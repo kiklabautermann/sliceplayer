@@ -7,6 +7,7 @@ This document outlines planned features, community ideas, and future enhancement
 ## 🎯 Planned Features & Enhancements
 
 ### 📦 DAW Export Expansion
+- [ ] **Custom WAV Export Scope**: Option/toggle to export slice WAV files either completely or restricted strictly to the active loop/slice region.
 - [ ] **Ableton Live Drum Rack Export**: Export `.alc` / Drum Rack presets.
 - [ ] **DecentSampler Preset Export**: Export `.dspreset` XML archives.
 - [ ] **FL Studio Slicex / DirectWave Export**: Export native preset formats.
