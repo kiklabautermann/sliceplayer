@@ -79,6 +79,10 @@ cd sliceplayer
 cargo run --package xtask -- bundle --release
 ```
 
+## 🗺️ Roadmap & Feature Requests
+
+Check out our [ROADMAP.md](ROADMAP.md) for planned features, DSP enhancements, and export formats. Have an idea? Feel free to submit feature requests via [GitHub Issues](https://github.com/kiklabautermann/sliceplayer/issues)!
+
 ---
 
 ## 🙏 Credits & Acknowledgements
