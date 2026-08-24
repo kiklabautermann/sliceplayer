@@ -4,14 +4,18 @@ fn main() {
     let root = std::path::Path::new(&manifest).parent().unwrap(); // workspace root
     let vl = root.join("velocloops");
 
-    cc::Build::new()
-        .cpp(true)
+    let mut build = cc::Build::new();
+    build.cpp(true)
         .file(vl.join("src/velociloops.cpp"))
         .include(vl.join("include"))
-        .flag("-std=c++17")
-        .flag("-O2")
-        .flag("-fPIC")
-        .compile("velociloops");
+        .std("c++17");
+
+    let target = std::env::var("TARGET").unwrap_or_default();
+    if !target.contains("msvc") {
+        build.flag("-O2").flag("-fPIC");
+    }
+
+    build.compile("velociloops");
 
     // Tell cargo to re-run if the C++ source changes.
     println!("cargo:rerun-if-changed={}", vl.join("src/velociloops.cpp").display());
