@@ -28,15 +28,27 @@ fn bundle() {
         std::process::exit(1);
     }
 
-    let so = root.join("target/release/libslice_player.so");
-    let dest_dir = std::path::PathBuf::from(
-        std::env::var("HOME").unwrap_or_else(|_| ".".into())
-    ).join(".clap/mill");
+    let artifact = if cfg!(target_os = "windows") {
+        root.join("target/release/slice_player.dll")
+    } else if cfg!(target_os = "macos") {
+        root.join("target/release/libslice_player.dylib")
+    } else {
+        root.join("target/release/libslice_player.so")
+    };
 
-    std::fs::create_dir_all(&dest_dir).unwrap();
-    let dest = dest_dir.join("slice_player.clap");
-    std::fs::copy(&so, &dest).expect("copy failed");
-    println!("✅ Deployed → {}", dest.display());
+    let home = std::env::var("HOME")
+        .or_else(|_| std::env::var("USERPROFILE"))
+        .unwrap_or_else(|_| ".".into());
+
+    let dest_dir = std::path::PathBuf::from(home).join(".clap/mill");
+
+    if artifact.exists() {
+        let _ = std::fs::create_dir_all(&dest_dir);
+        let dest = dest_dir.join("slice_player.clap");
+        if let Ok(_) = std::fs::copy(&artifact, &dest) {
+            println!("✅ Deployed → {}", dest.display());
+        }
+    }
 }
 
 fn clean() {
