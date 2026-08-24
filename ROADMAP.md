@@ -22,6 +22,14 @@ This document outlines planned features, community ideas, and future enhancement
 - [ ] **DJM500 / Oldschool Jungle Dub Echo**: Rhythmic BPM-synced delay with feedback filtering for classic D&B / Jungle dub echoes.
 - [ ] **Velocity Sensitivity Mapping**: Customizable velocity curves per slice.
 
+### 🌴 Jungle & Drum & Bass Specialized Tools
+- [ ] **Per-Slice Reverse Toggle**: Instant reverse playback per slice for swell effects & reverse snare fills.
+- [ ] **Multi-Bus Audio Routing (Multi-Out)**: Route slices to up to 8 separate stereo DAW audio buses (e.g., Bus 1: Kick, Bus 2: Snare, Bus 3: Tops, Bus 4: FX).
+- [ ] **Per-Slice Pitch Envelope & Pitch Drop**: Pitch decay envelope per slice for classic 808/snare pitch-drops.
+- [ ] **Jungle Ghost Note & Break Shuffler**: 1-click generative syncopation & snare roll generator.
+- [ ] **E-mu Z-Plane / Akai S950 Filter Modeling**: Non-linear warm lowpass filter modeling with sampler saturation.
+- [ ] **Zero-Crossing Auto-Snap & Micro-Nudge**: Zero-crossing alignment to prevent clicks on ultra-fast chops.
+
 ### 🎨 GUI & User Experience
 - [ ] **Direct Waveform Drag-and-Drop**: Drag audio files directly from the OS file manager into the waveform view.
 - [ ] **Mouse Wheel Zoom & Pan**: Pinch-to-zoom and smooth horizontal waveform scrolling.
