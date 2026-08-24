@@ -1,0 +1,3 @@
+[submodule "velocloops"]
+	path = velocloops
+	url = https://github.com/kunitoki/VelociLoops.git

@@ -1,0 +1,2073 @@
+<?xml version="1.0" encoding="UTF-8"?><multisample name="Rhodes Big">
+   <generator>Bitwig Studio</generator>
+   <category>Keyboards</category>
+   <creator>Genys</creator>
+   <description>Fender Rhodes sampled in 5 velocities and every key</description>
+   <keywords>
+      <keyword>analog</keyword>
+      <keyword>clean</keyword>
+   </keywords>
+   <group color="d93871" name="Vel 1"/>
+   <group color="d92e24" name="Vel 2"/>
+   <group color="ff5706" name="Vel 3"/>
+   <group color="d99d10" name="Vel 4"/>
+   <group color="739814" name="Vel 5"/>
+   <sample file="01 Rhodes E0 01.wav" gain="3.90" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="566117.000" zone-logic="always-play">
+      <key high="29" low="24" root="28" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="566117.000"/>
+   </sample>
+   <sample file="03 Rhodes F#0 01.wav" gain="2.22" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="1098.000" sample-stop="788712.000" zone-logic="always-play">
+      <key high="30" low="30" root="30" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="788712.000"/>
+   </sample>
+   <sample file="04 Rhodes G0 01.wav" gain="4.38" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="865957.000" zone-logic="always-play">
+      <key high="31" low="31" root="31" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="865957.000"/>
+   </sample>
+   <sample file="05 Rhodes G#0 01.wav" gain="1.98" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1360083.000" zone-logic="always-play">
+      <key high="32" low="32" root="32" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1360083.000"/>
+   </sample>
+   <sample file="06 Rhodes A0 01.wav" gain="5.40" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="842.000" sample-stop="853100.000" zone-logic="always-play">
+      <key high="33" low="33" root="33" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="853100.000"/>
+   </sample>
+   <sample file="07 Rhodes A#0 01.wav" gain="5.40" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="935279.000" zone-logic="always-play">
+      <key high="34" low="34" root="34" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="935279.000"/>
+   </sample>
+   <sample file="08 Rhodes B0 01.wav" gain="2.94" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1331747.000" zone-logic="always-play">
+      <key high="35" low="35" root="35" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1331747.000"/>
+   </sample>
+   <sample file="10 Rhodes C#1 01.wav" gain="5.64" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="572.000" sample-stop="859915.000" zone-logic="always-play">
+      <key high="37" low="36" root="37" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="859915.000"/>
+   </sample>
+   <sample file="11 Rhodes D1 01.wav" gain="5.64" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1193965.000" zone-logic="always-play">
+      <key high="38" low="38" root="38" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1193965.000"/>
+   </sample>
+   <sample file="12 Rhodes D#1 01.wav" gain="5.64" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="844884.000" zone-logic="always-play">
+      <key high="39" low="39" root="39" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="844884.000"/>
+   </sample>
+   <sample file="13 Rhodes E1 01.wav" gain="2.04" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1380870.000" zone-logic="always-play">
+      <key high="40" low="40" root="40" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1380870.000"/>
+   </sample>
+   <sample file="14 Rhodes F1 01.wav" gain="5.46" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="853345.000" zone-logic="always-play">
+      <key high="41" low="41" root="41" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="853345.000"/>
+   </sample>
+   <sample file="15 Rhodes F#1 01.wav" gain="2.94" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="893919.000" zone-logic="always-play">
+      <key high="42" low="42" root="42" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="893919.000"/>
+   </sample>
+   <sample file="16 Rhodes G1 01.wav" gain="9.60" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="993686.000" zone-logic="always-play">
+      <key high="43" low="43" root="43" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="993686.000"/>
+   </sample>
+   <sample file="17 Rhodes G#1 01.wav" gain="1.08" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1260531.000" zone-logic="always-play">
+      <key high="44" low="44" root="44" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1260531.000"/>
+   </sample>
+   <sample file="18 Rhodes A1 01.wav" gain="2.94" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="885833.000" zone-logic="always-play">
+      <key high="45" low="45" root="45" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="885833.000"/>
+   </sample>
+   <sample file="19 Rhodes A#1 01.wav" gain="7.50" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1088165.000" zone-logic="always-play">
+      <key high="46" low="46" root="46" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1088165.000"/>
+   </sample>
+   <sample file="21 Rhodes C2 01.wav" gain="1.50" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="847123.000" zone-logic="always-play">
+      <key high="48" low="47" root="48" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="847123.000"/>
+   </sample>
+   <sample file="22 Rhodes C#2 01.wav" gain="6.84" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1265453.000" zone-logic="always-play">
+      <key high="49" low="49" root="49" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1265453.000"/>
+   </sample>
+   <sample file="23 Rhodes D2 01.wav" gain="6.36" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1398180.000" zone-logic="always-play">
+      <key high="50" low="50" root="50" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1398180.000"/>
+   </sample>
+   <sample file="24 Rhodes D#2 01.wav" gain="6.36" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1060574.000" zone-logic="always-play">
+      <key high="51" low="51" root="51" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1060574.000"/>
+   </sample>
+   <sample file="25 Rhodes E2 01.wav" gain="6.36" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1368063.000" zone-logic="always-play">
+      <key high="52" low="52" root="52" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1368063.000"/>
+   </sample>
+   <sample file="26 Rhodes F2 01.wav" gain="6.36" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1308842.000" zone-logic="always-play">
+      <key high="53" low="53" root="53" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1308842.000"/>
+   </sample>
+   <sample file="27 Rhodes F#2 01.wav" gain="6.18" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1535994.000" zone-logic="always-play">
+      <key high="54" low="54" root="54" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1535994.000"/>
+   </sample>
+   <sample file="28 Rhodes G2 01.wav" gain="2.94" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1194984.000" zone-logic="always-play">
+      <key high="55" low="55" root="55" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1194984.000"/>
+   </sample>
+   <sample file="29 Rhodes G#2 01.wav" gain="-0.90" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1568763.000" zone-logic="always-play">
+      <key high="56" low="56" root="56" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1568763.000"/>
+   </sample>
+   <sample file="30 Rhodes A2 01.wav" gain="2.52" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1402835.000" zone-logic="always-play">
+      <key high="57" low="57" root="57" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1402835.000"/>
+   </sample>
+   <sample file="31 Rhodes A#2 01.wav" gain="6.18" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1142782.000" zone-logic="always-play">
+      <key high="58" low="58" root="58" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1142782.000"/>
+   </sample>
+   <sample file="32 Rhodes B2 01.wav" gain="5.64" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1394681.000" zone-logic="always-play">
+      <key high="59" low="59" root="59" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1394681.000"/>
+   </sample>
+   <sample file="33 Rhodes C3 01.wav" gain="0.30" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1075115.000" zone-logic="always-play">
+      <key high="60" low="60" root="60" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1075115.000"/>
+   </sample>
+   <sample file="34 Rhodes C#3 01.wav" gain="2.40" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="926719.000" zone-logic="always-play">
+      <key high="61" low="61" root="61" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="926719.000"/>
+   </sample>
+   <sample file="35 Rhodes D3 01.wav" gain="1.20" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1039475.000" zone-logic="always-play">
+      <key high="62" low="62" root="62" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1039475.000"/>
+   </sample>
+   <sample file="36 Rhodes D#3 01.wav" gain="0.72" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="784383.000" zone-logic="always-play">
+      <key high="63" low="63" root="63" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="784383.000"/>
+   </sample>
+   <sample file="37 Rhodes E3 01.wav" gain="-3.66" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1181549.000" zone-logic="always-play">
+      <key high="64" low="64" root="64" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1181549.000"/>
+   </sample>
+   <sample file="38 Rhodes F3 01.wav" gain="9.90" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1079207.000" zone-logic="always-play">
+      <key high="65" low="65" root="65" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1079207.000"/>
+   </sample>
+   <sample file="39 Rhodes F#3 01.wav" gain="7.02" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="835351.000" zone-logic="always-play">
+      <key high="66" low="66" root="66" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="835351.000"/>
+   </sample>
+   <sample file="40 Rhodes G3 01.wav" gain="1.38" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="954537.000" zone-logic="always-play">
+      <key high="67" low="67" root="67" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="954537.000"/>
+   </sample>
+   <sample file="41 Rhodes G#3 01.wav" gain="5.16" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="681793.000" zone-logic="always-play">
+      <key high="68" low="68" root="68" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="681793.000"/>
+   </sample>
+   <sample file="42 Rhodes A3 01.wav" gain="-0.18" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="797656.000" zone-logic="always-play">
+      <key high="69" low="69" root="69" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="797656.000"/>
+   </sample>
+   <sample file="43 Rhodes A#3 01.wav" gain="2.94" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="678908.000" zone-logic="always-play">
+      <key high="70" low="70" root="70" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="678908.000"/>
+   </sample>
+   <sample file="44 Rhodes B3 01.wav" gain="4.86" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="718838.000" zone-logic="always-play">
+      <key high="71" low="71" root="71" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="718838.000"/>
+   </sample>
+   <sample file="45 Rhodes C4 01.wav" gain="0.84" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="678778.000" zone-logic="always-play">
+      <key high="72" low="72" root="72" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="678778.000"/>
+   </sample>
+   <sample file="46 Rhodes C#4 01.wav" gain="2.34" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="808957.000" zone-logic="always-play">
+      <key high="73" low="73" root="73" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="808957.000"/>
+   </sample>
+   <sample file="48 Rhodes D#4 01.wav" gain="4.14" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="627613.000" zone-logic="always-play">
+      <key high="75" low="74" root="75" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="627613.000"/>
+   </sample>
+   <sample file="49 Rhodes E4 01.wav" gain="2.94" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="564206.000" zone-logic="always-play">
+      <key high="76" low="76" root="76" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="564206.000"/>
+   </sample>
+   <sample file="50 Rhodes F4 01.wav" gain="2.94" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="460799.000" zone-logic="always-play">
+      <key high="77" low="77" root="77" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="460799.000"/>
+   </sample>
+   <sample file="51 Rhodes F#4 01.wav" gain="1.02" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="264191.000" zone-logic="always-play">
+      <key high="78" low="78" root="78" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="264191.000"/>
+   </sample>
+   <sample file="52 Rhodes G4 01.wav" gain="-1.80" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="438756.000" zone-logic="always-play">
+      <key high="79" low="79" root="79" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="438756.000"/>
+   </sample>
+   <sample file="54 Rhodes A4 01.wav" gain="4.20" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="653298.000" zone-logic="always-play">
+      <key high="81" low="80" root="81" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="653298.000"/>
+   </sample>
+   <sample file="55 Rhodes A#4 01.wav" gain="5.28" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="646092.000" zone-logic="always-play">
+      <key high="82" low="82" root="82" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="646092.000"/>
+   </sample>
+   <sample file="56 Rhodes B4 01.wav" gain="7.98" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="652068.000" zone-logic="always-play">
+      <key high="83" low="83" root="83" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="652068.000"/>
+   </sample>
+   <sample file="57 Rhodes C5 01.wav" gain="6.48" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="395262.000" zone-logic="always-play">
+      <key high="84" low="84" root="84" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="395262.000"/>
+   </sample>
+   <sample file="58 Rhodes C#5 01.wav" gain="2.94" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="347615.000" zone-logic="always-play">
+      <key high="85" low="85" root="85" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="347615.000"/>
+   </sample>
+   <sample file="59 Rhodes D5 01.wav" gain="8.88" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="404294.000" zone-logic="always-play">
+      <key high="86" low="86" root="86" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="404294.000"/>
+   </sample>
+   <sample file="60 Rhodes D#5 01.wav" gain="1.74" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="291835.000" zone-logic="always-play">
+      <key high="87" low="87" root="87" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="291835.000"/>
+   </sample>
+   <sample file="61 Rhodes E5 01.wav" gain="2.88" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="366751.000" zone-logic="always-play">
+      <key high="88" low="88" root="88" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="366751.000"/>
+   </sample>
+   <sample file="62 Rhodes F5 01.wav" gain="6.48" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="194555.000" zone-logic="always-play">
+      <key high="89" low="89" root="89" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="194555.000"/>
+   </sample>
+   <sample file="63 Rhodes F#5 01.wav" gain="7.26" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="327611.000" zone-logic="always-play">
+      <key high="90" low="90" root="90" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="327611.000"/>
+   </sample>
+   <sample file="64 Rhodes G5 01.wav" gain="6.48" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="263546.000" zone-logic="always-play">
+      <key high="91" low="91" root="91" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="263546.000"/>
+   </sample>
+   <sample file="65 Rhodes G#5 01.wav" gain="10.56" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="86738.000" zone-logic="always-play">
+      <key high="92" low="92" root="92" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="86738.000"/>
+   </sample>
+   <sample file="66 Rhodes A5 01.wav" gain="7.26" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="232782.000" zone-logic="always-play">
+      <key high="93" low="93" root="93" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="232782.000"/>
+   </sample>
+   <sample file="67 Rhodes A#5 01.wav" gain="8.46" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="251357.000" zone-logic="always-play">
+      <key high="94" low="94" root="94" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="251357.000"/>
+   </sample>
+   <sample file="68 Rhodes B5 01.wav" gain="-0.78" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="243681.000" zone-logic="always-play">
+      <key high="96" low="95" root="95" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="243681.000"/>
+   </sample>
+   <sample file="70 Rhodes C#6 01.wav" gain="4.56" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="219985.000" zone-logic="always-play">
+      <key high="97" low="97" root="97" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="219985.000"/>
+   </sample>
+   <sample file="71 Rhodes D6 01.wav" gain="10.50" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="250849.000" zone-logic="always-play">
+      <key high="98" low="98" root="98" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="250849.000"/>
+   </sample>
+   <sample file="72 Rhodes D#6 01.wav" gain="-1.92" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="208215.000" zone-logic="always-play">
+      <key high="99" low="99" root="99" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="208215.000"/>
+   </sample>
+   <sample file="73 Rhodes E6 01.wav" gain="7.74" group="0" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="155134.000" zone-logic="always-play">
+      <key high="108" low="100" root="100" track="1.0000" tune="0.00"/>
+      <velocity high="67"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="155134.000"/>
+   </sample>
+   <sample file="01 Rhodes E0 02.wav" gain="3.42" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="723964.000" zone-logic="always-play">
+      <key high="28" low="24" root="28" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="723964.000"/>
+   </sample>
+   <sample file="02 Rhodes F0 02.wav" gain="5.46" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="580.000" sample-stop="789563.000" zone-logic="always-play">
+      <key high="29" low="29" root="29" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="789563.000"/>
+   </sample>
+   <sample file="04 Rhodes G0 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="605.000" sample-stop="1008478.000" zone-logic="always-play">
+      <key high="31" low="30" root="31" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1008478.000"/>
+   </sample>
+   <sample file="05 Rhodes G#0 02.wav" gain="0.96" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="1042.000" sample-stop="1355552.000" zone-logic="always-play">
+      <key high="32" low="32" root="32" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1355552.000"/>
+   </sample>
+   <sample file="06 Rhodes A0 02.wav" gain="0.48" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1098161.000" zone-logic="always-play">
+      <key high="33" low="33" root="33" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1098161.000"/>
+   </sample>
+   <sample file="07 Rhodes A#0 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="986010.000" zone-logic="always-play">
+      <key high="34" low="34" root="34" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="986010.000"/>
+   </sample>
+   <sample file="08 Rhodes B0 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="1032.000" sample-stop="1296238.000" zone-logic="always-play">
+      <key high="35" low="35" root="35" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1296238.000"/>
+   </sample>
+   <sample file="10 Rhodes C#1 02.wav" gain="3.72" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1034276.000" zone-logic="always-play">
+      <key high="37" low="36" root="37" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1034276.000"/>
+   </sample>
+   <sample file="11 Rhodes D1 02.wav" gain="1.26" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1411185.000" zone-logic="always-play">
+      <key high="38" low="38" root="38" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1411185.000"/>
+   </sample>
+   <sample file="12 Rhodes D#1 02.wav" gain="0.66" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="945.000" sample-stop="1019272.000" zone-logic="always-play">
+      <key high="39" low="39" root="39" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1019272.000"/>
+   </sample>
+   <sample file="13 Rhodes E1 02.wav" gain="0.90" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1256191.000" zone-logic="always-play">
+      <key high="40" low="40" root="40" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1256191.000"/>
+   </sample>
+   <sample file="14 Rhodes F1 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1085013.000" zone-logic="always-play">
+      <key high="41" low="41" root="41" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1085013.000"/>
+   </sample>
+   <sample file="15 Rhodes F#1 02.wav" gain="1.50" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="978691.000" zone-logic="always-play">
+      <key high="42" low="42" root="42" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="978691.000"/>
+   </sample>
+   <sample file="16 Rhodes G1 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1186388.000" zone-logic="always-play">
+      <key high="43" low="43" root="43" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1186388.000"/>
+   </sample>
+   <sample file="17 Rhodes G#1 02.wav" gain="1.26" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1270511.000" zone-logic="always-play">
+      <key high="44" low="44" root="44" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1270511.000"/>
+   </sample>
+   <sample file="18 Rhodes A1 02.wav" gain="-1.14" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="944794.000" zone-logic="always-play">
+      <key high="45" low="45" root="45" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="944794.000"/>
+   </sample>
+   <sample file="19 Rhodes A#1 02.wav" gain="5.70" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1166389.000" zone-logic="always-play">
+      <key high="46" low="46" root="46" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1166389.000"/>
+   </sample>
+   <sample file="21 Rhodes C2 02.wav" gain="2.28" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="802056.000" zone-logic="always-play">
+      <key high="48" low="47" root="48" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="802056.000"/>
+   </sample>
+   <sample file="22 Rhodes C#2 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1358941.000" zone-logic="always-play">
+      <key high="49" low="49" root="49" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1358941.000"/>
+   </sample>
+   <sample file="23 Rhodes D2 02.wav" gain="3.30" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1437305.000" zone-logic="always-play">
+      <key high="50" low="50" root="50" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1437305.000"/>
+   </sample>
+   <sample file="24 Rhodes D#2 02.wav" gain="0.06" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1150075.000" zone-logic="always-play">
+      <key high="51" low="51" root="51" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1150075.000"/>
+   </sample>
+   <sample file="25 Rhodes E2 02.wav" gain="-0.84" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1197414.000" zone-logic="always-play">
+      <key high="52" low="52" root="52" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1197414.000"/>
+   </sample>
+   <sample file="26 Rhodes F2 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1376544.000" zone-logic="always-play">
+      <key high="53" low="53" root="53" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1376544.000"/>
+   </sample>
+   <sample file="27 Rhodes F#2 02.wav" gain="4.56" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1605440.000" zone-logic="always-play">
+      <key high="54" low="54" root="54" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1605440.000"/>
+   </sample>
+   <sample file="28 Rhodes G2 02.wav" gain="3.96" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1282664.000" zone-logic="always-play">
+      <key high="55" low="55" root="55" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1282664.000"/>
+   </sample>
+   <sample file="29 Rhodes G#2 02.wav" gain="-0.18" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1401345.000" zone-logic="always-play">
+      <key high="56" low="56" root="56" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1401345.000"/>
+   </sample>
+   <sample file="30 Rhodes A2 02.wav" gain="0.06" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1262591.000" zone-logic="always-play">
+      <key high="57" low="57" root="57" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1262591.000"/>
+   </sample>
+   <sample file="31 Rhodes A#2 02.wav" gain="3.96" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1158143.000" zone-logic="always-play">
+      <key high="58" low="58" root="58" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1158143.000"/>
+   </sample>
+   <sample file="32 Rhodes B2 02.wav" gain="0.48" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1458175.000" zone-logic="always-play">
+      <key high="59" low="59" root="59" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1458175.000"/>
+   </sample>
+   <sample file="33 Rhodes C3 02.wav" gain="1.44" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1200000.000" zone-logic="always-play">
+      <key high="60" low="60" root="60" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1200000.000"/>
+   </sample>
+   <sample file="34 Rhodes C#3 02.wav" gain="1.38" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="926230.000" zone-logic="always-play">
+      <key high="61" low="61" root="61" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="926230.000"/>
+   </sample>
+   <sample file="35 Rhodes D3 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1076108.000" zone-logic="always-play">
+      <key high="62" low="62" root="62" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1076108.000"/>
+   </sample>
+   <sample file="36 Rhodes D#3 02.wav" gain="0.06" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="770046.000" zone-logic="always-play">
+      <key high="63" low="63" root="63" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="770046.000"/>
+   </sample>
+   <sample file="37 Rhodes E3 02.wav" gain="-3.60" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1193900.000" zone-logic="always-play">
+      <key high="64" low="64" root="64" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1193900.000"/>
+   </sample>
+   <sample file="38 Rhodes F3 02.wav" gain="7.38" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1134584.000" zone-logic="always-play">
+      <key high="65" low="65" root="65" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1134584.000"/>
+   </sample>
+   <sample file="39 Rhodes F#3 02.wav" gain="8.10" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="910173.000" zone-logic="always-play">
+      <key high="66" low="66" root="66" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="910173.000"/>
+   </sample>
+   <sample file="40 Rhodes G3 02.wav" gain="0.12" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="980996.000" zone-logic="always-play">
+      <key high="67" low="67" root="67" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="980996.000"/>
+   </sample>
+   <sample file="41 Rhodes G#3 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="700331.000" zone-logic="always-play">
+      <key high="68" low="68" root="68" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="700331.000"/>
+   </sample>
+   <sample file="42 Rhodes A3 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="881663.000" zone-logic="always-play">
+      <key high="69" low="69" root="69" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="881663.000"/>
+   </sample>
+   <sample file="43 Rhodes A#3 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="678901.000" zone-logic="always-play">
+      <key high="70" low="70" root="70" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="678901.000"/>
+   </sample>
+   <sample file="44 Rhodes B3 02.wav" gain="3.48" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="703423.000" zone-logic="always-play">
+      <key high="71" low="71" root="71" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="703423.000"/>
+   </sample>
+   <sample file="45 Rhodes C4 02.wav" gain="-1.70" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="631706.000" zone-logic="always-play">
+      <key high="72" low="72" root="72" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="631706.000"/>
+   </sample>
+   <sample file="46 Rhodes C#4 02.wav" gain="0.90" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="825200.000" zone-logic="always-play">
+      <key high="73" low="73" root="73" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="825200.000"/>
+   </sample>
+   <sample file="47 Rhodes D4 02.wav" gain="0.90" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="861106.000" zone-logic="always-play">
+      <key high="74" low="74" root="74" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="861106.000"/>
+   </sample>
+   <sample file="48 Rhodes D#4 02.wav" gain="0.90" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="671683.000" zone-logic="always-play">
+      <key high="75" low="75" root="75" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="671683.000"/>
+   </sample>
+   <sample file="49 Rhodes E4 02.wav" gain="-5.64" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="574314.000" zone-logic="always-play">
+      <key high="76" low="76" root="76" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="574314.000"/>
+   </sample>
+   <sample file="50 Rhodes F4 02.wav" gain="-1.44" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="514046.000" zone-logic="always-play">
+      <key high="77" low="77" root="77" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="514046.000"/>
+   </sample>
+   <sample file="51 Rhodes F#4 02.wav" gain="-1.56" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="242930.000" zone-logic="always-play">
+      <key high="78" low="78" root="78" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="242930.000"/>
+   </sample>
+   <sample file="52 Rhodes G4 02.wav" gain="-5.94" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="463850.000" zone-logic="always-play">
+      <key high="79" low="79" root="79" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="463850.000"/>
+   </sample>
+   <sample file="54 Rhodes A4 02.wav" gain="-2.94" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="185.000" sample-stop="781175.000" zone-logic="always-play">
+      <key high="81" low="80" root="81" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="781175.000"/>
+   </sample>
+   <sample file="55 Rhodes A#4 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="696220.000" zone-logic="always-play">
+      <key high="82" low="82" root="82" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="696220.000"/>
+   </sample>
+   <sample file="56 Rhodes B4 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="701438.000" zone-logic="always-play">
+      <key high="83" low="83" root="83" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="701438.000"/>
+   </sample>
+   <sample file="57 Rhodes C5 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="430079.000" zone-logic="always-play">
+      <key high="84" low="84" root="84" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="430079.000"/>
+   </sample>
+   <sample file="58 Rhodes C#5 02.wav" gain="-0.60" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="332791.000" zone-logic="always-play">
+      <key high="85" low="85" root="85" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="332791.000"/>
+   </sample>
+   <sample file="59 Rhodes D5 02.wav" gain="3.48" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="502230.000" zone-logic="always-play">
+      <key high="86" low="86" root="86" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="502230.000"/>
+   </sample>
+   <sample file="60 Rhodes D#5 02.wav" gain="1.44" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="350660.000" zone-logic="always-play">
+      <key high="87" low="87" root="87" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="350660.000"/>
+   </sample>
+   <sample file="61 Rhodes E5 02.wav" gain="3.18" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="440581.000" zone-logic="always-play">
+      <key high="88" low="88" root="88" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="440581.000"/>
+   </sample>
+   <sample file="62 Rhodes F5 02.wav" gain="2.58" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="226809.000" zone-logic="always-play">
+      <key high="89" low="89" root="89" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="226809.000"/>
+   </sample>
+   <sample file="63 Rhodes F#5 02.wav" gain="1.86" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="357302.000" zone-logic="always-play">
+      <key high="90" low="90" root="90" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="357302.000"/>
+   </sample>
+   <sample file="64 Rhodes G5 02.wav" gain="2.10" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="293886.000" zone-logic="always-play">
+      <key high="91" low="91" root="91" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="293886.000"/>
+   </sample>
+   <sample file="65 Rhodes G#5 02.wav" gain="9.72" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="290555.000" zone-logic="always-play">
+      <key high="92" low="92" root="92" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="290555.000"/>
+   </sample>
+   <sample file="66 Rhodes A5 02.wav" gain="-0.90" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="303102.000" zone-logic="always-play">
+      <key high="93" low="93" root="93" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="303102.000"/>
+   </sample>
+   <sample file="67 Rhodes A#5 02.wav" gain="8.88" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="280765.000" zone-logic="always-play">
+      <key high="94" low="94" root="94" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="280765.000"/>
+   </sample>
+   <sample file="68 Rhodes B5 02.wav" gain="-1.20" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="256960.000" zone-logic="always-play">
+      <key high="95" low="95" root="95" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="256960.000"/>
+   </sample>
+   <sample file="69 Rhodes C6 02.wav" gain="8.10" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="167423.000" zone-logic="always-play">
+      <key high="96" low="96" root="96" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="167423.000"/>
+   </sample>
+   <sample file="70 Rhodes C#6 02.wav" gain="-0.66" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="241486.000" zone-logic="always-play">
+      <key high="97" low="97" root="97" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="241486.000"/>
+   </sample>
+   <sample file="71 Rhodes D6 02.wav" gain="4.26" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="241506.000" zone-logic="always-play">
+      <key high="98" low="98" root="98" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="241506.000"/>
+   </sample>
+   <sample file="72 Rhodes D#6 02.wav" gain="-1.38" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="173505.000" zone-logic="always-play">
+      <key high="99" low="99" root="99" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="173505.000"/>
+   </sample>
+   <sample file="73 Rhodes E6 02.wav" gain="0.00" group="1" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="191412.000" zone-logic="always-play">
+      <key high="108" low="100" root="100" track="1.0000" tune="0.00"/>
+      <velocity high="97" low="68"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="191412.000"/>
+   </sample>
+   <sample file="01 Rhodes E0 03.wav" gain="4.50" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="693241.000" zone-logic="always-play">
+      <key high="28" low="24" root="28" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="693241.000"/>
+   </sample>
+   <sample file="03 Rhodes F#0 03.wav" gain="1.50" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="773.000" sample-stop="955372.000" zone-logic="always-play">
+      <key high="30" low="29" root="30" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="955372.000"/>
+   </sample>
+   <sample file="04 Rhodes G0 03.wav" gain="2.94" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1261866.000" zone-logic="always-play">
+      <key high="31" low="31" root="31" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1261866.000"/>
+   </sample>
+   <sample file="05 Rhodes G#0 03.wav" gain="2.58" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1205691.000" zone-logic="always-play">
+      <key high="32" low="32" root="32" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1205691.000"/>
+   </sample>
+   <sample file="06 Rhodes A0 03.wav" gain="1.98" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="946980.000" zone-logic="always-play">
+      <key high="33" low="33" root="33" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="946980.000"/>
+   </sample>
+   <sample file="07 Rhodes A#0 03.wav" gain="0.36" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1173096.000" zone-logic="always-play">
+      <key high="34" low="34" root="34" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1173096.000"/>
+   </sample>
+   <sample file="08 Rhodes B0 03.wav" gain="1.02" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1772652.000" zone-logic="always-play">
+      <key high="35" low="35" root="35" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1772652.000"/>
+   </sample>
+   <sample file="09 Rhodes C1 03.wav" gain="0.90" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1104652.000" zone-logic="always-play">
+      <key high="36" low="36" root="36" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1104652.000"/>
+   </sample>
+   <sample file="10 Rhodes C#1 03.wav" gain="1.56" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1293132.000" zone-logic="always-play">
+      <key high="37" low="37" root="37" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1293132.000"/>
+   </sample>
+   <sample file="11 Rhodes D1 03.wav" gain="-0.90" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1396597.000" zone-logic="always-play">
+      <key high="38" low="38" root="38" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1396597.000"/>
+   </sample>
+   <sample file="12 Rhodes D#1 03.wav" gain="-1.14" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1456756.000" zone-logic="always-play">
+      <key high="39" low="39" root="39" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1456756.000"/>
+   </sample>
+   <sample file="13 Rhodes E1 03.wav" gain="-2.40" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1411585.000" zone-logic="always-play">
+      <key high="40" low="40" root="40" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1411585.000"/>
+   </sample>
+   <sample file="14 Rhodes F1 03.wav" gain="4.62" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1393587.000" zone-logic="always-play">
+      <key high="41" low="41" root="41" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1393587.000"/>
+   </sample>
+   <sample file="15 Rhodes F#1 03.wav" gain="2.94" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="990661.000" zone-logic="always-play">
+      <key high="42" low="42" root="42" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="990661.000"/>
+   </sample>
+   <sample file="16 Rhodes G1 03.wav" gain="4.56" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1530684.000" zone-logic="always-play">
+      <key high="43" low="43" root="43" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1530684.000"/>
+   </sample>
+   <sample file="17 Rhodes G#1 03.wav" gain="-0.36" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1284796.000" zone-logic="always-play">
+      <key high="44" low="44" root="44" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1284796.000"/>
+   </sample>
+   <sample file="18 Rhodes A1 03.wav" gain="0.18" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1164916.000" zone-logic="always-play">
+      <key high="45" low="45" root="45" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1164916.000"/>
+   </sample>
+   <sample file="19 Rhodes A#1 03.wav" gain="2.46" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1143451.000" zone-logic="always-play">
+      <key high="46" low="46" root="46" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1143451.000"/>
+   </sample>
+   <sample file="20 Rhodes B1 03.wav" gain="4.14" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1194715.000" zone-logic="always-play">
+      <key high="47" low="47" root="47" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1194715.000"/>
+   </sample>
+   <sample file="21 Rhodes C2 03.wav" gain="0.06" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="911768.000" zone-logic="always-play">
+      <key high="48" low="48" root="48" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="911768.000"/>
+   </sample>
+   <sample file="22 Rhodes C#2 03.wav" gain="2.94" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1506991.000" zone-logic="always-play">
+      <key high="49" low="49" root="49" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1506991.000"/>
+   </sample>
+   <sample file="23 Rhodes D2 03.wav" gain="4.38" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1460367.000" zone-logic="always-play">
+      <key high="50" low="50" root="50" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1460367.000"/>
+   </sample>
+   <sample file="24 Rhodes D#2 03.wav" gain="0.72" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1200815.000" zone-logic="always-play">
+      <key high="51" low="51" root="51" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1200815.000"/>
+   </sample>
+   <sample file="25 Rhodes E2 03.wav" gain="-0.96" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1298981.000" zone-logic="always-play">
+      <key high="52" low="52" root="52" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1298981.000"/>
+   </sample>
+   <sample file="26 Rhodes F2 03.wav" gain="0.84" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1552265.000" zone-logic="always-play">
+      <key high="53" low="53" root="53" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1552265.000"/>
+   </sample>
+   <sample file="27 Rhodes F#2 03.wav" gain="-1.14" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1656471.000" zone-logic="always-play">
+      <key high="54" low="54" root="54" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1656471.000"/>
+   </sample>
+   <sample file="28 Rhodes G2 03.wav" gain="1.86" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1389608.000" zone-logic="always-play">
+      <key high="55" low="55" root="55" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1389608.000"/>
+   </sample>
+   <sample file="29 Rhodes G#2 03.wav" gain="0.84" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1430420.000" zone-logic="always-play">
+      <key high="56" low="56" root="56" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1430420.000"/>
+   </sample>
+   <sample file="30 Rhodes A2 03.wav" gain="0.84" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1775613.000" zone-logic="always-play">
+      <key high="57" low="57" root="57" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1775613.000"/>
+   </sample>
+   <sample file="31 Rhodes A#2 03.wav" gain="0.36" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1261567.000" zone-logic="always-play">
+      <key high="58" low="58" root="58" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1261567.000"/>
+   </sample>
+   <sample file="32 Rhodes B2 03.wav" gain="0.24" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1327713.000" zone-logic="always-play">
+      <key high="59" low="59" root="59" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1327713.000"/>
+   </sample>
+   <sample file="33 Rhodes C3 03.wav" gain="-0.24" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1210365.000" zone-logic="always-play">
+      <key high="60" low="60" root="60" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1210365.000"/>
+   </sample>
+   <sample file="34 Rhodes C#3 03.wav" gain="0.84" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1009939.000" zone-logic="always-play">
+      <key high="61" low="61" root="61" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1009939.000"/>
+   </sample>
+   <sample file="35 Rhodes D3 03.wav" gain="0.84" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1167729.000" zone-logic="always-play">
+      <key high="62" low="62" root="62" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1167729.000"/>
+   </sample>
+   <sample file="36 Rhodes D#3 03.wav" gain="-0.12" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="891196.000" zone-logic="always-play">
+      <key high="63" low="63" root="63" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="891196.000"/>
+   </sample>
+   <sample file="37 Rhodes E3 03.wav" gain="-3.36" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1204223.000" zone-logic="always-play">
+      <key high="64" low="64" root="64" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1204223.000"/>
+   </sample>
+   <sample file="38 Rhodes F3 03.wav" gain="3.00" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1159101.000" zone-logic="always-play">
+      <key high="65" low="65" root="65" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1159101.000"/>
+   </sample>
+   <sample file="39 Rhodes F#3 03.wav" gain="0.84" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="962559.000" zone-logic="always-play">
+      <key high="66" low="66" root="66" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="962559.000"/>
+   </sample>
+   <sample file="40 Rhodes G3 03.wav" gain="-1.38" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="930.000" sample-stop="1073141.000" zone-logic="always-play">
+      <key high="67" low="67" root="67" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1073141.000"/>
+   </sample>
+   <sample file="41 Rhodes G#3 03.wav" gain="3.36" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="857086.000" zone-logic="always-play">
+      <key high="68" low="68" root="68" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="857086.000"/>
+   </sample>
+   <sample file="42 Rhodes A3 03.wav" gain="-2.52" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="856062.000" zone-logic="always-play">
+      <key high="69" low="69" root="69" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="856062.000"/>
+   </sample>
+   <sample file="43 Rhodes A#3 03.wav" gain="-0.42" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="704510.000" zone-logic="always-play">
+      <key high="70" low="70" root="70" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="704510.000"/>
+   </sample>
+   <sample file="44 Rhodes B3 03.wav" gain="-1.98" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="761718.000" zone-logic="always-play">
+      <key high="71" low="71" root="71" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="761718.000"/>
+   </sample>
+   <sample file="45 Rhodes C4 03.wav" gain="-3.78" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="701438.000" zone-logic="always-play">
+      <key high="72" low="72" root="72" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="701438.000"/>
+   </sample>
+   <sample file="46 Rhodes C#4 03.wav" gain="-0.66" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="923647.000" zone-logic="always-play">
+      <key high="73" low="73" root="73" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="923647.000"/>
+   </sample>
+   <sample file="47 Rhodes D4 03.wav" gain="-1.86" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="903090.000" zone-logic="always-play">
+      <key high="74" low="74" root="74" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="903090.000"/>
+   </sample>
+   <sample file="48 Rhodes D#4 03.wav" gain="0.84" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="752626.000" zone-logic="always-play">
+      <key high="75" low="75" root="75" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="752626.000"/>
+   </sample>
+   <sample file="49 Rhodes E4 03.wav" gain="-6.00" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="643939.000" zone-logic="always-play">
+      <key high="76" low="76" root="76" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="643939.000"/>
+   </sample>
+   <sample file="50 Rhodes F4 03.wav" gain="-1.26" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="449372.000" zone-logic="always-play">
+      <key high="77" low="77" root="77" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="449372.000"/>
+   </sample>
+   <sample file="51 Rhodes F#4 03.wav" gain="-6.36" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="275373.000" zone-logic="always-play">
+      <key high="78" low="78" root="78" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="275373.000"/>
+   </sample>
+   <sample file="52 Rhodes G4 03.wav" gain="-10.02" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="504762.000" zone-logic="always-play">
+      <key high="79" low="79" root="79" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="504762.000"/>
+   </sample>
+   <sample file="53 Rhodes G#4 03.wav" gain="0.24" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="209350.000" zone-logic="always-play">
+      <key high="80" low="80" root="80" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="209350.000"/>
+   </sample>
+   <sample file="54 Rhodes A4 03.wav" gain="-6.00" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="741269.000" zone-logic="always-play">
+      <key high="81" low="81" root="81" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="741269.000"/>
+   </sample>
+   <sample file="55 Rhodes A#4 03.wav" gain="-0.72" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="669627.000" zone-logic="always-play">
+      <key high="82" low="82" root="82" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="669627.000"/>
+   </sample>
+   <sample file="56 Rhodes B4 03.wav" gain="-0.18" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="794430.000" zone-logic="always-play">
+      <key high="83" low="83" root="83" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="794430.000"/>
+   </sample>
+   <sample file="57 Rhodes C5 03.wav" gain="4.74" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="383830.000" zone-logic="always-play">
+      <key high="84" low="84" root="84" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="383830.000"/>
+   </sample>
+   <sample file="58 Rhodes C#5 03.wav" gain="-1.62" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="377843.000" zone-logic="always-play">
+      <key high="85" low="85" root="85" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="377843.000"/>
+   </sample>
+   <sample file="59 Rhodes D5 03.wav" gain="1.86" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="467785.000" zone-logic="always-play">
+      <key high="86" low="86" root="86" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="467785.000"/>
+   </sample>
+   <sample file="61 Rhodes E5 03.wav" gain="0.78" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="365053.000" zone-logic="always-play">
+      <key high="88" low="87" root="88" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="365053.000"/>
+   </sample>
+   <sample file="62 Rhodes F5 03.wav" gain="-0.72" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="43.000" sample-stop="204734.000" zone-logic="always-play">
+      <key high="90" low="89" root="89" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="204734.000"/>
+   </sample>
+   <sample file="65 Rhodes G#5 03.wav" gain="10.80" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="302691.000" zone-logic="always-play">
+      <key high="92" low="91" root="92" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="302691.000"/>
+   </sample>
+   <sample file="66 Rhodes A5 03.wav" gain="2.34" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="175322.000" zone-logic="always-play">
+      <key high="93" low="93" root="93" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="175322.000"/>
+   </sample>
+   <sample file="67 Rhodes A#5 03.wav" gain="5.28" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="283082.000" zone-logic="always-play">
+      <key high="94" low="94" root="94" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="283082.000"/>
+   </sample>
+   <sample file="68 Rhodes B5 03.wav" gain="0.66" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="243670.000" zone-logic="always-play">
+      <key high="95" low="95" root="95" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="243670.000"/>
+   </sample>
+   <sample file="69 Rhodes C6 03.wav" gain="0.78" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="140570.000" zone-logic="always-play">
+      <key high="96" low="96" root="96" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="140570.000"/>
+   </sample>
+   <sample file="70 Rhodes C#6 03.wav" gain="-2.46" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="239543.000" zone-logic="always-play">
+      <key high="97" low="97" root="97" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="239543.000"/>
+   </sample>
+   <sample file="71 Rhodes D6 03.wav" gain="0.78" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="232442.000" zone-logic="always-play">
+      <key high="98" low="98" root="98" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="232442.000"/>
+   </sample>
+   <sample file="72 Rhodes D#6 03.wav" gain="-0.06" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="180371.000" zone-logic="always-play">
+      <key high="99" low="99" root="99" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="180371.000"/>
+   </sample>
+   <sample file="73 Rhodes E6 03.wav" gain="0.78" group="2" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="163799.000" zone-logic="always-play">
+      <key high="108" low="100" root="100" track="1.0000" tune="0.00"/>
+      <velocity high="113" low="98"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="163799.000"/>
+   </sample>
+   <sample file="01 Rhodes E0 04.wav" gain="4.56" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="719829.000" zone-logic="always-play">
+      <key high="28" low="24" root="28" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="719829.000"/>
+   </sample>
+   <sample file="02 Rhodes F0 04.wav" gain="3.60" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="931072.000" zone-logic="always-play">
+      <key high="29" low="29" root="29" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="931072.000"/>
+   </sample>
+   <sample file="03 Rhodes F#0 04.wav" gain="3.12" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1025865.000" zone-logic="always-play">
+      <key high="30" low="30" root="30" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1025865.000"/>
+   </sample>
+   <sample file="04 Rhodes G0 04.wav" gain="2.40" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="683.000" sample-stop="1302493.000" zone-logic="always-play">
+      <key high="31" low="31" root="31" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1302493.000"/>
+   </sample>
+   <sample file="05 Rhodes G#0 04.wav" gain="-2.58" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1400131.000" zone-logic="always-play">
+      <key high="32" low="32" root="32" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1400131.000"/>
+   </sample>
+   <sample file="06 Rhodes A0 04.wav" gain="2.82" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="987657.000" zone-logic="always-play">
+      <key high="33" low="33" root="33" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="987657.000"/>
+   </sample>
+   <sample file="07 Rhodes A#0 04.wav" gain="-2.82" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1138195.000" zone-logic="always-play">
+      <key high="34" low="34" root="34" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1138195.000"/>
+   </sample>
+   <sample file="08 Rhodes B0 04.wav" gain="-1.26" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="829.000" sample-stop="1433563.000" zone-logic="always-play">
+      <key high="35" low="35" root="35" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1433563.000"/>
+   </sample>
+   <sample file="09 Rhodes C1 04.wav" gain="-2.94" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1474422.000" zone-logic="always-play">
+      <key high="36" low="36" root="36" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1474422.000"/>
+   </sample>
+   <sample file="10 Rhodes C#1 04.wav" gain="0.78" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1280049.000" zone-logic="always-play">
+      <key high="37" low="37" root="37" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1280049.000"/>
+   </sample>
+   <sample file="11 Rhodes D1 04.wav" gain="-2.34" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1183799.000" zone-logic="always-play">
+      <key high="38" low="38" root="38" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1183799.000"/>
+   </sample>
+   <sample file="12 Rhodes D#1 04.wav" gain="-2.46" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1302195.000" zone-logic="always-play">
+      <key high="39" low="39" root="39" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1302195.000"/>
+   </sample>
+   <sample file="13 Rhodes E1 04.wav" gain="-3.06" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1561717.000" zone-logic="always-play">
+      <key high="40" low="40" root="40" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1561717.000"/>
+   </sample>
+   <sample file="14 Rhodes F1 04.wav" gain="-1.80" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1561958.000" zone-logic="always-play">
+      <key high="41" low="41" root="41" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1561958.000"/>
+   </sample>
+   <sample file="15 Rhodes F#1 04.wav" gain="0.00" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1369967.000" zone-logic="always-play">
+      <key high="42" low="42" root="42" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1369967.000"/>
+   </sample>
+   <sample file="16 Rhodes G1 04.wav" gain="1.50" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1305578.000" zone-logic="always-play">
+      <key high="43" low="43" root="43" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1305578.000"/>
+   </sample>
+   <sample file="17 Rhodes G#1 04.wav" gain="-1.20" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1360703.000" zone-logic="always-play">
+      <key high="44" low="44" root="44" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1360703.000"/>
+   </sample>
+   <sample file="18 Rhodes A1 04.wav" gain="-1.56" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1219505.000" zone-logic="always-play">
+      <key high="45" low="45" root="45" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1219505.000"/>
+   </sample>
+   <sample file="19 Rhodes A#1 04.wav" gain="-0.72" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1174642.000" zone-logic="always-play">
+      <key high="46" low="46" root="46" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1174642.000"/>
+   </sample>
+   <sample file="20 Rhodes B1 04.wav" gain="1.02" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1182032.000" zone-logic="always-play">
+      <key high="47" low="47" root="47" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1182032.000"/>
+   </sample>
+   <sample file="21 Rhodes C2 04.wav" gain="-2.70" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="999859.000" zone-logic="always-play">
+      <key high="48" low="48" root="48" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="999859.000"/>
+   </sample>
+   <sample file="22 Rhodes C#2 04.wav" gain="1.32" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1513471.000" zone-logic="always-play">
+      <key high="49" low="49" root="49" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1513471.000"/>
+   </sample>
+   <sample file="23 Rhodes D2 04.wav" gain="-1.86" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1671150.000" zone-logic="always-play">
+      <key high="50" low="50" root="50" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1671150.000"/>
+   </sample>
+   <sample file="24 Rhodes D#2 04.wav" gain="3.00" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1127261.000" zone-logic="always-play">
+      <key high="51" low="51" root="51" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1127261.000"/>
+   </sample>
+   <sample file="25 Rhodes E2 04.wav" gain="-2.76" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1286527.000" zone-logic="always-play">
+      <key high="52" low="52" root="52" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1286527.000"/>
+   </sample>
+   <sample file="26 Rhodes F2 04.wav" gain="-3.24" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1665023.000" zone-logic="always-play">
+      <key high="53" low="53" root="53" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1665023.000"/>
+   </sample>
+   <sample file="27 Rhodes F#2 04.wav" gain="-3.90" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1777506.000" zone-logic="always-play">
+      <key high="54" low="54" root="54" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1777506.000"/>
+   </sample>
+   <sample file="28 Rhodes G2 04.wav" gain="0.00" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1463203.000" zone-logic="always-play">
+      <key high="55" low="55" root="55" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1463203.000"/>
+   </sample>
+   <sample file="29 Rhodes G#2 04.wav" gain="0.00" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1401315.000" zone-logic="always-play">
+      <key high="56" low="56" root="56" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1401315.000"/>
+   </sample>
+   <sample file="30 Rhodes A2 04.wav" gain="0.00" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1570253.000" zone-logic="always-play">
+      <key high="57" low="57" root="57" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1570253.000"/>
+   </sample>
+   <sample file="31 Rhodes A#2 04.wav" gain="0.00" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1288170.000" zone-logic="always-play">
+      <key high="58" low="58" root="58" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1288170.000"/>
+   </sample>
+   <sample file="32 Rhodes B2 04.wav" gain="0.00" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1358244.000" zone-logic="always-play">
+      <key high="59" low="59" root="59" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1358244.000"/>
+   </sample>
+   <sample file="33 Rhodes C3 04.wav" gain="0.00" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1285663.000" zone-logic="always-play">
+      <key high="60" low="60" root="60" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1285663.000"/>
+   </sample>
+   <sample file="34 Rhodes C#3 04.wav" gain="-1.92" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1120017.000" zone-logic="always-play">
+      <key high="61" low="61" root="61" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1120017.000"/>
+   </sample>
+   <sample file="35 Rhodes D3 04.wav" gain="2.82" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1096586.000" zone-logic="always-play">
+      <key high="62" low="62" root="62" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1096586.000"/>
+   </sample>
+   <sample file="37 Rhodes E3 04.wav" gain="-4.38" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1320937.000" zone-logic="always-play">
+      <key high="64" low="63" root="64" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1320937.000"/>
+   </sample>
+   <sample file="38 Rhodes F3 04.wav" gain="-0.66" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1251176.000" zone-logic="always-play">
+      <key high="65" low="65" root="65" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1251176.000"/>
+   </sample>
+   <sample file="39 Rhodes F#3 04.wav" gain="0.78" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="994303.000" zone-logic="always-play">
+      <key high="66" low="66" root="66" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="994303.000"/>
+   </sample>
+   <sample file="40 Rhodes G3 04.wav" gain="0.00" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="804686.000" zone-logic="always-play">
+      <key high="67" low="67" root="67" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="804686.000"/>
+   </sample>
+   <sample file="41 Rhodes G#3 04.wav" gain="0.00" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="914330.000" zone-logic="always-play">
+      <key high="68" low="68" root="68" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="914330.000"/>
+   </sample>
+   <sample file="42 Rhodes A3 04.wav" gain="-2.76" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1005518.000" zone-logic="always-play">
+      <key high="69" low="69" root="69" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1005518.000"/>
+   </sample>
+   <sample file="43 Rhodes A#3 04.wav" gain="0.00" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="686032.000" zone-logic="always-play">
+      <key high="70" low="70" root="70" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="686032.000"/>
+   </sample>
+   <sample file="44 Rhodes B3 04.wav" gain="0.00" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="732159.000" zone-logic="always-play">
+      <key high="71" low="71" root="71" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="732159.000"/>
+   </sample>
+   <sample file="45 Rhodes C4 04.wav" gain="-2.76" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="675832.000" zone-logic="always-play">
+      <key high="72" low="72" root="72" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="675832.000"/>
+   </sample>
+   <sample file="46 Rhodes C#4 04.wav" gain="0.00" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="774130.000" zone-logic="always-play">
+      <key high="73" low="73" root="73" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="774130.000"/>
+   </sample>
+   <sample file="47 Rhodes D4 04.wav" gain="-2.76" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="838599.000" zone-logic="always-play">
+      <key high="74" low="74" root="74" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="838599.000"/>
+   </sample>
+   <sample file="48 Rhodes D#4 04.wav" gain="-3.00" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="729934.000" zone-logic="always-play">
+      <key high="75" low="75" root="75" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="729934.000"/>
+   </sample>
+   <sample file="49 Rhodes E4 04.wav" gain="-4.56" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="517119.000" zone-logic="always-play">
+      <key high="76" low="76" root="76" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="517119.000"/>
+   </sample>
+   <sample file="50 Rhodes F4 04.wav" gain="-2.10" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="543731.000" zone-logic="always-play">
+      <key high="77" low="77" root="77" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="543731.000"/>
+   </sample>
+   <sample file="51 Rhodes F#4 04.wav" gain="-4.98" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="305025.000" zone-logic="always-play">
+      <key high="78" low="78" root="78" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="305025.000"/>
+   </sample>
+   <sample file="52 Rhodes G4 04.wav" gain="-7.56" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="536486.000" zone-logic="always-play">
+      <key high="79" low="79" root="79" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="536486.000"/>
+   </sample>
+   <sample file="53 Rhodes G#4 04.wav" gain="-2.52" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="232814.000" zone-logic="always-play">
+      <key high="80" low="80" root="80" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="232814.000"/>
+   </sample>
+   <sample file="55 Rhodes A#4 04.wav" gain="-3.42" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="805798.000" zone-logic="always-play">
+      <key high="82" low="81" root="82" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="805798.000"/>
+   </sample>
+   <sample file="56 Rhodes B4 04.wav" gain="-0.72" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="756225.000" zone-logic="always-play">
+      <key high="83" low="83" root="83" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="756225.000"/>
+   </sample>
+   <sample file="57 Rhodes C5 04.wav" gain="-0.66" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="429938.000" zone-logic="always-play">
+      <key high="84" low="84" root="84" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="429938.000"/>
+   </sample>
+   <sample file="58 Rhodes C#5 04.wav" gain="-2.58" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="399871.000" zone-logic="always-play">
+      <key high="85" low="85" root="85" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="399871.000"/>
+   </sample>
+   <sample file="59 Rhodes D5 04.wav" gain="-0.30" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="481273.000" zone-logic="always-play">
+      <key high="86" low="86" root="86" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="481273.000"/>
+   </sample>
+   <sample file="60 Rhodes D#5 04.wav" gain="0.12" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="354292.000" zone-logic="always-play">
+      <key high="87" low="87" root="87" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="354292.000"/>
+   </sample>
+   <sample file="61 Rhodes E5 04.wav" gain="-3.18" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="404984.000" zone-logic="always-play">
+      <key high="88" low="88" root="88" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="404984.000"/>
+   </sample>
+   <sample file="62 Rhodes F5 04.wav" gain="-0.90" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="207871.000" zone-logic="always-play">
+      <key high="89" low="89" root="89" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="207871.000"/>
+   </sample>
+   <sample file="63 Rhodes F#5 04.wav" gain="-5.70" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="345048.000" zone-logic="always-play">
+      <key high="90" low="90" root="90" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="345048.000"/>
+   </sample>
+   <sample file="64 Rhodes G5 04.wav" gain="-2.10" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="286719.000" zone-logic="always-play">
+      <key high="91" low="91" root="91" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="286719.000"/>
+   </sample>
+   <sample file="65 Rhodes G#5 04.wav" gain="5.28" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="358227.000" zone-logic="always-play">
+      <key high="92" low="92" root="92" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="358227.000"/>
+   </sample>
+   <sample file="66 Rhodes A5 04.wav" gain="-2.64" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="319371.000" zone-logic="always-play">
+      <key high="93" low="93" root="93" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="319371.000"/>
+   </sample>
+   <sample file="67 Rhodes A#5 04.wav" gain="0.78" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="309992.000" zone-logic="always-play">
+      <key high="94" low="94" root="94" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="309992.000"/>
+   </sample>
+   <sample file="68 Rhodes B5 04.wav" gain="-2.10" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="238744.000" zone-logic="always-play">
+      <key high="95" low="95" root="95" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="238744.000"/>
+   </sample>
+   <sample file="69 Rhodes C6 04.wav" gain="-2.10" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="155233.000" zone-logic="always-play">
+      <key high="96" low="96" root="96" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="155233.000"/>
+   </sample>
+   <sample file="70 Rhodes C#6 04.wav" gain="-3.60" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="260581.000" zone-logic="always-play">
+      <key high="97" low="97" root="97" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="260581.000"/>
+   </sample>
+   <sample file="71 Rhodes D6 04.wav" gain="-1.74" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="247619.000" zone-logic="always-play">
+      <key high="98" low="98" root="98" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="247619.000"/>
+   </sample>
+   <sample file="72 Rhodes D#6 04.wav" gain="-0.24" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="181766.000" zone-logic="always-play">
+      <key high="99" low="99" root="99" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="181766.000"/>
+   </sample>
+   <sample file="73 Rhodes E6 04.wav" gain="-2.10" group="3" parameter-1="0.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="165338.000" zone-logic="always-play">
+      <key high="108" low="100" root="100" track="1.0000" tune="0.00"/>
+      <velocity high="125" low="114"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="165338.000"/>
+   </sample>
+   <sample file="01 Rhodes E0 05.wav" gain="-0.72" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="825290.000" zone-logic="always-play">
+      <key high="28" low="24" root="28" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="825290.000"/>
+   </sample>
+   <sample file="02 Rhodes F0 05.wav" gain="2.58" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="890408.000" zone-logic="always-play">
+      <key high="30" low="29" root="29" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="890408.000"/>
+   </sample>
+   <sample file="03 Rhodes F#0 05.wav" gain="0.54" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1054410.000" zone-logic="always-play">
+      <key high="31" low="31" root="30" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1054410.000"/>
+   </sample>
+   <sample file="05 Rhodes G#0 05.wav" gain="-0.24" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1214689.000" zone-logic="always-play">
+      <key high="32" low="32" root="32" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1214689.000"/>
+   </sample>
+   <sample file="06 Rhodes A0 05.wav" gain="3.36" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1006011.000" zone-logic="always-play">
+      <key high="33" low="33" root="33" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1006011.000"/>
+   </sample>
+   <sample file="07 Rhodes A#0 05.wav" gain="-6.36" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1800158.000" zone-logic="always-play">
+      <key high="34" low="34" root="34" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1800158.000"/>
+   </sample>
+   <sample file="08 Rhodes B0 05.wav" gain="0.30" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="942613.000" zone-logic="always-play">
+      <key high="35" low="35" root="35" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="942613.000"/>
+   </sample>
+   <sample file="09 Rhodes C1 05.wav" gain="-8.64" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1393660.000" zone-logic="always-play">
+      <key high="36" low="36" root="36" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1393660.000"/>
+   </sample>
+   <sample file="10 Rhodes C#1 05.wav" gain="-1.02" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1267294.000" zone-logic="always-play">
+      <key high="37" low="37" root="37" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1267294.000"/>
+   </sample>
+   <sample file="11 Rhodes D1 05.wav" gain="-5.52" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1058605.000" zone-logic="always-play">
+      <key high="38" low="38" root="38" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1058605.000"/>
+   </sample>
+   <sample file="12 Rhodes D#1 05.wav" gain="-6.78" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1184507.000" zone-logic="always-play">
+      <key high="40" low="39" root="39" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1184507.000"/>
+   </sample>
+   <sample file="15 Rhodes F#1 05.wav" gain="-4.50" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1274590.000" zone-logic="always-play">
+      <key high="42" low="41" root="42" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1274590.000"/>
+   </sample>
+   <sample file="16 Rhodes G1 05.wav" gain="-0.72" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1359187.000" zone-logic="always-play">
+      <key high="43" low="43" root="43" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1359187.000"/>
+   </sample>
+   <sample file="17 Rhodes G#1 05.wav" gain="-3.42" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1260322.000" zone-logic="always-play">
+      <key high="44" low="44" root="44" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1260322.000"/>
+   </sample>
+   <sample file="18 Rhodes A1 05.wav" gain="-1.14" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1092582.000" zone-logic="always-play">
+      <key high="45" low="45" root="45" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1092582.000"/>
+   </sample>
+   <sample file="19 Rhodes A#1 05.wav" gain="-3.60" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1275754.000" zone-logic="always-play">
+      <key high="46" low="46" root="46" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1275754.000"/>
+   </sample>
+   <sample file="20 Rhodes B1 05.wav" gain="1.56" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1086457.000" zone-logic="always-play">
+      <key high="47" low="47" root="47" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1086457.000"/>
+   </sample>
+   <sample file="21 Rhodes C2 05.wav" gain="-2.22" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1092503.000" zone-logic="always-play">
+      <key high="48" low="48" root="48" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1092503.000"/>
+   </sample>
+   <sample file="22 Rhodes C#2 05.wav" gain="1.62" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1447866.000" zone-logic="always-play">
+      <key high="49" low="49" root="49" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1447866.000"/>
+   </sample>
+   <sample file="23 Rhodes D2 05.wav" gain="-3.30" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1726231.000" zone-logic="always-play">
+      <key high="50" low="50" root="50" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1726231.000"/>
+   </sample>
+   <sample file="24 Rhodes D#2 05.wav" gain="-0.18" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1198041.000" zone-logic="always-play">
+      <key high="51" low="51" root="51" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1198041.000"/>
+   </sample>
+   <sample file="25 Rhodes E2 05.wav" gain="-4.38" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1359752.000" zone-logic="always-play">
+      <key high="52" low="52" root="52" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1359752.000"/>
+   </sample>
+   <sample file="26 Rhodes F2 05.wav" gain="-7.20" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1570817.000" zone-logic="always-play">
+      <key high="53" low="53" root="53" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1570817.000"/>
+   </sample>
+   <sample file="27 Rhodes F#2 05.wav" gain="-4.68" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1685503.000" zone-logic="always-play">
+      <key high="54" low="54" root="54" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1685503.000"/>
+   </sample>
+   <sample file="28 Rhodes G2 05.wav" gain="-4.56" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1411739.000" zone-logic="always-play">
+      <key high="55" low="55" root="55" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1411739.000"/>
+   </sample>
+   <sample file="29 Rhodes G#2 05.wav" gain="-4.32" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1634303.000" zone-logic="always-play">
+      <key high="56" low="56" root="56" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1634303.000"/>
+   </sample>
+   <sample file="30 Rhodes A2 05.wav" gain="-3.48" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1521634.000" zone-logic="always-play">
+      <key high="57" low="57" root="57" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1521634.000"/>
+   </sample>
+   <sample file="31 Rhodes A#2 05.wav" gain="-3.54" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1451969.000" zone-logic="always-play">
+      <key high="58" low="58" root="58" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1451969.000"/>
+   </sample>
+   <sample file="32 Rhodes B2 05.wav" gain="-3.12" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1441791.000" zone-logic="always-play">
+      <key high="59" low="59" root="59" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1441791.000"/>
+   </sample>
+   <sample file="33 Rhodes C3 05.wav" gain="0.00" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1306623.000" zone-logic="always-play">
+      <key high="60" low="60" root="60" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1306623.000"/>
+   </sample>
+   <sample file="34 Rhodes C#3 05.wav" gain="-3.42" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1152913.000" zone-logic="always-play">
+      <key high="62" low="61" root="61" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1152913.000"/>
+   </sample>
+   <sample file="36 Rhodes D#3 05.wav" gain="-2.04" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="881612.000" zone-logic="always-play">
+      <key high="63" low="63" root="63" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="881612.000"/>
+   </sample>
+   <sample file="38 Rhodes F3 05.wav" gain="-4.98" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1191935.000" zone-logic="always-play">
+      <key high="65" low="64" root="65" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1191935.000"/>
+   </sample>
+   <sample file="39 Rhodes F#3 05.wav" gain="-1.26" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1091406.000" zone-logic="always-play">
+      <key high="66" low="66" root="66" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1091406.000"/>
+   </sample>
+   <sample file="40 Rhodes G3 05.wav" gain="-2.04" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="484.000" sample-stop="966596.000" zone-logic="always-play">
+      <key high="67" low="67" root="67" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="966596.000"/>
+   </sample>
+   <sample file="41 Rhodes G#3 05.wav" gain="-3.30" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="909310.000" zone-logic="always-play">
+      <key high="68" low="68" root="68" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="909310.000"/>
+   </sample>
+   <sample file="42 Rhodes A3 05.wav" gain="-2.34" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="1015790.000" zone-logic="always-play">
+      <key high="69" low="69" root="69" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="1015790.000"/>
+   </sample>
+   <sample file="43 Rhodes A#3 05.wav" gain="-1.98" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="702461.000" zone-logic="always-play">
+      <key high="70" low="70" root="70" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="702461.000"/>
+   </sample>
+   <sample file="44 Rhodes B3 05.wav" gain="-2.46" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="822167.000" zone-logic="always-play">
+      <key high="71" low="71" root="71" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="822167.000"/>
+   </sample>
+   <sample file="45 Rhodes C4 05.wav" gain="-1.92" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="765951.000" zone-logic="always-play">
+      <key high="72" low="72" root="72" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="765951.000"/>
+   </sample>
+   <sample file="46 Rhodes C#4 05.wav" gain="-1.62" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="738240.000" zone-logic="always-play">
+      <key high="73" low="73" root="73" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="738240.000"/>
+   </sample>
+   <sample file="47 Rhodes D4 05.wav" gain="-3.60" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="743330.000" zone-logic="always-play">
+      <key high="74" low="74" root="74" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="743330.000"/>
+   </sample>
+   <sample file="48 Rhodes D#4 05.wav" gain="-5.70" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="766806.000" zone-logic="always-play">
+      <key high="75" low="75" root="75" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="766806.000"/>
+   </sample>
+   <sample file="49 Rhodes E4 05.wav" gain="-3.60" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="770180.000" zone-logic="always-play">
+      <key high="76" low="76" root="76" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="770180.000"/>
+   </sample>
+   <sample file="50 Rhodes F4 05.wav" gain="-4.74" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="460638.000" zone-logic="always-play">
+      <key high="77" low="77" root="77" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="460638.000"/>
+   </sample>
+   <sample file="51 Rhodes F#4 05.wav" gain="-6.66" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="259449.000" zone-logic="always-play">
+      <key high="78" low="78" root="78" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="259449.000"/>
+   </sample>
+   <sample file="52 Rhodes G4 05.wav" gain="-7.68" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="525272.000" zone-logic="always-play">
+      <key high="79" low="79" root="79" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="525272.000"/>
+   </sample>
+   <sample file="53 Rhodes G#4 05.wav" gain="-3.54" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="275285.000" zone-logic="always-play">
+      <key high="80" low="80" root="80" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="275285.000"/>
+   </sample>
+   <sample file="55 Rhodes A#4 05.wav" gain="-2.22" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="713673.000" zone-logic="always-play">
+      <key high="82" low="81" root="82" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="713673.000"/>
+   </sample>
+   <sample file="56 Rhodes B4 05.wav" gain="-2.58" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="776189.000" zone-logic="always-play">
+      <key high="83" low="83" root="83" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="776189.000"/>
+   </sample>
+   <sample file="57 Rhodes C5 05.wav" gain="-2.04" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="439295.000" zone-logic="always-play">
+      <key high="84" low="84" root="84" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="439295.000"/>
+   </sample>
+   <sample file="58 Rhodes C#5 05.wav" gain="-2.28" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="371588.000" zone-logic="always-play">
+      <key high="85" low="85" root="85" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="371588.000"/>
+   </sample>
+   <sample file="59 Rhodes D5 05.wav" gain="0.00" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="539639.000" zone-logic="always-play">
+      <key high="86" low="86" root="86" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="539639.000"/>
+   </sample>
+   <sample file="60 Rhodes D#5 05.wav" gain="2.34" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="335634.000" zone-logic="always-play">
+      <key high="87" low="87" root="87" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="335634.000"/>
+   </sample>
+   <sample file="61 Rhodes E5 05.wav" gain="-6.00" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="424793.000" zone-logic="always-play">
+      <key high="88" low="88" root="88" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="424793.000"/>
+   </sample>
+   <sample file="62 Rhodes F5 05.wav" gain="0.00" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="232684.000" zone-logic="always-play">
+      <key high="89" low="89" root="89" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="232684.000"/>
+   </sample>
+   <sample file="63 Rhodes F#5 05.wav" gain="-4.08" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="360392.000" zone-logic="always-play">
+      <key high="90" low="90" root="90" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="360392.000"/>
+   </sample>
+   <sample file="64 Rhodes G5 05.wav" gain="0.00" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="317439.000" zone-logic="always-play">
+      <key high="91" low="91" root="91" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="317439.000"/>
+   </sample>
+   <sample file="65 Rhodes G#5 05.wav" gain="7.20" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="280017.000" zone-logic="always-play">
+      <key high="92" low="92" root="92" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="280017.000"/>
+   </sample>
+   <sample file="66 Rhodes A5 05.wav" gain="-0.72" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="314184.000" zone-logic="always-play">
+      <key high="93" low="93" root="93" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="314184.000"/>
+   </sample>
+   <sample file="67 Rhodes A#5 05.wav" gain="2.88" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="296250.000" zone-logic="always-play">
+      <key high="94" low="94" root="94" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="296250.000"/>
+   </sample>
+   <sample file="68 Rhodes B5 05.wav" gain="-1.92" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="236272.000" zone-logic="always-play">
+      <key high="95" low="95" root="95" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="236272.000"/>
+   </sample>
+   <sample file="69 Rhodes C6 05.wav" gain="2.16" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="204239.000" zone-logic="always-play">
+      <key high="96" low="96" root="96" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="204239.000"/>
+   </sample>
+   <sample file="70 Rhodes C#6 05.wav" gain="-2.82" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="285645.000" zone-logic="always-play">
+      <key high="97" low="97" root="97" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="285645.000"/>
+   </sample>
+   <sample file="71 Rhodes D6 05.wav" gain="0.00" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="294275.000" zone-logic="always-play">
+      <key high="98" low="98" root="98" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="294275.000"/>
+   </sample>
+   <sample file="72 Rhodes D#6 05.wav" gain="0.00" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="174160.000" zone-logic="always-play">
+      <key high="99" low="99" root="99" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="174160.000"/>
+   </sample>
+   <sample file="73 Rhodes E6 05.wav" gain="1.44" group="4" parameter-1="1.0000" parameter-2="0.0000" parameter-3="0.0000" reverse="false" sample-start="0.000" sample-stop="188894.000" zone-logic="always-play">
+      <key high="108" low="100" root="100" track="1.0000" tune="0.00"/>
+      <velocity low="126"/>
+      <select/>
+      <loop fade="0.0000" mode="off" start="0.000" stop="188894.000"/>
+   </sample>
+</multisample>
