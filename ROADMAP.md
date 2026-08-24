@@ -15,7 +15,9 @@ This document outlines planned features, community ideas, and future enhancement
 
 ### 🎧 Audio & DSP Engine
 - [ ] **Per-Slice Choke Groups**: Allow slices (e.g., Open/Closed Hi-Hats) to cut each other off during playback.
-- [ ] **Per-Slice Filter & FX**: Lowpass/Highpass resonant filter per slice.
+- [ ] **Per-Slice Filter & Processing**: Resonant Lowpass & Highpass filters per slice.
+- [ ] **Per-Slice Bitcrusher & Degradation**: Bit depth reduction, sample rate crushing, and saturation per slice.
+- [ ] **Per-Slice Retrigger / Rhythmic Stutter**: Multi-trigger repeat modes (1/16, 1/32, 1/64 rolls) per slice.
 - [ ] **Advanced Time-Stretching**: Pitch-neutral time stretching algorithms for slice rendering.
 - [ ] **Velocity Sensitivity Mapping**: Customizable velocity curves per slice.
 
