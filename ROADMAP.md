@@ -31,6 +31,8 @@ This document outlines planned features, community ideas, and future enhancement
 - [ ] **Zero-Crossing Auto-Snap & Micro-Nudge**: Zero-crossing alignment to prevent clicks on ultra-fast chops.
 
 ### 🎨 GUI & User Experience
+- [ ] **Copy & Paste Slice Settings**: Copy all FX, filter, envelope, and pitch settings from one slice and apply/propagate them to selected target slices or all slices simultaneously.
+- [ ] **Reset Slice Settings to Default**: Reset per-slice FX and tuning parameters back to default initial state per slice or globally for all slices.
 - [ ] **Direct Waveform Drag-and-Drop**: Drag audio files directly from the OS file manager into the waveform view.
 - [ ] **Mouse Wheel Zoom & Pan**: Pinch-to-zoom and smooth horizontal waveform scrolling.
 - [ ] **Slice Categorization & Color Tagging**: Assign custom colors and tags (Kick, Snare, HiHat, Synth, Perc) to slices.
