@@ -563,6 +563,31 @@ fn draw_toolbar(ui: &mut Ui, state: &mut EditorState) {
             }
         }
 
+        if styled_button(ui, "🎹 Export MIDI", ACCENT2) {
+            let mut dialog = rfd::FileDialog::new().add_filter("MIDI File", &["mid", "midi"]);
+            if let Some(dir) = state.last_dir.lock().unwrap().as_ref() {
+                dialog = dialog.set_directory(dir);
+            }
+            if let Some(mut path) = dialog.save_file() {
+                let ext = path.extension().and_then(|s| s.to_str()).unwrap_or("").to_lowercase();
+                if ext != "mid" && ext != "midi" {
+                    path.set_extension("mid");
+                }
+                let msg = {
+                    let guard = state.loop_data.read().unwrap();
+                    if let Some(sl) = guard.as_ref() {
+                        match crate::midi_export::export_midi(sl, &path) {
+                            Ok(()) => format!("Exported MIDI file: {}", path.file_name().unwrap_or_default().to_string_lossy()),
+                            Err(e) => format!("Export MIDI Error: {e}"),
+                        }
+                    } else {
+                        "No loop loaded.".to_string()
+                    }
+                };
+                state.status(msg);
+            }
+        }
+
         let temp_midi_path = PathBuf::from("/tmp/slice_player_latest.mid");
         let btn_resp = ui.add(egui::Button::new(
             egui::RichText::new("🎹 Copy MIDI").color(ACCENT2).strong()
