@@ -18,7 +18,8 @@ This document outlines planned features, community ideas, and future enhancement
 - [ ] **Per-Slice Filter & Processing**: Resonant Lowpass & Highpass filters per slice.
 - [ ] **Per-Slice Bitcrusher & Degradation**: Bit depth reduction, sample rate crushing, and saturation per slice.
 - [ ] **Per-Slice Retrigger / Rhythmic Stutter**: Multi-trigger repeat modes (1/16, 1/32, 1/64 rolls) per slice.
-- [ ] **Advanced Time-Stretching**: Pitch-neutral time stretching algorithms for slice rendering.
+- [ ] **Akai-Style Vintage Time-Stretching**: Classic S1000/S3000 granular pitch-coarse time-stretching with signature metallic artifacts.
+- [ ] **DJM500 / Oldschool Jungle Dub Echo**: Rhythmic BPM-synced delay with feedback filtering for classic D&B / Jungle dub echoes.
 - [ ] **Velocity Sensitivity Mapping**: Customizable velocity curves per slice.
 
 ### 🎨 GUI & User Experience
@@ -28,6 +29,7 @@ This document outlines planned features, community ideas, and future enhancement
 - [ ] **A/B Comparison Snapshots**: Quick state snapshot switching while editing slice layouts.
 
 ### ⚙️ Settings & State Management
+- [ ] **Full Preset Save & Load**: Save and restore complete SlicePlayer presets including all per-slice FX settings, filters, delays, slice points, and mapping configurations.
 - [ ] **Plugin Settings & Favorite Paths (JSON/XML)**: Load & save global plugin configuration files for favorite directory paths, default export folders, and custom UI preferences.
 
 ---
