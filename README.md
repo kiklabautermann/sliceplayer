@@ -1,89 +1,93 @@
 # SlicePlayer 🎹⚡
 
-**SlicePlayer** is an open-source, high-performance **CLAP audio plugin** for Linux designed for dynamic audio loop slicing, real-time playback, and direct export to **Bitwig Studio `.multisample` archives** with synchronized MIDI pattern clips.
+![SlicePlayer GUI](sliceplayer_0.1.0.png)
+
+**SlicePlayer** is an open-source, high-performance **CLAP audio plugin** for Linux, macOS, and Windows designed for dynamic audio loop slicing, real-time playback, and direct export to **Bitwig Studio `.multisample` archives** with synchronized MIDI pattern clips.
 
 Built with Rust, [`nih-plug`](https://github.com/robbert-vdh/nih-plug), [`egui`](https://github.com/emilk/egui), and C++ REX2/DWOP codec support via **VelociLoops**.
 
 ---
 
-## ✨ Features
+## 📖 Quick User Guide
 
-- **🎧 Audio Slicing & Onset Detection**:
-  - Transient detection using SuperFlux spectral onset analysis.
-  - Beat grid slicing (1/4, 1/8, 1/16, 1/32, triplets).
-  - Manual slice creation, boundary adjustment, and slice editing.
+### 1. Load Audio & Browse Loops 📁
+- Click **`Browser`** to toggle the built-in file explorer sidebar.
+- Browse your sample library and double-click any `.wav`, `.flac`, `.mp3`, or REX (`.rx2`, `.rex`, `.rcy`) loop file to load it instantly.
 
-- **📦 Bitwig Studio `.multisample` Export**:
-  - Exports uncompressed (STORED ZIP method) `.multisample` archives streaming-ready for Bitwig Studio Sampler.
-  - Native 1:1 Bitwig XML schema generation (`<key high="..." low="..." root="..." track="0.0000" tune="0.00"/>`).
-  - Automatic zero-pitch tracking (`track="0.0000"`) ensuring original transient playback speed across all keys.
+### 2. Choose Slicing Mode ⚡
+- **`⚡ Transients`**: Uses SuperFlux spectral onset analysis to detect natural drum and instrument attacks.
+  - **Threshold**: Adjust sensitivity (`0.05` – `1.00`).
+  - **Gap ms**: Set minimum distance between slice markers to avoid micro-fragments.
+  - **Re-Detect**: Re-calculate slice points instantly after tweaking settings.
+- **`📐 Grid`**: Automatically divides the loop by musical time signature subdivisions (1/4, 1/8, 1/16, 1/32).
+- **`✂️ Manual`**: 
+  - **Double-click / Shift+Click** on the waveform to add a custom slice marker.
+  - **Right-click** a slice marker to remove it.
+  - **Drag** slice handles to adjust boundaries.
 
-- **🎹 Companion MIDI Pattern Export**:
-  - Automatically exports a companion `.mid` clip alongside the `.multisample` archive with identical stem filename.
-  - One-click **"Copy MIDI"** button to copy `text/uri-list` straight to your system clipboard for instant drag-and-drop / Ctrl+V into Bitwig or REAPER.
+### 3. Set Loop Markers 🔁
+- Drag the **`S` (Start)** and **`E` (End)** green/red boundary handles to isolate specific bar sections of your loop.
+- Use the **Bars** buttons (`1`, `2`, `4`, `8`, `16`) to snap loop boundaries automatically.
 
-- **⚡ Real-Time Audio Engine**:
-  - Zero-heap allocation audio rendering loop for real-time safety.
-  - Per-slice volume gain, pitch shift, reverse playback, and fade envelopes.
-  - REX / REX2 (`.rx2`, `.rex`, `.rcy`) import support.
+### 4. Export to Bitwig Studio 📦
+- Click **`📦 Export Multisample`** to select a save location.
+- SlicePlayer exports two files simultaneously with matching stem filenames:
+  1. `YourLoop.multisample`: Uncompressed Bitwig Sampler ZIP archive containing all slice WAVs mapped to contiguous keys (`C3`, `C#3`, `D3`...) with zero-pitch tracking (`track="0.0000"`).
+  2. `YourLoop.mid`: Standard MIDI Type-0 clip matching the exact slice pattern.
+
+### 5. Drag & Drop / Clipboard MIDI 🎹
+- Click **`🎹 Copy MIDI`** or drag the button directly into your DAW timeline.
+- In Bitwig Studio or REAPER, simply press **Ctrl+V** on any instrument track to paste the slice trigger pattern!
 
 ---
 
-## 🚀 Quick Start & Installation
+## ✨ Key Features
 
-### Pre-built Linux Binary
+- **🎧 Onset & Grid Slicing**: SuperFlux spectral onset analysis + beat grid divisions + manual waveform editing.
+- **📦 Bitwig Studio `.multisample` Export**: Streaming-ready uncompressed ZIP archive with native 1:1 Bitwig XML schema (`<key high="..." low="..." root="..." track="0.0000" tune="0.00"/>`).
+- **🎹 Companion MIDI Pattern Export**: Automatic `.mid` clip export + system clipboard `text/uri-list` pasting.
+- **⚡ Real-Time Audio Engine**: Zero-heap allocation audio rendering loop for real-time safety.
+- **🎵 REX / REX2 Import**: Native decoding of Propellerhead REX2 (`.rx2`), REX (`.rex`), and RCY (`.rcy`) files via VelociLoops.
 
-The latest pre-built Linux CLAP plugin is available directly in the repository under [`bin/slice_player.clap`](bin/slice_player.clap).
+---
 
-Copy it to your local CLAP directory:
+## 🚀 Installation & Multi-Platform Downloads
+
+Pre-compiled **CLAP plugin binaries** for all major operating systems are published automatically on the [Releases Page](https://github.com/kiklabautermann/sliceplayer/releases):
+
+- 🐧 **Linux x64**: `slice_player-linux-x64.clap` (or copy local [`bin/slice_player.clap`](bin/slice_player.clap) to `~/.clap/`)
+- 🍎 **macOS Apple Silicon (M1/M2/M3/M4)**: `slice_player-macos-arm64.clap` (copy to `~/Library/Audio/Plug-Ins/CLAP/`)
+- 🪟 **Windows x64**: `slice_player-windows-x64.clap` (copy to `%COMMONPROGRAMFILES%\CLAP\`)
+
+---
+
+## 🛠️ Building from Source
+
+### Prerequisites
+- Rust 1.75+ toolchain (`rustup`)
+- C++17 compatible compiler (`g++`, `clang++`, or MSVC)
+- `cmake`
+
+### Build Commands
 
 ```bash
-mkdir -p ~/.clap
-cp bin/slice_player.clap ~/.clap/
-```
-
-### Building from Source
-
-#### Prerequisites
-- Rust 1.75+ toolchain
-- C++17 compatible compiler (`g++` or `clang++`)
-- `cmake` (for C++ dependencies)
-
-#### Build Commands
-
-```bash
-# Clone the repository
+# Clone repository recursively
 git clone --recursive https://github.com/kiklabautermann/sliceplayer.git
 cd sliceplayer
 
 # Build release bundle
-cargo run --package xtask -- bundle
-
-# Installed CLAP binary will be located at:
-# target/release/libslice_player.so
+cargo run --package xtask -- bundle --release
 ```
-
----
-
-## 🛠️ Tech Stack & Architecture
-
-- **Audio Plugin Framework**: [`nih-plug`](https://github.com/robbert-vdh/nih-plug) (CLAP standard)
-- **GUI Framework**: [`egui`](https://github.com/emilk/egui) / `nih_plug_egui`
-- **Audio Codecs**: REX2 DWOP decoding via VelociLoops FFI & `symphonia` for WAV/FLAC/MP3 decoding
-- **MIDI Serialization**: [`midly`](https://github.com/Bavards/midly)
-- **ZIP Streamer**: [`zip-rs`](https://github.com/zip-rs/zip)
 
 ---
 
 ## 🙏 Credits & Acknowledgements
 
-SlicePlayer relies on incredible open-source libraries:
-
-- **[VelociLoops](https://github.com/kunitoki/VelociLoops)** by [@kunitoki](https://github.com/kunitoki): A clean-room C library for reading, writing, and transient-slicing REX2 (`.rx2`), REX (`.rex`), and RCY (`.rcy`) audio containers and decoding the DWOP bitstream.
+- **[VelociLoops](https://github.com/kunitoki/VelociLoops)** by [@kunitoki](https://github.com/kunitoki): Open-source C library for reading, writing, and transient-slicing REX2 (`.rx2`) audio containers and decoding the DWOP bitstream.
 - **[nih-plug](https://github.com/robbert-vdh/nih-plug)** by [@robbert-vdh](https://github.com/robbert-vdh): Rust audio plugin framework for CLAP and VST3.
 
 ---
 
 ## 📄 License
 
-This project is open-source under the MIT License. See [LICENSE](LICENSE) for details.
+Open-source software licensed under the MIT License. See [LICENSE](LICENSE) for details.
