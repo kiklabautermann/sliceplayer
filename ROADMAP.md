@@ -25,6 +25,9 @@ This document outlines planned features, community ideas, and future enhancement
 - [ ] **Slice Categorization & Color Tagging**: Assign custom colors and tags (Kick, Snare, HiHat, Synth, Perc) to slices.
 - [ ] **A/B Comparison Snapshots**: Quick state snapshot switching while editing slice layouts.
 
+### ⚙️ Settings & State Management
+- [ ] **Plugin Settings & Favorite Paths (JSON/XML)**: Load & save global plugin configuration files for favorite directory paths, default export folders, and custom UI preferences.
+
 ---
 
 ## 💬 Feature Requests & Community Feedback
