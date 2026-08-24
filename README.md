@@ -91,3 +91,10 @@ cargo run --package xtask -- bundle --release
 ## 📄 License
 
 Open-source software licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+---
+
+## ⚠️ Disclaimer & Liability
+
+This software is provided **"AS IS"**, without warranty of any kind, express or implied. In no event shall the authors or copyright holders be liable for any claim, damages, data loss, project corruption, or other liability arising from the use or inability to use this software. Users are advised to back up important audio files and DAW projects prior to use.
+
