@@ -506,6 +506,16 @@ impl Engine {
         self.voices.iter().filter(|v| v.active).count()
     }
 
+    pub fn active_slice_indices(&self) -> Vec<usize> {
+        let mut indices = Vec::new();
+        for voice in &self.voices {
+            if voice.active {
+                indices.push(voice.slice_idx);
+            }
+        }
+        indices
+    }
+
     pub fn active_playhead_frames(&self, loop_data: &SliceLoop) -> Vec<usize> {
         let mut frames = Vec::new();
         if let Some(ph) = self.preview_playhead {

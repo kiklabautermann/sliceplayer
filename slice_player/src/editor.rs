@@ -1150,6 +1150,49 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
         }
     }
 
+    // ── Render Active MIDI Triggered Slices Highlight Overlay ─────────────────────────────
+    let active_slice_indices = state.engine.lock().unwrap().active_slice_indices();
+    for &act_idx in &active_slice_indices {
+        if let Some(slice) = sl.slices.get(act_idx) {
+            let x_start = frame_to_x(slice.start as f32);
+            let x_end   = frame_to_x(slice.end as f32);
+            let x0 = x_start.max(rect.left());
+            let x1 = x_end.min(rect.right());
+            if x1 > x0 {
+                let act_rect = Rect::from_min_max(Pos2::new(x0, rect.top()), Pos2::new(x1, rect.bottom()));
+                // Pulsating vibrant neon cyan fill overlay
+                painter.rect_filled(
+                    act_rect,
+                    0.0,
+                    Color32::from_rgba_unmultiplied(0, 240, 220, 65),
+                );
+                // Glowing cyan border frame
+                painter.rect_stroke(
+                    act_rect,
+                    0.0,
+                    Stroke::new(3.0, Color32::from_rgb(0, 255, 230)),
+                    egui::StrokeKind::Inside,
+                );
+                // Header badge at top right of active playing slice
+                let badge_text = format!("▶ PLAY #{:02}", act_idx + 1);
+                let badge_width = 82.0;
+                let badge_pos = Pos2::new((x1 - badge_width - 4.0).max(x0 + 4.0), rect.top() + 4.0);
+                painter.rect_filled(
+                    Rect::from_min_size(badge_pos, Vec2::new(badge_width, 16.0)),
+                    3.0,
+                    Color32::from_rgba_unmultiplied(0, 40, 50, 230),
+                );
+                painter.text(
+                    Pos2::new(badge_pos.x + 4.0, badge_pos.y + 2.0),
+                    Align2::LEFT_TOP,
+                    badge_text,
+                    FontId::monospace(10.0),
+                    Color32::from_rgb(0, 255, 230),
+                );
+            }
+        }
+    }
+
     // Render Fade Overlays & Handles for each slice
     for (idx, slice) in sl.slices.iter().enumerate() {
         let x_start = frame_to_x(slice.start as f32);
@@ -1263,7 +1306,7 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
     }
 
     // Request continuous UI repaint while audio is playing for smooth 60 FPS playhead movement.
-    if !playheads.is_empty() {
+    if !playheads.is_empty() || !active_slice_indices.is_empty() {
         ui.ctx().request_repaint();
     }
 
