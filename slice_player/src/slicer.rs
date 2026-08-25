@@ -589,10 +589,11 @@ impl SliceLoop {
         // Collect original MIDI notes of slices
         let original_notes: Vec<u8> = self.slices.iter().map(|s| s.note).collect();
         let num_rearranges = ((num_slices as f32 * 0.75 * intensity_clamped) as usize).max(1);
+        let main_beat_step = (num_slices / 4).max(1);
 
         for _ in 0..num_rearranges {
             let target_idx = (rand_f32() * num_slices as f32) as usize % num_slices;
-            let is_main_beat = target_idx % 4 == 0;
+            let is_main_beat = target_idx % main_beat_step == 0;
             if lock_main_beats && is_main_beat { continue; }
 
             // Pick a source slice to substitute/duplicate into target_idx
@@ -620,10 +621,12 @@ impl SliceLoop {
             (seed >> 9) as f32 / 8388608.0
         };
 
+        let main_beat_step = (num_slices / 4).max(1);
+
         match style {
             ShuffleStyle::GhostNotesOnly => {
                 for (idx, slice) in self.slices.iter_mut().enumerate() {
-                    let is_main_beat = idx % 4 == 0; // 1/4 beats
+                    let is_main_beat = idx % main_beat_step == 0;
                     if lock_main_beats && is_main_beat { continue; }
 
                     if !is_main_beat && rand_f32() < intensity_clamped {
@@ -636,7 +639,7 @@ impl SliceLoop {
             }
             ShuffleStyle::AmenRoller => {
                 for (idx, slice) in self.slices.iter_mut().enumerate() {
-                    let is_main_beat = idx % 4 == 0;
+                    let is_main_beat = idx % main_beat_step == 0;
                     if lock_main_beats && is_main_beat { continue; }
 
                     let roll_prob = rand_f32();
@@ -652,12 +655,12 @@ impl SliceLoop {
                 }
 
                 // Swap offbeat slices for classic Amen shuffle fill
-                if num_slices >= 8 {
+                if num_slices >= 4 {
                     let swap_count = ((num_slices as f32 * 0.25 * intensity_clamped) as usize).max(1);
                     for _ in 0..swap_count {
                         let i1 = (rand_f32() * num_slices as f32) as usize % num_slices;
                         let i2 = (rand_f32() * num_slices as f32) as usize % num_slices;
-                        if lock_main_beats && (i1 % 4 == 0 || i2 % 4 == 0) { continue; }
+                        if lock_main_beats && (i1 % main_beat_step == 0 || i2 % main_beat_step == 0) { continue; }
                         if i1 != i2 {
                             let note1 = self.slices[i1].note;
                             self.slices[i1].note = self.slices[i2].note;
@@ -668,7 +671,7 @@ impl SliceLoop {
             }
             ShuffleStyle::SyncopatedFunk => {
                 for (idx, slice) in self.slices.iter_mut().enumerate() {
-                    let is_main_beat = idx % 4 == 0;
+                    let is_main_beat = idx % main_beat_step == 0;
                     if lock_main_beats && is_main_beat { continue; }
 
                     let p = rand_f32();
@@ -681,7 +684,7 @@ impl SliceLoop {
             }
             ShuffleStyle::WildChopper => {
                 for (idx, slice) in self.slices.iter_mut().enumerate() {
-                    let is_main_beat = idx % 4 == 0;
+                    let is_main_beat = idx % main_beat_step == 0;
                     if lock_main_beats && is_main_beat { continue; }
 
                     if rand_f32() < intensity_clamped {
