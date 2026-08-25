@@ -24,6 +24,7 @@ This document outlines planned features, community ideas, and future enhancement
 - [x] **Digitakt-Style Warm Overdrive**: Authentic 5-stage mathematical DSP model featuring quadratic $G_{\text{in}}$ gain mapping, 2nd-harmonic asymmetric $\tanh$ soft-clipping with DC-bias, $G_{\text{out}}$ dynamic auto-gain compensation, 1st-order IIR DC-blocker filter ($15\text{ Hz}$), and anti-aliasing reconstruction.
 - [x] **Mackie CR-1604 Transistor "In The Red" Overdrive**: 90s console transistor overdrive with 1.5 kHz transformer mid-band punch resonance, cubic soft-knee transistor saturation, and dynamic level compensation.
 - [x] **Header Master FX Quick-Access Button**: Header bar indicator (`🎛️ Master FX: ON` / `OFF`) allowing 1-click access to Master FX controls right from startup.
+- [ ] **Turntable Stop 1200 Effect**: Technics SL-1200 vinyl turntable motor brake & pitch spin-down effect (adjustable deceleration curve 0.1s–4.0s) per slice or master trigger.
 - [ ] **Velocity Sensitivity Mapping**: Customizable velocity curves per slice.
 
 ### 🌴 Jungle & Drum & Bass Specialized Tools
