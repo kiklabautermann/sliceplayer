@@ -1,6 +1,6 @@
 # SlicePlayer 🎹⚡
 
-![SlicePlayer GUI](sliceplayer_0.1.0.png)
+![SlicePlayer GUI v0.3.0](sliceplayer_0.3.0.png)
 
 **SlicePlayer** is an open-source, high-performance **CLAP audio plugin** for Linux, macOS, and Windows designed for dynamic audio loop slicing, real-time playback, and direct export to **Bitwig Studio `.multisample` archives** with synchronized MIDI pattern clips.
 
