@@ -9,7 +9,7 @@ use egui::{
 use nih_plug_egui::egui;
 
 
-use crate::slicer::{DelayRate, FilterMode, GridDivision, RetriggerRate, SliceLoop, TransientSettings};
+use crate::slicer::{DelayRate, GridDivision, RetriggerRate, SliceLoop, TransientSettings};
 use crate::midi_export::{export_midi, copy_midi_file_to_clipboard};
 
 // ── Colours ───────────────────────────────────────────────────────────────────
@@ -1395,27 +1395,27 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                     ui.horizontal(|ui| {
                         ui.label(egui::RichText::new("🎛️ Slice FX:").color(ACCENT).strong());
 
-                        // Filter
+                        // DJM Mixer-Style Lowpass / Highpass Combo Filter
                         ui.add_space(4.0);
-                        ui.label("Filter:");
-                        egui::ComboBox::new("filter_mode", "")
-                            .selected_text(slice.fx.filter_mode.label())
-                            .show_ui(ui, |ui| {
-                                ui.selectable_value(&mut slice.fx.filter_mode, FilterMode::Off, "Off");
-                                ui.selectable_value(&mut slice.fx.filter_mode, FilterMode::Lowpass, "Lowpass");
-                                ui.selectable_value(&mut slice.fx.filter_mode, FilterMode::Highpass, "Highpass");
-                                ui.selectable_value(&mut slice.fx.filter_mode, FilterMode::Bandpass, "Bandpass");
-                            });
+                        ui.label("🎚️ DJM Filter:");
+                        ui.add(egui::Slider::new(&mut slice.fx.filter_djm, -1.0..=1.0)
+                            .custom_formatter(|val, _| {
+                                if val < -0.01 {
+                                    let norm = (1.0 + val.clamp(-1.0, 0.0)) as f32;
+                                    let hz = 20.0f32 * (20000.0f32 / 20.0f32).powf(norm);
+                                    format!("LP {:.0} Hz", hz)
+                                } else if val > 0.01 {
+                                    let norm = val.clamp(0.0, 1.0) as f32;
+                                    let hz = 20.0f32 * (15000.0f32 / 20.0f32).powf(norm);
+                                    format!("HP {:.0} Hz", hz)
+                                } else {
+                                    "Neutral (Off)".to_string()
+                                }
+                            }));
 
-                        if slice.fx.filter_mode != FilterMode::Off {
-                            ui.label("Cutoff:");
-                            ui.add(egui::Slider::new(&mut slice.fx.filter_cutoff, 20.0..=20000.0)
-                                .logarithmic(true).suffix(" Hz").fixed_decimals(0));
-
-                            ui.label("Res:");
-                            ui.add(egui::Slider::new(&mut slice.fx.filter_resonance, 0.5..=10.0)
-                                .suffix(" Q").fixed_decimals(2));
-                        }
+                        ui.label("Res:");
+                        ui.add(egui::Slider::new(&mut slice.fx.filter_resonance, 0.5..=10.0)
+                            .suffix(" Q").fixed_decimals(2));
 
                         // Bitcrusher
                         ui.add_space(6.0);

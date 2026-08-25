@@ -48,6 +48,8 @@ pub struct SlicePersisted {
     pub filter_mode: u8,
     #[serde(default = "default_cutoff")]
     pub filter_cutoff: f32,
+    #[serde(default)]
+    pub filter_djm: f32,
     #[serde(default = "default_resonance")]
     pub filter_resonance: f32,
     #[serde(default = "default_bit_depth")]
@@ -154,6 +156,7 @@ fn update_persisted_from_loop(target: &RwLock<Option<SlicePlayerPersistedData>>,
                 slicer::FilterMode::Bandpass => 3,
             },
             filter_cutoff: s.fx.filter_cutoff,
+            filter_djm: s.fx.filter_djm,
             filter_resonance: s.fx.filter_resonance,
             bit_depth: s.fx.bit_depth,
             downsample_factor: s.fx.downsample_factor,
@@ -266,6 +269,7 @@ fn restore_from_persisted(persisted: &RwLock<Option<SlicePlayerPersistedData>>, 
                         _ => slicer::FilterMode::Off,
                     };
                     slice.fx.filter_cutoff = if s.filter_cutoff > 0.0 { s.filter_cutoff } else { 20000.0 };
+                    slice.fx.filter_djm = s.filter_djm;
                     slice.fx.filter_resonance = if s.filter_resonance > 0.0 { s.filter_resonance } else { 0.707 };
                     slice.fx.bit_depth = if s.bit_depth > 0.0 { s.bit_depth } else { 16.0 };
                     slice.fx.downsample_factor = s.downsample_factor.max(1);

@@ -415,19 +415,20 @@ impl Engine {
                 sl = bitcrush(sl, slice.fx.bit_depth);
                 sr = bitcrush(sr, slice.fx.bit_depth);
 
-                // 3. State Variable Filter (SVF)
-                if slice.fx.filter_mode != FilterMode::Off {
+                // 3. State Variable Filter (SVF - DJM Combo & Standard Filter)
+                let (f_mode, f_cutoff) = slice.fx.effective_filter();
+                if f_mode != FilterMode::Off {
                     sl = voice.filter_svf_l.process(
                         sl,
-                        slice.fx.filter_mode,
-                        slice.fx.filter_cutoff,
+                        f_mode,
+                        f_cutoff,
                         slice.fx.filter_resonance,
                         sample_rate,
                     );
                     sr = voice.filter_svf_r.process(
                         sr,
-                        slice.fx.filter_mode,
-                        slice.fx.filter_cutoff,
+                        f_mode,
+                        f_cutoff,
                         slice.fx.filter_resonance,
                         sample_rate,
                     );
@@ -534,7 +535,7 @@ fn sample_at(loop_data: &SliceLoop, slice: &crate::slicer::Slice, offset: usize)
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::slicer::{Slice, SliceLoop, RetriggerRate};
+    use crate::slicer::{FilterMode, RetriggerRate, Slice, SliceFx, SliceLoop};
 
     #[test]
     fn test_retrigger_choked_by_next_slice() {
@@ -629,5 +630,21 @@ mod tests {
 
         let sum: f32 = output.iter().map(|s| s.abs()).sum();
         assert!(sum > 0.0, "Jungle Dub Echo rendered silent audio");
+    }
+
+    #[test]
+    fn test_djm_combo_filter_effective() {
+        let mut fx = SliceFx::default();
+        assert_eq!(fx.effective_filter(), (FilterMode::Off, 20000.0));
+
+        fx.filter_djm = -0.5;
+        let (mode_lp, cutoff_lp) = fx.effective_filter();
+        assert_eq!(mode_lp, FilterMode::Lowpass);
+        assert!(cutoff_lp > 100.0 && cutoff_lp < 5000.0);
+
+        fx.filter_djm = 0.5;
+        let (mode_hp, cutoff_hp) = fx.effective_filter();
+        assert_eq!(mode_hp, FilterMode::Highpass);
+        assert!(cutoff_hp > 100.0 && cutoff_hp < 5000.0);
     }
 }

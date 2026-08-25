@@ -30,6 +30,7 @@ pub fn save_preset_to_file(path: &Path, sl: &SliceLoop) -> Result<(), String> {
             FilterMode::Bandpass => 3,
         },
         filter_cutoff: s.fx.filter_cutoff,
+        filter_djm: s.fx.filter_djm,
         filter_resonance: s.fx.filter_resonance,
         bit_depth: s.fx.bit_depth,
         downsample_factor: s.fx.downsample_factor,
@@ -121,6 +122,7 @@ pub fn load_preset_from_file(path: &Path) -> Result<SliceLoop, String> {
             _ => FilterMode::Off,
         };
         slice.fx.filter_cutoff = if s.filter_cutoff > 0.0 { s.filter_cutoff } else { 20000.0 };
+        slice.fx.filter_djm = s.filter_djm;
         slice.fx.filter_resonance = if s.filter_resonance > 0.0 { s.filter_resonance } else { 0.707 };
         slice.fx.bit_depth = if s.bit_depth > 0.0 { s.bit_depth } else { 16.0 };
         slice.fx.downsample_factor = s.downsample_factor.max(1);

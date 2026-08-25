@@ -156,6 +156,8 @@ pub struct SliceFx {
     pub filter_mode: FilterMode,
     /// Cutoff frequency in Hz (20.0 Hz - 20000.0 Hz).
     pub filter_cutoff: f32,
+    /// DJM combo filter position (-1.0 = full LP cut, 0.0 = Off/Neutral, +1.0 = full HP cut).
+    pub filter_djm: f32,
     /// Filter resonance / Q (0.5 - 10.0).
     pub filter_resonance: f32,
 
@@ -189,11 +191,30 @@ pub struct SliceFx {
     pub delay_tone: f32,
 }
 
+impl SliceFx {
+    pub fn effective_filter(&self) -> (FilterMode, f32) {
+        if self.filter_djm < -0.01 {
+            let norm = 1.0 + self.filter_djm.clamp(-1.0, 0.0);
+            let cutoff = 20.0f32 * (20000.0f32 / 20.0f32).powf(norm);
+            (FilterMode::Lowpass, cutoff)
+        } else if self.filter_djm > 0.01 {
+            let norm = self.filter_djm.clamp(0.0, 1.0);
+            let cutoff = 20.0f32 * (15000.0f32 / 20.0f32).powf(norm);
+            (FilterMode::Highpass, cutoff)
+        } else if self.filter_mode != FilterMode::Off {
+            (self.filter_mode, self.filter_cutoff)
+        } else {
+            (FilterMode::Off, 20000.0)
+        }
+    }
+}
+
 impl Default for SliceFx {
     fn default() -> Self {
         Self {
             filter_mode: FilterMode::Off,
             filter_cutoff: 20000.0,
+            filter_djm: 0.0,
             filter_resonance: 0.707,
             bit_depth: 16.0,
             downsample_factor: 1,
