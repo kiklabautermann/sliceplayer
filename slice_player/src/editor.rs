@@ -816,24 +816,106 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
         }
     }
 
-    // ── Waveform peaks ────────────────────────────────────────────────────────
-    let buckets = sl.peak_cache.len().max(1);
+    // ── High-Resolution Dynamic Waveform Rendering ──────────────────────────────
     let mid_y = rect.center().y;
     let half = rect.height() * 0.5;
+    let width_px = rect.width().max(1.0) as usize;
+    let num_channels = sl.channels.max(1);
 
-    for (i, &(neg, pos)) in sl.peak_cache.iter().enumerate() {
-        let f0 = (i as f32 / buckets as f32) * total;
-        let f1 = ((i + 1) as f32 / buckets as f32) * total;
+    if view_frames <= rect.width() * 2.0 {
+        // Deep zoom: render continuous waveform line with individual sample point dots
+        let first_f = view_start_f.floor().max(0.0) as usize;
+        let last_f = (view_start_f + view_frames).ceil().min(total) as usize;
+        let mut sample_points: Vec<Pos2> = Vec::with_capacity(last_f.saturating_sub(first_f) + 1);
 
-        let x0 = frame_to_x(f0);
-        let x1 = frame_to_x(f1);
+        for f in first_f..=last_f {
+            if f >= sl.total_frames { break; }
+            let x = frame_to_x(f as f32);
+            let idx = f * num_channels;
+            let sample_val = if idx < sl.audio.len() { sl.audio[idx] } else { 0.0 };
+            let y = mid_y - sample_val.clamp(-1.0, 1.0) * half * 0.92;
+            sample_points.push(Pos2::new(x, y));
+        }
 
-        if x1 >= rect.left() && x0 <= rect.right() {
-            let top    = mid_y - pos.abs().min(1.0) * half * 0.92;
-            let bottom = mid_y + neg.abs().min(1.0) * half * 0.92;
+        if sample_points.len() > 1 {
+            // Draw filled area under line to center
+            for i in 0..sample_points.len().saturating_sub(1) {
+                let p1 = sample_points[i];
+                let p2 = sample_points[i + 1];
+                let poly = vec![
+                    p1,
+                    p2,
+                    Pos2::new(p2.x, mid_y),
+                    Pos2::new(p1.x, mid_y),
+                ];
+                painter.add(egui::Shape::convex_polygon(poly, WAVEFORM.gamma_multiply(0.35), Stroke::NONE));
+            }
+            // Draw waveform connecting line
+            painter.add(egui::Shape::line(
+                sample_points.clone(),
+                Stroke::new(1.8, WAVEFORM),
+            ));
+            // Draw glowing cyan dots on individual sample points
+            for p in sample_points {
+                if p.x >= rect.left() && p.x <= rect.right() {
+                    painter.circle_filled(p, 2.5, Color32::from_rgb(0, 255, 220));
+                }
+            }
+        }
+    } else {
+        // Multi-resolution dynamic peak rendering per pixel column
+        for px in 0..width_px {
+            let x0 = rect.left() + px as f32;
+            let x1 = x0 + 1.0;
+
+            let frac0 = px as f32 / width_px as f32;
+            let frac1 = (px + 1) as f32 / width_px as f32;
+
+            let f0 = ((view_start_f + frac0 * view_frames) as usize).min(sl.total_frames);
+            let f1 = ((view_start_f + frac1 * view_frames) as usize).min(sl.total_frames).max(f0 + 1);
+
+            let frame_span = f1 - f0;
+            let mut min_val = 0.0f32;
+            let mut max_val = 0.0f32;
+
+            if frame_span <= 512 {
+                for f in f0..f1 {
+                    let idx = f * num_channels;
+                    if idx < sl.audio.len() {
+                        let sample_l = sl.audio[idx];
+                        if sample_l < min_val { min_val = sample_l; }
+                        if sample_l > max_val { max_val = sample_l; }
+                        if num_channels > 1 && idx + 1 < sl.audio.len() {
+                            let sample_r = sl.audio[idx + 1];
+                            if sample_r < min_val { min_val = sample_r; }
+                            if sample_r > max_val { max_val = sample_r; }
+                        }
+                    }
+                }
+            } else {
+                let step = (frame_span / 128).max(1);
+                for f in (f0..f1).step_by(step) {
+                    let idx = f * num_channels;
+                    if idx < sl.audio.len() {
+                        let sample_l = sl.audio[idx];
+                        if sample_l < min_val { min_val = sample_l; }
+                        if sample_l > max_val { max_val = sample_l; }
+                        if num_channels > 1 && idx + 1 < sl.audio.len() {
+                            let sample_r = sl.audio[idx + 1];
+                            if sample_r < min_val { min_val = sample_r; }
+                            if sample_r > max_val { max_val = sample_r; }
+                        }
+                    }
+                }
+            }
+
+            let top    = mid_y - max_val.abs().min(1.0) * half * 0.92;
+            let bottom = mid_y + min_val.abs().min(1.0) * half * 0.92;
+
             painter.rect_filled(
-                Rect::from_min_max(Pos2::new(x0.max(rect.left()), top), Pos2::new(x1.min(rect.right()).max(x0 + 1.0), bottom)),
-                0.0, WAVEFORM.gamma_multiply(0.75),
+                Rect::from_min_max(Pos2::new(x0, top), Pos2::new(x1, bottom.max(top + 1.0))),
+                0.0,
+                WAVEFORM.gamma_multiply(0.75),
             );
         }
     }
