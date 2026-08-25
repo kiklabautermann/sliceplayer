@@ -9,7 +9,7 @@ use egui::{
 use nih_plug_egui::egui;
 
 
-use crate::slicer::{GridDivision, SliceLoop, TransientSettings};
+use crate::slicer::{DelayRate, FilterMode, GridDivision, RetriggerRate, SliceLoop, TransientSettings};
 use crate::midi_export::{export_midi, copy_midi_file_to_clipboard};
 
 // ── Colours ───────────────────────────────────────────────────────────────────
@@ -302,12 +302,14 @@ fn draw_file_browser(ui: &mut Ui, state: &mut EditorState) {
 
             if modified {
                 *state.favorites.lock().unwrap() = favs;
+                crate::sync_global_settings(&state.last_dir, &state.favorites);
             }
         });
 
         if let Some(dir) = jump_dir {
             state.file_browser.set_dir(dir.clone());
             *state.last_dir.lock().unwrap() = Some(dir);
+            crate::sync_global_settings(&state.last_dir, &state.favorites);
         }
         if let Some(msg) = status_update {
             state.status(msg);
@@ -328,11 +330,20 @@ fn draw_file_browser(ui: &mut Ui, state: &mut EditorState) {
             let filename = sel.file_name().map(|s| s.to_string_lossy().to_string()).unwrap_or_default();
             ui.horizontal(|ui| {
                 ui.label(egui::RichText::new(&filename).color(ACCENT2).strong().size(11.0));
-                if ui.small_button("🔊 Pre").clicked() {
-                    audition_path = Some(sel.clone());
+                let path = sel.clone();
+
+                let is_auditioning = state.engine.lock().unwrap().is_auditioning();
+
+                if is_auditioning {
+                    if styled_button(ui, "⏹ Stop", Color32::from_rgb(255, 80, 80)) {
+                        state.engine.lock().unwrap().stop_audition();
+                    }
+                } else if styled_button(ui, "▶ Preview", ACCENT2) {
+                    audition_path = Some(path.clone());
                 }
-                if ui.small_button("📥 Load").clicked() {
-                    load_path = Some(sel.clone());
+
+                if styled_button(ui, "⚡ Load Into Slicer", ACCENT) {
+                    load_path = Some(path);
                 }
             });
             ui.separator();
@@ -346,10 +357,11 @@ fn draw_file_browser(ui: &mut Ui, state: &mut EditorState) {
 
                 if entry.is_dir {
                     let text = format!("📁 {}", entry.name);
-                    if ui.selectable_label(is_selected, text).clicked() {
+                    if ui.selectable_label(is_selected, text).double_clicked() {
                         let path = entry.path.clone();
                         state.file_browser.set_dir(path.clone());
                         *state.last_dir.lock().unwrap() = Some(path);
+                        crate::sync_global_settings(&state.last_dir, &state.favorites);
                     }
                 } else if entry.is_audio {
                     let ext = entry.path.extension().and_then(|s| s.to_str()).unwrap_or("").to_lowercase();
@@ -402,6 +414,7 @@ fn load_file_into_slicer(path: &std::path::Path, state: &mut EditorState) {
     let ext = path.extension().and_then(|s| s.to_str()).unwrap_or("").to_lowercase();
     if let Some(parent) = path.parent() {
         *state.last_dir.lock().unwrap() = Some(parent.to_path_buf());
+        crate::sync_global_settings(&state.last_dir, &state.favorites);
     }
     match ext.as_str() {
         "rx2" | "rex" | "rcy" => {
@@ -505,6 +518,53 @@ fn draw_toolbar(ui: &mut Ui, state: &mut EditorState) {
             }
             if let Some(path) = dialog.pick_file() {
                 load_file_into_slicer(&path, state);
+            }
+        }
+
+        ui.add_space(6.0);
+
+        if styled_button(ui, "📂 Load Preset", Color32::from_rgb(180, 100, 220)) {
+            let mut dialog = rfd::FileDialog::new().add_filter("SlicePlayer Preset", &["sliceplayer", "json"]);
+            if let Some(dir) = state.last_dir.lock().unwrap().as_ref() {
+                dialog = dialog.set_directory(dir);
+            }
+            if let Some(path) = dialog.pick_file() {
+                match crate::preset::load_preset_from_file(&path) {
+                    Ok(sl) => {
+                        let bpm = sl.bpm;
+                        state.bpm_input = bpm;
+                        *state.loop_data.write().unwrap() = Some(sl);
+                        state.selected_slice = None;
+                        state.transient_preview.clear();
+                        state.status(format!("Loaded Preset: {}", path.file_name().unwrap_or_default().to_string_lossy()));
+                    }
+                    Err(e) => state.status(format!("Preset load error: {e}")),
+                }
+            }
+        }
+
+        if styled_button(ui, "💾 Save Preset", Color32::from_rgb(180, 100, 220)) {
+            let mut dialog = rfd::FileDialog::new().add_filter("SlicePlayer Preset", &["sliceplayer", "json"]);
+            if let Some(dir) = state.last_dir.lock().unwrap().as_ref() {
+                dialog = dialog.set_directory(dir);
+            }
+            if let Some(mut path) = dialog.save_file() {
+                let ext = path.extension().and_then(|s| s.to_str()).unwrap_or("").to_lowercase();
+                if ext != "sliceplayer" && ext != "json" {
+                    path.set_extension("sliceplayer");
+                }
+                let res = {
+                    let guard = state.loop_data.read().unwrap();
+                    if let Some(sl) = guard.as_ref() {
+                        crate::preset::save_preset_to_file(&path, sl)
+                    } else {
+                        Err("No loop loaded to save as preset.".to_string())
+                    }
+                };
+                match res {
+                    Ok(()) => state.status(format!("Saved Preset: {}", path.file_name().unwrap_or_default().to_string_lossy())),
+                    Err(e) => state.status(format!("Preset save error: {e}")),
+                }
             }
         }
 
@@ -916,6 +976,47 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
         }
     }
 
+    // ── Render Selected Slice Highlight Overlay ─────────────────────────────────────────
+    if let Some(sel_idx) = state.selected_slice {
+        if let Some(slice) = sl.slices.get(sel_idx) {
+            let x_start = frame_to_x(slice.start as f32);
+            let x_end   = frame_to_x(slice.end as f32);
+            let x0 = x_start.max(rect.left());
+            let x1 = x_end.min(rect.right());
+            if x1 > x0 {
+                let sel_rect = Rect::from_min_max(Pos2::new(x0, rect.top()), Pos2::new(x1, rect.bottom()));
+                // Vibrant translucent gold/orange fill overlay
+                painter.rect_filled(
+                    sel_rect,
+                    0.0,
+                    Color32::from_rgba_unmultiplied(255, 170, 40, 45),
+                );
+                // Glowing border box frame
+                painter.rect_stroke(
+                    sel_rect,
+                    0.0,
+                    Stroke::new(2.5, Color32::from_rgb(255, 170, 40)),
+                    egui::StrokeKind::Inside,
+                );
+                // Header badge at top left of selected slice
+                let badge_text = format!("Slice #{} ({})", sel_idx + 1, midi_note_name(slice.note));
+                let badge_pos = Pos2::new(x0 + 4.0, rect.top() + 4.0);
+                painter.rect_filled(
+                    Rect::from_min_size(badge_pos, Vec2::new(95.0, 16.0)),
+                    3.0,
+                    Color32::from_rgba_unmultiplied(20, 24, 32, 220),
+                );
+                painter.text(
+                    Pos2::new(badge_pos.x + 4.0, badge_pos.y + 2.0),
+                    Align2::LEFT_TOP,
+                    badge_text,
+                    FontId::monospace(10.0),
+                    Color32::from_rgb(255, 190, 60),
+                );
+            }
+        }
+    }
+
     // Render Fade Overlays & Handles for each slice
     for (idx, slice) in sl.slices.iter().enumerate() {
         let x_start = rect.left() + (slice.start as f32 / total) * rect.width();
@@ -1221,6 +1322,8 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
     let Some(sel) = state.selected_slice else { return; };
 
     let mut delete_requested = false;
+    let mut copy_to_all_requested = false;
+    let mut reset_fx_requested = false;
 
     {
         let mut guard = state.loop_data.write().unwrap();
@@ -1233,56 +1336,217 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
             .inner_margin(6.0)
             .corner_radius(6.0)
             .show(ui, |ui| {
-                ui.horizontal(|ui| {
-                    ui.label(egui::RichText::new(format!("Slice #{} ({})", sel + 1, midi_note_name(slice.note)))
-                        .color(ACCENT).strong());
+                ui.vertical(|ui| {
+                    ui.horizontal(|ui| {
+                        ui.label(egui::RichText::new(format!("Slice #{} ({})", sel + 1, midi_note_name(slice.note)))
+                            .color(ACCENT).strong());
 
-                    ui.add_space(8.0);
-                    ui.label("Note:");
-                    egui::ComboBox::new("slice_note", "")
-                        .selected_text(midi_note_name(slice.note))
-                        .show_ui(ui, |ui| {
-                            for n in 0u8..=127 {
-                                ui.selectable_value(&mut slice.note, n, midi_note_name(n));
+                        ui.add_space(8.0);
+                        ui.label("Note:");
+                        egui::ComboBox::new("slice_note", "")
+                            .selected_text(midi_note_name(slice.note))
+                            .show_ui(ui, |ui| {
+                                for n in 0u8..=127 {
+                                    ui.selectable_value(&mut slice.note, n, midi_note_name(n));
+                                }
+                            });
+
+                        ui.add_space(8.0);
+                        ui.label("Gain:");
+                        ui.add(egui::Slider::new(&mut slice.gain, 0.0..=2.0).suffix("x").fixed_decimals(2));
+
+                        ui.add_space(8.0);
+                        ui.label("Pan:");
+                        ui.add(egui::Slider::new(&mut slice.pan, -1.0..=1.0).fixed_decimals(2));
+
+                        ui.add_space(8.0);
+                        ui.label("Pitch:");
+                        ui.add(egui::Slider::new(&mut slice.pitch_semitones, -24.0..=24.0)
+                            .suffix(" st").fixed_decimals(1));
+
+                        ui.add_space(8.0);
+                        ui.label("Fade In:");
+                        let max_in_ms = (slice.frame_count() / 2) as f32 * 1000.0 / sl.sample_rate as f32;
+                        ui.add(egui::Slider::new(&mut slice.fade_in_ms, 0.0..=max_in_ms.max(10.0)).suffix(" ms").fixed_decimals(1));
+
+                        ui.add_space(8.0);
+                        ui.label("Fade Out:");
+                        let max_out_ms = (slice.frame_count() / 2) as f32 * 1000.0 / sl.sample_rate as f32;
+                        ui.add(egui::Slider::new(&mut slice.fade_out_ms, 0.0..=max_out_ms.max(10.0)).suffix(" ms").fixed_decimals(1));
+
+                        ui.add_space(6.0);
+                        ui.checkbox(&mut slice.reverse, "Rev");
+
+                        ui.add_space(6.0);
+                        ui.checkbox(&mut slice.muted, "Mute");
+
+                        ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                            if styled_button(ui, "🗑️ Delete", Color32::from_rgb(220, 70, 70)) {
+                                delete_requested = true;
                             }
                         });
+                    });
 
-                    ui.add_space(8.0);
-                    ui.label("Gain:");
-                    ui.add(egui::Slider::new(&mut slice.gain, 0.0..=2.0).suffix("x").fixed_decimals(2));
+                    ui.add_space(4.0);
+                    ui.separator();
+                    ui.add_space(4.0);
 
-                    ui.add_space(8.0);
-                    ui.label("Pan:");
-                    ui.add(egui::Slider::new(&mut slice.pan, -1.0..=1.0).fixed_decimals(2));
+                    // Row 2: Per-Slice DSP / FX Engine Controls
+                    ui.horizontal(|ui| {
+                        ui.label(egui::RichText::new("🎛️ Slice FX:").color(ACCENT).strong());
 
-                    ui.add_space(8.0);
-                    ui.label("Pitch:");
-                    ui.add(egui::Slider::new(&mut slice.pitch_semitones, -24.0..=24.0)
-                        .suffix(" st").fixed_decimals(1));
+                        // Filter
+                        ui.add_space(4.0);
+                        ui.label("Filter:");
+                        egui::ComboBox::new("filter_mode", "")
+                            .selected_text(slice.fx.filter_mode.label())
+                            .show_ui(ui, |ui| {
+                                ui.selectable_value(&mut slice.fx.filter_mode, FilterMode::Off, "Off");
+                                ui.selectable_value(&mut slice.fx.filter_mode, FilterMode::Lowpass, "Lowpass");
+                                ui.selectable_value(&mut slice.fx.filter_mode, FilterMode::Highpass, "Highpass");
+                                ui.selectable_value(&mut slice.fx.filter_mode, FilterMode::Bandpass, "Bandpass");
+                            });
 
-                    ui.add_space(8.0);
-                    ui.label("Fade In:");
-                    let max_in_ms = (slice.frame_count() / 2) as f32 * 1000.0 / sl.sample_rate as f32;
-                    ui.add(egui::Slider::new(&mut slice.fade_in_ms, 0.0..=max_in_ms.max(10.0)).suffix(" ms").fixed_decimals(1));
+                        if slice.fx.filter_mode != FilterMode::Off {
+                            ui.label("Cutoff:");
+                            ui.add(egui::Slider::new(&mut slice.fx.filter_cutoff, 20.0..=20000.0)
+                                .logarithmic(true).suffix(" Hz").fixed_decimals(0));
 
-                    ui.add_space(8.0);
-                    ui.label("Fade Out:");
-                    let max_out_ms = (slice.frame_count() / 2) as f32 * 1000.0 / sl.sample_rate as f32;
-                    ui.add(egui::Slider::new(&mut slice.fade_out_ms, 0.0..=max_out_ms.max(10.0)).suffix(" ms").fixed_decimals(1));
+                            ui.label("Res:");
+                            ui.add(egui::Slider::new(&mut slice.fx.filter_resonance, 0.5..=10.0)
+                                .suffix(" Q").fixed_decimals(2));
+                        }
 
-                    ui.add_space(6.0);
-                    ui.checkbox(&mut slice.reverse, "Rev");
+                        // Bitcrusher
+                        ui.add_space(6.0);
+                        ui.label("Crush:");
+                        ui.add(egui::Slider::new(&mut slice.fx.bit_depth, 1.0..=16.0)
+                            .suffix(" bits").fixed_decimals(1));
 
-                    ui.add_space(6.0);
-                    ui.checkbox(&mut slice.muted, "Mute");
+                        ui.label("Downsample:");
+                        ui.add(egui::Slider::new(&mut slice.fx.downsample_factor, 1..=32)
+                            .suffix("x"));
 
-                    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                        if styled_button(ui, "🗑️ Delete", Color32::from_rgb(220, 70, 70)) {
-                            delete_requested = true;
+                        // Drive
+                        ui.add_space(6.0);
+                        ui.label("Drive:");
+                        ui.add(egui::Slider::new(&mut slice.fx.drive, 0.0..=1.0)
+                            .fixed_decimals(2));
+
+                        // Retrigger
+                        ui.add_space(6.0);
+                        ui.label("Retrig:");
+                        egui::ComboBox::new("retrigger_rate", "")
+                            .selected_text(slice.fx.retrigger_rate.label())
+                            .show_ui(ui, |ui| {
+                                ui.selectable_value(&mut slice.fx.retrigger_rate, RetriggerRate::Off, "Off");
+                                ui.selectable_value(&mut slice.fx.retrigger_rate, RetriggerRate::Eighth, "1/8");
+                                ui.selectable_value(&mut slice.fx.retrigger_rate, RetriggerRate::Sixteenth, "1/16");
+                                ui.selectable_value(&mut slice.fx.retrigger_rate, RetriggerRate::ThirtySecond, "1/32");
+                                ui.selectable_value(&mut slice.fx.retrigger_rate, RetriggerRate::SixtyFourth, "1/64");
+                            });
+
+                        if slice.fx.retrigger_rate != RetriggerRate::Off {
+                            ui.label("Decay:");
+                            ui.add(egui::Slider::new(&mut slice.fx.retrigger_decay, 0.0..=1.0)
+                                .fixed_decimals(2));
+                        }
+
+                        // Choke Group
+                        ui.add_space(6.0);
+                        ui.label("Choke:");
+                        egui::ComboBox::new("choke_group", "")
+                            .selected_text(if slice.fx.choke_group == 0 { "Off".to_string() } else { format!("Grp {}", slice.fx.choke_group) })
+                            .show_ui(ui, |ui| {
+                                ui.selectable_value(&mut slice.fx.choke_group, 0, "Off");
+                                for g in 1u8..=8 {
+                                    ui.selectable_value(&mut slice.fx.choke_group, g, format!("Group {g}"));
+                                }
+                            });
+
+                        // Batch Action Buttons
+                        ui.add_space(6.0);
+                        if styled_button(ui, "📋 Copy FX to All", Color32::from_rgb(60, 160, 220)) {
+                            copy_to_all_requested = true;
+                        }
+                        if styled_button(ui, "🔄 Reset FX", Color32::from_rgb(180, 120, 60)) {
+                            reset_fx_requested = true;
+                        }
+                    });
+
+                    ui.add_space(4.0);
+                    ui.separator();
+                    ui.add_space(4.0);
+
+                    // Row 3: Akai Vintage Timestretch & DJM500 Oldschool Jungle Dub Echo
+                    ui.horizontal(|ui| {
+                        // Akai Timestretch
+                        ui.label(egui::RichText::new("📼 Akai Stretch:").color(ACCENT2).strong());
+                        ui.add(egui::Slider::new(&mut slice.fx.stretch_factor, 0.5..=2.0)
+                            .suffix("x").fixed_decimals(2));
+
+                        if (slice.fx.stretch_factor - 1.0).abs() > 0.01 {
+                            ui.label("Grain:");
+                            ui.add(egui::Slider::new(&mut slice.fx.stretch_grain_ms, 10.0..=100.0)
+                                .suffix(" ms").fixed_decimals(0));
+                        }
+
+                        ui.add_space(8.0);
+                        ui.separator();
+                        ui.add_space(8.0);
+
+                        // DJM500 Dub Echo
+                        ui.label(egui::RichText::new("📻 Jungle Dub Echo:").color(ACCENT2).strong());
+                        ui.label("Time:");
+                        egui::ComboBox::new("delay_rate", "")
+                            .selected_text(slice.fx.delay_rate.label())
+                            .show_ui(ui, |ui| {
+                                ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::Off, "Off");
+                                ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::Sixteenth, "1/16");
+                                ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::Eighth, "1/8");
+                                ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::DottedEighth, "3/16 (Dotted)");
+                                ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::Quarter, "1/4");
+                                ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::Half, "1/2");
+                            });
+
+                        if slice.fx.delay_rate != DelayRate::Off {
+                            ui.label("FB:");
+                            ui.add(egui::Slider::new(&mut slice.fx.delay_feedback, 0.0..=0.90)
+                                .fixed_decimals(2));
+
+                            ui.label("Mix:");
+                            ui.add(egui::Slider::new(&mut slice.fx.delay_mix, 0.0..=1.0)
+                                .fixed_decimals(2));
+
+                            ui.label("Tone (LP):");
+                            ui.add(egui::Slider::new(&mut slice.fx.delay_tone, 200.0..=12000.0)
+                                .logarithmic(true).suffix(" Hz").fixed_decimals(0));
                         }
                     });
                 });
             });
+    }
+
+    if copy_to_all_requested {
+        {
+            let mut guard = state.loop_data.write().unwrap();
+            if let Some(sl) = guard.as_mut() {
+                sl.copy_slice_fx_to_all(sel);
+            }
+        }
+        state.status(format!("Copied FX settings from Slice #{} to all slices", sel + 1));
+    }
+
+    if reset_fx_requested {
+        {
+            let mut guard = state.loop_data.write().unwrap();
+            if let Some(sl) = guard.as_mut() {
+                if let Some(slice) = sl.slices.get_mut(sel) {
+                    slice.reset_fx();
+                }
+            }
+        }
+        state.status(format!("Reset FX settings for Slice #{}", sel + 1));
     }
 
     if delete_requested {

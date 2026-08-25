@@ -59,6 +59,152 @@ impl Default for TransientSettings {
     }
 }
 
+// ── Per-slice DSP & FX settings ───────────────────────────────────────────────
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum FilterMode {
+    Off,
+    Lowpass,
+    Highpass,
+    Bandpass,
+}
+
+impl FilterMode {
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::Off => "Off",
+            Self::Lowpass => "Lowpass",
+            Self::Highpass => "Highpass",
+            Self::Bandpass => "Bandpass",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RetriggerRate {
+    Off,
+    Eighth,       // 1/8
+    Sixteenth,    // 1/16
+    ThirtySecond, // 1/32
+    SixtyFourth,  // 1/64
+}
+
+impl RetriggerRate {
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::Off => "Off",
+            Self::Eighth => "1/8",
+            Self::Sixteenth => "1/16",
+            Self::ThirtySecond => "1/32",
+            Self::SixtyFourth => "1/64",
+        }
+    }
+
+    pub fn division_factor(self) -> usize {
+        match self {
+            Self::Off => 0,
+            Self::Eighth => 8,
+            Self::Sixteenth => 16,
+            Self::ThirtySecond => 32,
+            Self::SixtyFourth => 64,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum DelayRate {
+    Off,
+    Sixteenth,     // 1/16
+    Eighth,        // 1/8
+    DottedEighth,  // 3/16
+    Quarter,       // 1/4
+    Half,          // 1/2
+}
+
+impl DelayRate {
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::Off => "Off",
+            Self::Sixteenth => "1/16",
+            Self::Eighth => "1/8",
+            Self::DottedEighth => "3/16 (Dotted)",
+            Self::Quarter => "1/4",
+            Self::Half => "1/2",
+        }
+    }
+
+    pub fn beats(self) -> f32 {
+        match self {
+            Self::Off => 0.0,
+            Self::Sixteenth => 0.25,
+            Self::Eighth => 0.5,
+            Self::DottedEighth => 0.75,
+            Self::Quarter => 1.0,
+            Self::Half => 2.0,
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct SliceFx {
+    pub filter_mode: FilterMode,
+    /// Cutoff frequency in Hz (20.0 Hz - 20000.0 Hz).
+    pub filter_cutoff: f32,
+    /// Filter resonance / Q (0.5 - 10.0).
+    pub filter_resonance: f32,
+
+    /// Bit reduction depth (1.0 - 16.0 bits, 16.0 = off).
+    pub bit_depth: f32,
+    /// Sample rate downsample factor (1 - 32x, 1 = off).
+    pub downsample_factor: u32,
+    /// Drive / Soft clipping saturation (0.0 - 1.0).
+    pub drive: f32,
+
+    /// Retrigger rate.
+    pub retrigger_rate: RetriggerRate,
+    /// Retrigger volume decay per roll hit (0.0 = no decay, 1.0 = quick decay).
+    pub retrigger_decay: f32,
+
+    /// Choke Group (0 = None, 1..=8).
+    pub choke_group: u8,
+
+    /// Akai-style granular vintage timestretch ratio (0.5x - 2.0x, 1.0 = Off).
+    pub stretch_factor: f32,
+    /// Granular window length in ms (10.0ms - 100.0ms, default 30.0ms).
+    pub stretch_grain_ms: f32,
+
+    /// DJM500 / Oldschool Jungle Dub Echo rate.
+    pub delay_rate: DelayRate,
+    /// Delay feedback (0.0 - 0.90).
+    pub delay_feedback: f32,
+    /// Delay wet mix (0.0 - 1.0).
+    pub delay_mix: f32,
+    /// Delay feedback lowpass filter tone (200.0 Hz - 12000.0 Hz).
+    pub delay_tone: f32,
+}
+
+impl Default for SliceFx {
+    fn default() -> Self {
+        Self {
+            filter_mode: FilterMode::Off,
+            filter_cutoff: 20000.0,
+            filter_resonance: 0.707,
+            bit_depth: 16.0,
+            downsample_factor: 1,
+            drive: 0.0,
+            retrigger_rate: RetriggerRate::Off,
+            retrigger_decay: 0.0,
+            choke_group: 0,
+            stretch_factor: 1.0,
+            stretch_grain_ms: 30.0,
+            delay_rate: DelayRate::Off,
+            delay_feedback: 0.45,
+            delay_mix: 0.35,
+            delay_tone: 3500.0,
+        }
+    }
+}
+
 // ── Per-slice data ────────────────────────────────────────────────────────────
 
 #[derive(Debug, Clone)]
@@ -79,6 +225,8 @@ pub struct Slice {
     pub fade_in_ms: f32,
     /// Volume Fade-Out duration in milliseconds.
     pub fade_out_ms: f32,
+    /// Per-slice DSP / FX settings.
+    pub fx: SliceFx,
 }
 
 impl Slice {
@@ -88,6 +236,7 @@ impl Slice {
             gain: 1.0, pan: 0.0, pitch_semitones: 0.0,
             reverse: false, muted: false,
             fade_in_ms: 0.0, fade_out_ms: 0.0,
+            fx: SliceFx::default(),
         }
     }
     pub fn frame_count(&self) -> usize { self.end.saturating_sub(self.start) }
@@ -100,6 +249,14 @@ impl Slice {
     pub fn fade_out_frames(&self, sample_rate: u32) -> usize {
         let max_frames = self.frame_count() / 2;
         ((self.fade_out_ms * sample_rate as f32 / 1000.0) as usize).min(max_frames)
+    }
+
+    pub fn reset_fx(&mut self) {
+        self.fx = SliceFx::default();
+    }
+
+    pub fn copy_fx_from(&mut self, source: &Slice) {
+        self.fx = source.fx.clone();
     }
 }
 
@@ -464,6 +621,20 @@ impl SliceLoop {
             (self.audio[idx] + self.audio[idx + 1]) * 0.5
         } else {
             0.0
+        }
+    }
+
+    pub fn copy_slice_fx_to_all(&mut self, src_idx: usize) {
+        if let Some(src_fx) = self.slices.get(src_idx).map(|s| s.fx.clone()) {
+            for slice in self.slices.iter_mut() {
+                slice.fx = src_fx.clone();
+            }
+        }
+    }
+
+    pub fn reset_all_slice_fx(&mut self) {
+        for slice in self.slices.iter_mut() {
+            slice.reset_fx();
         }
     }
 }

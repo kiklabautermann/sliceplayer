@@ -5,6 +5,8 @@ mod slicer;
 mod engine;
 mod midi_export;
 mod exporter;
+pub mod settings;
+pub mod preset;
 mod editor;
 
 use std::path::PathBuf;
@@ -16,6 +18,16 @@ use nih_plug_egui::resizable_window::ResizableWindow;
 use engine::Engine;
 use slicer::SliceLoop;
 use editor::EditorState;
+
+fn default_cutoff() -> f32 { 20000.0 }
+fn default_resonance() -> f32 { 0.707 }
+fn default_bit_depth() -> f32 { 16.0 }
+fn default_downsample() -> u32 { 1 }
+fn default_stretch_factor() -> f32 { 1.0 }
+fn default_stretch_grain_ms() -> f32 { 30.0 }
+fn default_delay_feedback() -> f32 { 0.45 }
+fn default_delay_mix() -> f32 { 0.35 }
+fn default_delay_tone() -> f32 { 3500.0 }
 
 #[derive(serde::Serialize, serde::Deserialize, Clone)]
 pub struct SlicePersisted {
@@ -31,6 +43,37 @@ pub struct SlicePersisted {
     pub fade_in_ms: f32,
     #[serde(default)]
     pub fade_out_ms: f32,
+    // Per-slice FX
+    #[serde(default)]
+    pub filter_mode: u8,
+    #[serde(default = "default_cutoff")]
+    pub filter_cutoff: f32,
+    #[serde(default = "default_resonance")]
+    pub filter_resonance: f32,
+    #[serde(default = "default_bit_depth")]
+    pub bit_depth: f32,
+    #[serde(default = "default_downsample")]
+    pub downsample_factor: u32,
+    #[serde(default)]
+    pub drive: f32,
+    #[serde(default)]
+    pub retrigger_rate: u8,
+    #[serde(default)]
+    pub retrigger_decay: f32,
+    #[serde(default)]
+    pub choke_group: u8,
+    #[serde(default = "default_stretch_factor")]
+    pub stretch_factor: f32,
+    #[serde(default = "default_stretch_grain_ms")]
+    pub stretch_grain_ms: f32,
+    #[serde(default)]
+    pub delay_rate: u8,
+    #[serde(default = "default_delay_feedback")]
+    pub delay_feedback: f32,
+    #[serde(default = "default_delay_mix")]
+    pub delay_mix: f32,
+    #[serde(default = "default_delay_tone")]
+    pub delay_tone: f32,
 }
 
 #[derive(serde::Serialize, serde::Deserialize, Clone)]
@@ -67,6 +110,7 @@ struct SlicePlayerParams {
 
 impl Default for SlicePlayerParams {
     fn default() -> Self {
+        let global = settings::load_global_settings();
         Self {
             editor_state: EguiState::from_size(900, 500),
             master_gain: FloatParam::new(
@@ -77,10 +121,21 @@ impl Default for SlicePlayerParams {
             .with_unit("x")
             .with_step_size(0.01),
             persisted_loop: RwLock::new(None),
-            last_dir: Arc::new(Mutex::new(None)),
-            favorites: Arc::new(Mutex::new([None, None, None, None, None])),
+            last_dir: Arc::new(Mutex::new(global.last_dir)),
+            favorites: Arc::new(Mutex::new(global.favorites)),
         }
     }
+}
+
+pub fn sync_global_settings(last_dir: &Mutex<Option<PathBuf>>, favorites: &Mutex<[Option<PathBuf>; 5]>) {
+    let last = last_dir.lock().ok().and_then(|g| g.clone());
+    let favs = favorites.lock().ok().map(|g| g.clone()).unwrap_or([None, None, None, None, None]);
+    let global = settings::GlobalSettings {
+        favorites: favs,
+        last_dir: last,
+        default_export_dir: None,
+    };
+    settings::save_global_settings(&global);
 }
 
 // ── Persistence Helpers ───────────────────────────────────────────────────────
@@ -92,6 +147,39 @@ fn update_persisted_from_loop(target: &RwLock<Option<SlicePlayerPersistedData>>,
             pan: s.pan, pitch_semitones: s.pitch_semitones,
             reverse: s.reverse, muted: s.muted,
             fade_in_ms: s.fade_in_ms, fade_out_ms: s.fade_out_ms,
+            filter_mode: match s.fx.filter_mode {
+                slicer::FilterMode::Off => 0,
+                slicer::FilterMode::Lowpass => 1,
+                slicer::FilterMode::Highpass => 2,
+                slicer::FilterMode::Bandpass => 3,
+            },
+            filter_cutoff: s.fx.filter_cutoff,
+            filter_resonance: s.fx.filter_resonance,
+            bit_depth: s.fx.bit_depth,
+            downsample_factor: s.fx.downsample_factor,
+            drive: s.fx.drive,
+            retrigger_rate: match s.fx.retrigger_rate {
+                slicer::RetriggerRate::Off => 0,
+                slicer::RetriggerRate::Eighth => 1,
+                slicer::RetriggerRate::Sixteenth => 2,
+                slicer::RetriggerRate::ThirtySecond => 3,
+                slicer::RetriggerRate::SixtyFourth => 4,
+            },
+            retrigger_decay: s.fx.retrigger_decay,
+            choke_group: s.fx.choke_group,
+            stretch_factor: s.fx.stretch_factor,
+            stretch_grain_ms: s.fx.stretch_grain_ms,
+            delay_rate: match s.fx.delay_rate {
+                slicer::DelayRate::Off => 0,
+                slicer::DelayRate::Sixteenth => 1,
+                slicer::DelayRate::Eighth => 2,
+                slicer::DelayRate::DottedEighth => 3,
+                slicer::DelayRate::Quarter => 4,
+                slicer::DelayRate::Half => 5,
+            },
+            delay_feedback: s.fx.delay_feedback,
+            delay_mix: s.fx.delay_mix,
+            delay_tone: s.fx.delay_tone,
         }).collect();
 
         if let Some(ref mut persisted) = *guard {
@@ -160,11 +248,49 @@ fn restore_from_persisted(persisted: &RwLock<Option<SlicePlayerPersistedData>>, 
                 sl.loop_end = state.loop_end.min(sl.total_frames);
             }
             if !state.slices.is_empty() {
-                sl.slices = state.slices.iter().map(|s| slicer::Slice {
-                    start: s.start, end: s.end, note: s.note, gain: s.gain,
-                    pan: s.pan, pitch_semitones: s.pitch_semitones,
-                    reverse: s.reverse, muted: s.muted,
-                    fade_in_ms: s.fade_in_ms, fade_out_ms: s.fade_out_ms,
+                sl.slices = state.slices.iter().map(|s| {
+                    let mut slice = slicer::Slice::new(s.start, s.end, s.note);
+                    slice.gain = s.gain;
+                    slice.pan = s.pan;
+                    slice.pitch_semitones = s.pitch_semitones;
+                    slice.reverse = s.reverse;
+                    slice.muted = s.muted;
+                    slice.fade_in_ms = s.fade_in_ms;
+                    slice.fade_out_ms = s.fade_out_ms;
+                    slice.fx.filter_mode = match s.filter_mode {
+                        1 => slicer::FilterMode::Lowpass,
+                        2 => slicer::FilterMode::Highpass,
+                        3 => slicer::FilterMode::Bandpass,
+                        _ => slicer::FilterMode::Off,
+                    };
+                    slice.fx.filter_cutoff = if s.filter_cutoff > 0.0 { s.filter_cutoff } else { 20000.0 };
+                    slice.fx.filter_resonance = if s.filter_resonance > 0.0 { s.filter_resonance } else { 0.707 };
+                    slice.fx.bit_depth = if s.bit_depth > 0.0 { s.bit_depth } else { 16.0 };
+                    slice.fx.downsample_factor = s.downsample_factor.max(1);
+                    slice.fx.drive = s.drive;
+                    slice.fx.retrigger_rate = match s.retrigger_rate {
+                        1 => slicer::RetriggerRate::Eighth,
+                        2 => slicer::RetriggerRate::Sixteenth,
+                        3 => slicer::RetriggerRate::ThirtySecond,
+                        4 => slicer::RetriggerRate::SixtyFourth,
+                        _ => slicer::RetriggerRate::Off,
+                    };
+                    slice.fx.retrigger_decay = s.retrigger_decay;
+                    slice.fx.choke_group = s.choke_group;
+                    slice.fx.stretch_factor = if s.stretch_factor > 0.0 { s.stretch_factor } else { 1.0 };
+                    slice.fx.stretch_grain_ms = if s.stretch_grain_ms > 0.0 { s.stretch_grain_ms } else { 30.0 };
+                    slice.fx.delay_rate = match s.delay_rate {
+                        1 => slicer::DelayRate::Sixteenth,
+                        2 => slicer::DelayRate::Eighth,
+                        3 => slicer::DelayRate::DottedEighth,
+                        4 => slicer::DelayRate::Quarter,
+                        5 => slicer::DelayRate::Half,
+                        _ => slicer::DelayRate::Off,
+                    };
+                    slice.fx.delay_feedback = s.delay_feedback;
+                    slice.fx.delay_mix = s.delay_mix;
+                    slice.fx.delay_tone = if s.delay_tone > 0.0 { s.delay_tone } else { 3500.0 };
+                    slice
                 }).collect();
             }
             if let Ok(mut target_guard) = target.write() {
