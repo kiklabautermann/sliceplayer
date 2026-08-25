@@ -24,7 +24,7 @@ const TEXT_DIM:  Color32 = Color32::from_rgb(130, 140, 160);
 
 
 // Width in pixels within which a marker is considered "grabbed".
-const MARKER_GRAB_PX: f32 = 6.0;
+const MARKER_GRAB_PX: f32 = 12.0;
 
 use std::path::PathBuf;
 use crate::engine::Engine;
@@ -1068,6 +1068,16 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
         }
     }
 
+    // Keyboard arrow keys nudge mode for hovered (orange) marker
+    let mut requested_nudge: Option<(usize, bool)> = None; // (slice_idx, is_left)
+    if let Some(hover_idx) = hover_marker {
+        if ui.input(|i| i.key_pressed(egui::Key::ArrowLeft)) {
+            requested_nudge = Some((hover_idx, true));
+        } else if ui.input(|i| i.key_pressed(egui::Key::ArrowRight)) {
+            requested_nudge = Some((hover_idx, false));
+        }
+    }
+
     // ── Render Selected Slice Highlight Overlay ─────────────────────────────────────────
     if let Some(sel_idx) = state.selected_slice {
         if let Some(slice) = sl.slices.get(sel_idx) {
@@ -1229,6 +1239,28 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
     // ── Interaction ───────────────────────────────────────────────────────────
     drop(guard); // Release read lock before taking write lock.
 
+    // Execute arrow key zero-crossing nudge for hovered (orange) marker
+    if let Some((nudge_idx, is_left)) = requested_nudge {
+        let msg = {
+            let mut guard = state.loop_data.write().unwrap();
+            if let Some(sl) = guard.as_mut() {
+                let next_zc = if is_left {
+                    sl.find_zero_crossing_left(sl.slices[nudge_idx].start)
+                } else {
+                    sl.find_zero_crossing_right(sl.slices[nudge_idx].start)
+                };
+                sl.move_slice_start(nudge_idx, next_zc);
+                sl.rebuild_peaks(1024);
+                let dir_str = if is_left { "left" } else { "right" };
+                Some(format!("Nudged marker #{} {dir_str} to zero-crossing frame {next_zc}", nudge_idx + 1))
+            } else { None }
+        };
+        if let Some(m) = msg {
+            state.status(m);
+        }
+        ui.ctx().request_repaint();
+    }
+
     // Start drag on a loop marker, fade handle, or slice marker.
     if response.drag_started() {
         if let Some(pos) = response.interact_pointer_pos() {
@@ -1265,12 +1297,16 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
                     if let Some(hit) = fade_hit {
                         state.dragging_fade = Some(hit);
                         state.selected_slice = Some(hit.0);
+                    } else if let Some(idx) = hover_marker {
+                        state.dragging_marker = Some(idx);
+                        state.selected_slice = Some(idx);
                     } else {
                         // Check slice markers
                         for (idx, slice) in sl.slices.iter().enumerate().skip(1) {
                             let x = frame_to_x(slice.start as f32);
                             if (pos.x - x).abs() < MARKER_GRAB_PX {
                                 state.dragging_marker = Some(idx);
+                                state.selected_slice = Some(idx);
                                 break;
                             }
                         }

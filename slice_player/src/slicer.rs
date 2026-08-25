@@ -732,6 +732,48 @@ impl SliceLoop {
 
         best_frame
     }
+
+    /// Find the next true zero-crossing frame to the left (earlier in time) from start_frame.
+    pub fn find_zero_crossing_left(&self, start_frame: usize) -> usize {
+        if self.audio.is_empty() || start_frame <= 1 { return 0; }
+        let num_channels = self.channels.max(1);
+        let min_f = start_frame.saturating_sub(10000).max(1);
+
+        for f in (min_f..start_frame).rev() {
+            let idx = f * num_channels;
+            let prev_idx = (f - 1) * num_channels;
+            if idx < self.audio.len() && prev_idx < self.audio.len() {
+                let sample_l = self.audio[idx];
+                let prev_l = self.audio[prev_idx];
+                if (sample_l >= 0.0 && prev_l < 0.0) || (sample_l <= 0.0 && prev_l > 0.0) {
+                    return f;
+                }
+            }
+        }
+        start_frame.saturating_sub(1)
+    }
+
+    /// Find the next true zero-crossing frame to the right (later in time) from start_frame.
+    pub fn find_zero_crossing_right(&self, start_frame: usize) -> usize {
+        if self.audio.is_empty() || start_frame >= self.total_frames.saturating_sub(1) {
+            return self.total_frames;
+        }
+        let num_channels = self.channels.max(1);
+        let max_f = (start_frame + 10000).min(self.total_frames);
+
+        for f in (start_frame + 1)..max_f {
+            let idx = f * num_channels;
+            let prev_idx = (f - 1) * num_channels;
+            if idx < self.audio.len() && prev_idx < self.audio.len() {
+                let sample_l = self.audio[idx];
+                let prev_l = self.audio[prev_idx];
+                if (sample_l >= 0.0 && prev_l < 0.0) || (sample_l <= 0.0 && prev_l > 0.0) {
+                    return f;
+                }
+            }
+        }
+        (start_frame + 1).min(self.total_frames)
+    }
 }
 
 fn detect_wav_bpm(path: &Path, _sample_rate: u32, _total_frames: usize) -> f64 {
