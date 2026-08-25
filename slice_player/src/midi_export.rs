@@ -46,8 +46,8 @@ pub fn export_midi(loop_data: &SliceLoop, path: &Path) -> Result<(), String> {
         })
         .collect();
 
-    for (i, (_slice_idx, slice)) in valid_slices.iter().enumerate() {
-        let note = (48 + i as u8).min(127);
+    for (_i, (_slice_idx, slice)) in valid_slices.iter().enumerate() {
+        let note = slice.note;
 
         // Clamp slice boundaries to the loop region
         let clamped_start = slice.start.max(loop_data.loop_start);

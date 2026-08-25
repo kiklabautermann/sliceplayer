@@ -658,10 +658,10 @@ fn draw_toolbar(ui: &mut Ui, state: &mut EditorState) {
                 let guard = state.loop_data.read().unwrap();
                 if let Some(sl) = guard.as_ref() {
                     if let Ok(()) = export_midi(sl, &temp_midi_path) {
-                        let _ = copy_midi_file_to_clipboard(&temp_midi_path);
-                        let uri = format!("file://{}", temp_midi_path.to_string_lossy());
-                        ui.ctx().copy_text(uri);
-                        "MIDI clip set to system clipboard! Press Ctrl+V in Bitwig.".to_string()
+                        match copy_midi_file_to_clipboard(&temp_midi_path) {
+                            Ok(()) => "MIDI clip copied to clipboard! Press Ctrl+V in Bitwig.".to_string(),
+                            Err(e) => format!("MIDI clip generated at /tmp/slice_player_latest.mid (clipboard error: {e})"),
+                        }
                     } else {
                         "Failed to generate temp MIDI clip.".to_string()
                     }
@@ -811,6 +811,16 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
 
         if scroll_delta.x != 0.0 {
             let pan_delta = (scroll_delta.x / rect.width()) / zoom;
+            state.zoom_scroll = (state.zoom_scroll - pan_delta).clamp(0.0, max_scroll);
+            ui.ctx().request_repaint();
+        }
+    }
+
+    // Middle mouse button drag to pan waveform view window
+    if response.dragged_by(egui::PointerButton::Middle) {
+        let drag_delta = response.drag_delta();
+        if drag_delta.x != 0.0 {
+            let pan_delta = (drag_delta.x / rect.width()) / zoom;
             state.zoom_scroll = (state.zoom_scroll - pan_delta).clamp(0.0, max_scroll);
             ui.ctx().request_repaint();
         }
