@@ -114,6 +114,8 @@ impl RetriggerRate {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DelayRate {
     Off,
+    SixtyFourth,   // 1/64
+    ThirtySecond,  // 1/32
     Sixteenth,     // 1/16
     Eighth,        // 1/8
     DottedEighth,  // 3/16
@@ -125,6 +127,8 @@ impl DelayRate {
     pub fn label(self) -> &'static str {
         match self {
             Self::Off => "Off",
+            Self::SixtyFourth => "1/64",
+            Self::ThirtySecond => "1/32",
             Self::Sixteenth => "1/16",
             Self::Eighth => "1/8",
             Self::DottedEighth => "3/16 (Dotted)",
@@ -136,6 +140,8 @@ impl DelayRate {
     pub fn beats(self) -> f32 {
         match self {
             Self::Off => 0.0,
+            Self::SixtyFourth => 0.0625,
+            Self::ThirtySecond => 0.125,
             Self::Sixteenth => 0.25,
             Self::Eighth => 0.5,
             Self::DottedEighth => 0.75,

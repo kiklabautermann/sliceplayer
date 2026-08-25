@@ -1502,6 +1502,8 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                             .selected_text(slice.fx.delay_rate.label())
                             .show_ui(ui, |ui| {
                                 ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::Off, "Off");
+                                ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::SixtyFourth, "1/64");
+                                ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::ThirtySecond, "1/32");
                                 ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::Sixteenth, "1/16");
                                 ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::Eighth, "1/8");
                                 ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::DottedEighth, "3/16 (Dotted)");
