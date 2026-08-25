@@ -1478,13 +1478,17 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
 
                     if let Some((idx, _)) = near_marker {
                         select_action = Some(Some(idx));
-                        play_note = Some(sl.slices[idx].note);
+                        if !ctrl_held {
+                            play_note = Some(sl.slices[idx].note);
+                        }
                     } else {
                         // Which slice did we click in?
                         let clicked_slice = sl.slices.iter().position(|s| s.start <= click_frame && click_frame < s.end);
                         if let Some(idx) = clicked_slice {
                             select_action = Some(Some(idx));
-                            play_note = Some(sl.slices[idx].note);
+                            if !ctrl_held {
+                                play_note = Some(sl.slices[idx].note);
+                            }
                         } else if !ctrl_held {
                             select_action = Some(None);
                         }
