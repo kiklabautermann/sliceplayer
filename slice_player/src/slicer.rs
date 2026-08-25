@@ -571,7 +571,7 @@ impl SliceLoop {
         Ok(())
     }
 
-    /// Rearrange / chop & substitute slice sequence boundaries across the grid slots.
+    /// Rearrange / chop & substitute slice sequence boundaries across the grid slots without any silent gaps.
     pub fn rearrange_slice_sequence(&mut self, intensity: f32, lock_main_beats: bool) {
         if self.slices.len() <= 1 {
             self.apply_grid(GridDivision::Sixteenth, self.bpm);
@@ -586,7 +586,8 @@ impl SliceLoop {
             (seed >> 9) as f32 / 8388608.0
         };
 
-        let original_ranges: Vec<(usize, usize)> = self.slices.iter().map(|s| (s.start, s.end)).collect();
+        // Collect original MIDI notes of slices
+        let original_notes: Vec<u8> = self.slices.iter().map(|s| s.note).collect();
         let num_rearranges = ((num_slices as f32 * 0.75 * intensity_clamped) as usize).max(1);
 
         for _ in 0..num_rearranges {
@@ -596,12 +597,12 @@ impl SliceLoop {
 
             // Pick a source slice to substitute/duplicate into target_idx
             let src_idx = (rand_f32() * num_slices as f32) as usize % num_slices;
-            let (src_start, src_end) = original_ranges[src_idx];
+            let src_note = original_notes[src_idx];
 
-            self.slices[target_idx].start = src_start;
-            self.slices[target_idx].end = src_end;
+            self.slices[target_idx].note = src_note;
+            // Clear any premature fade-out silences so beat plays 100% seamlessly without gaps
+            self.slices[target_idx].fade_out_ms = 0.0;
         }
-        self.rebuild_peaks(1024);
     }
 
     /// Randomize per-slice FX parameters (pitch, retrigger, filters, drive, reverse) according to style.
@@ -626,9 +627,9 @@ impl SliceLoop {
                     if lock_main_beats && is_main_beat { continue; }
 
                     if !is_main_beat && rand_f32() < intensity_clamped {
-                        // Shape into snappy ghost note: subtle pitch shift & short fade out (preserve gain)
+                        // Shape into snappy ghost note: subtle pitch shift (preserve natural decay to avoid gaps)
                         slice.pitch_semitones = (rand_f32() * 3.0).round(); // +0..+3 semitones
-                        slice.fade_out_ms = (15.0 + rand_f32() * 25.0).clamp(5.0, 50.0);
+                        slice.fade_out_ms = 0.0; // Keep continuous flow without gaps
                         slice.reverse = false;
                     }
                 }
