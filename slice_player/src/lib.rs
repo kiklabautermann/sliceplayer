@@ -118,7 +118,7 @@ impl Default for SlicePlayerParams {
     fn default() -> Self {
         let global = settings::load_global_settings();
         Self {
-            editor_state: EguiState::from_size(900, 500),
+            editor_state: EguiState::from_size(1250, 680),
             master_gain: FloatParam::new(
                 "Master Gain",
                 1.0,
@@ -410,7 +410,7 @@ impl Plugin for SlicePlayer {
                 }
 
                 ResizableWindow::new("slice_player_window")
-                    .min_size([700.0, 400.0])
+                    .min_size([900.0, 500.0])
                     .show(ctx, &params.editor_state, |ui| {
                         editor::draw(ui, state);
                     });
