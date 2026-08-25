@@ -190,6 +190,18 @@ impl EditorState {
         self.selected_slices.clear();
     }
 
+    pub fn select_all_slices(&mut self) {
+        if let Ok(guard) = self.loop_data.read() {
+            if let Some(sl) = guard.as_ref() {
+                let n = sl.slices.len();
+                self.selected_slices = (0..n).collect();
+                if n > 0 {
+                    self.selected_slice = Some(0);
+                }
+            }
+        }
+    }
+
     fn status(&mut self, msg: impl Into<String>) {
         self.status_msg = msg.into();
     }
@@ -202,6 +214,13 @@ pub fn draw(ui: &mut Ui, state: &mut EditorState) {
 
     // Handle OS File Drag and Drop.
     handle_drag_and_drop(ui, state);
+
+    // Global Ctrl+A shortcut to select all slices
+    if ui.input(|i| i.key_pressed(egui::Key::A) && (i.modifiers.ctrl || i.modifiers.command)) {
+        state.select_all_slices();
+        let n = state.selected_slices.len();
+        state.status(format!("Selected all {n} slices (Ctrl+A)"));
+    }
 
     if state.file_browser.visible {
         egui::SidePanel::left("file_browser_panel")
@@ -1511,7 +1530,12 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
                 }
             }
             if let Some(action) = select_action {
-                if let Some(idx) = action {
+                let a_held = ui.input(|i| i.key_down(egui::Key::A));
+                if ctrl_held && a_held {
+                    state.select_all_slices();
+                    let n = state.selected_slices.len();
+                    status_msg = Some(format!("Selected all {n} slices (Ctrl+A)"));
+                } else if let Some(idx) = action {
                     state.select_slice(idx, ctrl_held);
                 } else {
                     state.clear_selection();
@@ -1568,6 +1592,7 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
     let mut delete_requested = false;
     let mut copy_to_all_requested = false;
     let mut reset_fx_requested = false;
+    let mut select_all_requested = false;
 
     {
         let mut guard = state.loop_data.write().unwrap();
@@ -1765,6 +1790,10 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                     ui.horizontal(|ui| {
                         ui.label(egui::RichText::new("⚡ Batch Actions:").color(ACCENT).strong());
                         ui.add_space(6.0);
+                        if styled_button(ui, "✅ Select All (Ctrl+A)", Color32::from_rgb(40, 180, 120)) {
+                            select_all_requested = true;
+                        }
+                        ui.add_space(8.0);
                         if styled_button(ui, "📋 Copy FX to All Slices", Color32::from_rgb(60, 160, 220)) {
                             copy_to_all_requested = true;
                         }
@@ -1792,6 +1821,12 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                 if slice_after.fx != slice_before.fx { target_slice.fx = slice_after.fx.clone(); }
             }
         }
+    }
+
+    if select_all_requested {
+        state.select_all_slices();
+        let n = state.selected_slices.len();
+        state.status(format!("Selected all {n} slices"));
     }
 
     if copy_to_all_requested {

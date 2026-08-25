@@ -34,7 +34,7 @@ This document outlines planned features, community ideas, and future enhancement
 
 ### 🎨 GUI & User Experience
 - [x] **MIDI Triggered Slice Visual Highlighting**: Real-time 60 FPS neon cyan glow, glowing border, and `▶ PLAY #XX` badge overlay on slices currently played via MIDI or GUI triggers.
-- [x] **Multi-Slice Selection (Ctrl+Click)**: Select multiple slices simultaneously with Ctrl+Click and modify parameters (Gain, Pan, Pitch, Filters, FX, Mute, Reverse) for all selected slices in real time.
+- [x] **Multi-Slice Selection (Ctrl+Click & Ctrl+A)**: Select multiple slices with Ctrl+Click or select ALL slices simultaneously with Ctrl+A / Batch Action button, modifying parameters (Gain, Pan, Pitch, Filters, FX, Mute, Reverse) for all selected slices in real time.
 - [x] **Copy & Paste Slice Settings**: Copy all FX, filter, envelope, and pitch settings from one slice and apply/propagate them to all slices simultaneously.
 - [x] **Reset Slice Settings to Default**: Reset per-slice FX and tuning parameters back to default initial state per slice.
 - [x] **Mouse Wheel Zoom & Pan**: Pinch-to-zoom, middle-mouse drag panning, horizontal scroll wheel panning, and multi-resolution sample-accurate waveform rendering.
