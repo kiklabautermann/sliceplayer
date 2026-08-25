@@ -572,7 +572,7 @@ impl SliceLoop {
     }
 
     /// Generative Jungle / Drum & Bass breakbeat shuffler.
-    pub fn apply_jungle_break_shuffle(&mut self, style: ShuffleStyle, intensity: f32, lock_main_beats: bool) {
+    pub fn apply_jungle_break_shuffle(&mut self, style: ShuffleStyle, intensity: f32, lock_main_beats: bool, rearrange_slices: bool) {
         // If there is only 1 slice, auto-slice into a 16th grid first!
         if self.slices.len() <= 1 {
             self.apply_grid(GridDivision::Sixteenth, self.bpm);
@@ -589,6 +589,26 @@ impl SliceLoop {
             (seed >> 9) as f32 / 8388608.0
         };
 
+        // ── 1. Optional Slice Rearrangement & Duplication/Substitution ─────────────
+        if rearrange_slices && num_slices >= 4 {
+            let original_ranges: Vec<(usize, usize)> = self.slices.iter().map(|s| (s.start, s.end)).collect();
+            let num_rearranges = ((num_slices as f32 * 0.75 * intensity_clamped) as usize).max(1);
+
+            for _ in 0..num_rearranges {
+                let target_idx = (rand_f32() * num_slices as f32) as usize % num_slices;
+                let is_main_beat = target_idx % 4 == 0;
+                if lock_main_beats && is_main_beat { continue; }
+
+                // Pick a source slice to substitute/duplicate into target_idx
+                let src_idx = (rand_f32() * num_slices as f32) as usize % num_slices;
+                let (src_start, src_end) = original_ranges[src_idx];
+
+                self.slices[target_idx].start = src_start;
+                self.slices[target_idx].end = src_end;
+            }
+        }
+
+        // ── 2. Style-based FX & Parameter Transformations ─────────────────────
         match style {
             ShuffleStyle::GhostNotesOnly => {
                 for (idx, slice) in self.slices.iter_mut().enumerate() {
@@ -958,19 +978,19 @@ mod tests {
             assert_eq!(slice.gain, 1.0);
         }
 
-        sl.apply_jungle_break_shuffle(ShuffleStyle::AmenRoller, 0.70, true);
+        sl.apply_jungle_break_shuffle(ShuffleStyle::AmenRoller, 0.70, true, true);
         assert_eq!(sl.slices.len(), n);
         for slice in &sl.slices { assert_eq!(slice.gain, 1.0); }
 
-        sl.apply_jungle_break_shuffle(ShuffleStyle::GhostNotesOnly, 0.50, false);
+        sl.apply_jungle_break_shuffle(ShuffleStyle::GhostNotesOnly, 0.50, false, false);
         assert_eq!(sl.slices.len(), n);
         for slice in &sl.slices { assert_eq!(slice.gain, 1.0); }
 
-        sl.apply_jungle_break_shuffle(ShuffleStyle::SyncopatedFunk, 0.80, true);
+        sl.apply_jungle_break_shuffle(ShuffleStyle::SyncopatedFunk, 0.80, true, true);
         assert_eq!(sl.slices.len(), n);
         for slice in &sl.slices { assert_eq!(slice.gain, 1.0); }
 
-        sl.apply_jungle_break_shuffle(ShuffleStyle::WildChopper, 1.00, false);
+        sl.apply_jungle_break_shuffle(ShuffleStyle::WildChopper, 1.00, false, true);
         assert_eq!(sl.slices.len(), n);
         for slice in &sl.slices { assert_eq!(slice.gain, 1.0); }
     }

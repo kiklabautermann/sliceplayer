@@ -129,6 +129,7 @@ pub struct EditorState {
     pub shuffle_style: crate::slicer::ShuffleStyle,
     pub shuffle_intensity: f32,
     pub lock_main_beats: bool,
+    pub rearrange_slices: bool,
 }
 
 impl EditorState {
@@ -163,6 +164,7 @@ impl EditorState {
             shuffle_style: crate::slicer::ShuffleStyle::AmenRoller,
             shuffle_intensity: 0.50,
             lock_main_beats: true,
+            rearrange_slices: true,
         }
     }
 
@@ -1957,6 +1959,7 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
 
                         ui.add_space(4.0);
                         ui.checkbox(&mut state.lock_main_beats, "🔒 Lock Main Beats");
+                        ui.checkbox(&mut state.rearrange_slices, "🔄 Rearrange Slices");
 
                         ui.add_space(6.0);
                         if styled_button(ui, "🎲 Shuffle Break", Color32::from_rgb(240, 160, 40)) {
@@ -1964,10 +1967,11 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
                             let style = state.shuffle_style;
                             let intensity = state.shuffle_intensity;
                             let lock_beats = state.lock_main_beats;
+                            let rearrange = state.rearrange_slices;
                             let msg = {
                                 let mut guard = state.loop_data.write().unwrap();
                                 if let Some(sl) = guard.as_mut() {
-                                    sl.apply_jungle_break_shuffle(style, intensity, lock_beats);
+                                    sl.apply_jungle_break_shuffle(style, intensity, lock_beats, rearrange);
                                     let n = sl.slices.len();
                                     Some(format!("Generated {} breakbeat variation ({n} Slices @ {:.0}% Amount)", style.label(), intensity * 100.0))
                                 } else { None }
