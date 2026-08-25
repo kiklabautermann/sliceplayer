@@ -1463,15 +1463,6 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                                     ui.selectable_value(&mut slice.fx.choke_group, g, format!("Group {g}"));
                                 }
                             });
-
-                        // Batch Action Buttons
-                        ui.add_space(6.0);
-                        if styled_button(ui, "📋 Copy FX to All", Color32::from_rgb(60, 160, 220)) {
-                            copy_to_all_requested = true;
-                        }
-                        if styled_button(ui, "🔄 Reset FX", Color32::from_rgb(180, 120, 60)) {
-                            reset_fx_requested = true;
-                        }
                     });
 
                     ui.add_space(4.0);
@@ -1531,6 +1522,23 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                             ui.label("Tone (LP):");
                             ui.add(egui::Slider::new(&mut slice.fx.delay_tone, 200.0..=12000.0)
                                 .logarithmic(true).suffix(" Hz").fixed_decimals(0));
+                        }
+                    });
+
+                    ui.add_space(4.0);
+                    ui.separator();
+                    ui.add_space(4.0);
+
+                    // Row 4: Batch Action Buttons
+                    ui.horizontal(|ui| {
+                        ui.label(egui::RichText::new("⚡ Batch Actions:").color(ACCENT).strong());
+                        ui.add_space(6.0);
+                        if styled_button(ui, "📋 Copy FX to All Slices", Color32::from_rgb(60, 160, 220)) {
+                            copy_to_all_requested = true;
+                        }
+                        ui.add_space(8.0);
+                        if styled_button(ui, "🔄 Reset Slice FX", Color32::from_rgb(180, 120, 60)) {
+                            reset_fx_requested = true;
                         }
                     });
                 });
