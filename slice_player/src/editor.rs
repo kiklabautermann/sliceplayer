@@ -757,7 +757,7 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
     let available = ui.available_width();
     let height = (ui.available_height() - 6.0).max(160.0);
     let (rect, response) = ui.allocate_exact_size(Vec2::new(available, height), Sense::click_and_drag());
-    let painter = ui.painter_at(rect);
+    let painter = ui.painter_at(rect).with_clip_rect(rect);
 
     // Background.
     painter.rect_filled(rect, 4.0, PANEL_BG);
@@ -931,12 +931,12 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
 
     // Check hover state for loop start/end and fade handles
     if let Some(pos) = pointer {
-        let x_s = rect.left() + (sl.loop_start as f32 / total) * rect.width();
+        let x_s = frame_to_x(sl.loop_start as f32);
         if (pos.x - x_s).abs() < 12.0 {
             hover_loop = Some(false);
             ui.ctx().set_cursor_icon(CursorIcon::ResizeHorizontal);
         }
-        let x_e = rect.left() + (sl.loop_end as f32 / total) * rect.width();
+        let x_e = frame_to_x(sl.loop_end as f32);
         if hover_loop.is_none() && (pos.x - x_e).abs() < 12.0 {
             hover_loop = Some(true);
             ui.ctx().set_cursor_icon(CursorIcon::ResizeHorizontal);
@@ -945,7 +945,7 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
         if hover_loop.is_none() {
             for (idx, slice) in sl.slices.iter().enumerate() {
                 let fade_out_f = slice.fade_out_frames(sl.sample_rate);
-                let x_fade_out = rect.left() + (slice.end.saturating_sub(fade_out_f) as f32 / total) * rect.width();
+                let x_fade_out = frame_to_x(slice.end.saturating_sub(fade_out_f) as f32);
                 let handle_out = Pos2::new(x_fade_out, rect.top() + 8.0);
                 if (pos - handle_out).length() < 9.0 {
                     hover_fade = Some((idx, true));
@@ -954,7 +954,7 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
                 }
 
                 let fade_in_f = slice.fade_in_frames(sl.sample_rate);
-                let x_fade_in = rect.left() + ((slice.start + fade_in_f) as f32 / total) * rect.width();
+                let x_fade_in = frame_to_x((slice.start + fade_in_f) as f32);
                 let handle_in = Pos2::new(x_fade_in, rect.top() + 8.0);
                 if (pos - handle_in).length() < 9.0 {
                     hover_fade = Some((idx, false));
@@ -966,7 +966,7 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
 
         if hover_loop.is_none() && hover_fade.is_none() {
             for (idx, slice) in sl.slices.iter().enumerate().skip(1) {
-                let x = rect.left() + (slice.start as f32 / total) * rect.width();
+                let x = frame_to_x(slice.start as f32);
                 if (pos.x - x).abs() < MARKER_GRAB_PX {
                     hover_marker = Some(idx);
                     ui.ctx().set_cursor_icon(CursorIcon::ResizeHorizontal);
@@ -1019,8 +1019,8 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
 
     // Render Fade Overlays & Handles for each slice
     for (idx, slice) in sl.slices.iter().enumerate() {
-        let x_start = rect.left() + (slice.start as f32 / total) * rect.width();
-        let x_end   = rect.left() + (slice.end   as f32 / total) * rect.width();
+        let x_start = frame_to_x(slice.start as f32);
+        let x_end   = frame_to_x(slice.end   as f32);
         let is_selected = state.selected_slice == Some(idx);
 
         let fade_in_f = slice.fade_in_frames(sl.sample_rate);
@@ -1028,7 +1028,7 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
 
         // Fade In Envelope & Handle
         if fade_in_f > 0 || is_selected {
-            let x_fade_in = rect.left() + ((slice.start + fade_in_f) as f32 / total) * rect.width();
+            let x_fade_in = frame_to_x((slice.start + fade_in_f) as f32);
             let polygon = vec![
                 Pos2::new(x_start, rect.top()),
                 Pos2::new(x_fade_in, rect.top()),
@@ -1055,7 +1055,7 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
 
         // Fade Out Envelope & Handle
         if fade_out_f > 0 || is_selected {
-            let x_fade_out = rect.left() + (slice.end.saturating_sub(fade_out_f) as f32 / total) * rect.width();
+            let x_fade_out = frame_to_x(slice.end.saturating_sub(fade_out_f) as f32);
             let polygon = vec![
                 Pos2::new(x_fade_out, rect.top()),
                 Pos2::new(x_end, rect.top()),
@@ -1083,29 +1083,31 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
 
     for (idx, slice) in sl.slices.iter().enumerate() {
         if idx == 0 { continue; } // Don't draw marker at start
-        let x = rect.left() + (slice.start as f32 / total) * rect.width();
-        let col = if state.dragging_marker == Some(idx) || hover_marker == Some(idx) {
-            MARKER_HO
-        } else {
-            MARKER
-        };
-        painter.line_segment(
-            [Pos2::new(x, rect.top()), Pos2::new(x, rect.bottom())],
-            Stroke::new(2.0, col),
-        );
-        // Note label.
-        let note_name = midi_note_name(slice.note);
-        painter.text(
-            Pos2::new(x + 3.0, rect.top() + 4.0),
-            Align2::LEFT_TOP, note_name,
-            FontId::monospace(9.0), col,
-        );
+        let x = frame_to_x(slice.start as f32);
+        if x >= rect.left() - 10.0 && x <= rect.right() + 10.0 {
+            let col = if state.dragging_marker == Some(idx) || hover_marker == Some(idx) {
+                MARKER_HO
+            } else {
+                MARKER
+            };
+            painter.line_segment(
+                [Pos2::new(x, rect.top()), Pos2::new(x, rect.bottom())],
+                Stroke::new(2.0, col),
+            );
+            // Note label.
+            let note_name = midi_note_name(slice.note);
+            painter.text(
+                Pos2::new(x + 3.0, rect.top() + 4.0),
+                Align2::LEFT_TOP, note_name,
+                FontId::monospace(9.0), col,
+            );
+        }
     }
 
     // ── Playhead cursor(s) ───────────────────────────────────────────────────
     let playheads = state.engine.lock().unwrap().active_playhead_frames(sl);
     for frame in &playheads {
-        let x = rect.left() + (*frame as f32 / total) * rect.width();
+        let x = frame_to_x(*frame as f32);
         if x >= rect.left() && x <= rect.right() {
             // Glowing cyan cursor line
             painter.line_segment(
@@ -1140,10 +1142,8 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
         if let Some(pos) = response.interact_pointer_pos() {
             let guard = state.loop_data.read().unwrap();
             if let Some(sl) = guard.as_ref() {
-                let total = sl.total_frames as f32;
-
-                let x_s = rect.left() + (sl.loop_start as f32 / total) * rect.width();
-                let x_e = rect.left() + (sl.loop_end as f32 / total) * rect.width();
+                let x_s = frame_to_x(sl.loop_start as f32);
+                let x_e = frame_to_x(sl.loop_end as f32);
 
                 if (pos.x - x_s).abs() < 14.0 {
                     state.dragging_loop_bound = Some(false);
@@ -1154,7 +1154,7 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
                     let mut fade_hit = None;
                     for (idx, slice) in sl.slices.iter().enumerate() {
                         let fade_out_f = slice.fade_out_frames(sl.sample_rate);
-                        let x_fade_out = rect.left() + (slice.end.saturating_sub(fade_out_f) as f32 / total) * rect.width();
+                        let x_fade_out = frame_to_x(slice.end.saturating_sub(fade_out_f) as f32);
                         let handle_out = Pos2::new(x_fade_out, rect.top() + 8.0);
                         if (pos - handle_out).length() < 10.0 {
                             fade_hit = Some((idx, true));
@@ -1162,7 +1162,7 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
                         }
 
                         let fade_in_f = slice.fade_in_frames(sl.sample_rate);
-                        let x_fade_in = rect.left() + ((slice.start + fade_in_f) as f32 / total) * rect.width();
+                        let x_fade_in = frame_to_x((slice.start + fade_in_f) as f32);
                         let handle_in = Pos2::new(x_fade_in, rect.top() + 8.0);
                         if (pos - handle_in).length() < 10.0 {
                             fade_hit = Some((idx, false));
@@ -1176,7 +1176,7 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
                     } else {
                         // Check slice markers
                         for (idx, slice) in sl.slices.iter().enumerate().skip(1) {
-                            let x = rect.left() + (slice.start as f32 / total) * rect.width();
+                            let x = frame_to_x(slice.start as f32);
                             if (pos.x - x).abs() < MARKER_GRAB_PX {
                                 state.dragging_marker = Some(idx);
                                 break;
@@ -1303,9 +1303,8 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
             let msg = {
                 let mut guard = state.loop_data.write().unwrap();
                 if let Some(sl) = guard.as_mut() {
-                    let total = sl.total_frames as f32;
                     if let Some((idx, _)) = sl.slices.iter().enumerate().skip(1).find(|(_, s)| {
-                        let mx = rect.left() + (s.start as f32 / total) * rect.width();
+                        let mx = frame_to_x(s.start as f32);
                         (pos.x - mx).abs() < MARKER_GRAB_PX * 2.0
                     }) {
                         sl.remove_slice(idx);
