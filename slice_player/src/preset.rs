@@ -48,14 +48,17 @@ pub fn save_preset_to_file(path: &Path, sl: &SliceLoop) -> Result<(), String> {
         stretch_grain_ms: s.fx.stretch_grain_ms,
         delay_rate: match s.fx.delay_rate {
             crate::slicer::DelayRate::Off => 0,
-            crate::slicer::DelayRate::SixtyFourth => 1,
-            crate::slicer::DelayRate::ThirtySecond => 2,
-            crate::slicer::DelayRate::Sixteenth => 3,
-            crate::slicer::DelayRate::Eighth => 4,
-            crate::slicer::DelayRate::DottedEighth => 5,
-            crate::slicer::DelayRate::Quarter => 6,
-            crate::slicer::DelayRate::Half => 7,
+            crate::slicer::DelayRate::Ms => 1,
+            crate::slicer::DelayRate::SixtyFourth => 2,
+            crate::slicer::DelayRate::ThirtySecond => 3,
+            crate::slicer::DelayRate::Sixteenth => 4,
+            crate::slicer::DelayRate::DottedSixteenth => 5,
+            crate::slicer::DelayRate::Eighth => 6,
+            crate::slicer::DelayRate::DottedEighth => 7,
+            crate::slicer::DelayRate::Quarter => 8,
+            crate::slicer::DelayRate::Half => 9,
         },
+        delay_ms: s.fx.delay_ms,
         delay_feedback: s.fx.delay_feedback,
         delay_mix: s.fx.delay_mix,
         delay_tone: s.fx.delay_tone,
@@ -139,15 +142,18 @@ pub fn load_preset_from_file(path: &Path) -> Result<SliceLoop, String> {
         slice.fx.stretch_factor = if s.stretch_factor > 0.0 { s.stretch_factor } else { 1.0 };
         slice.fx.stretch_grain_ms = if s.stretch_grain_ms > 0.0 { s.stretch_grain_ms } else { 30.0 };
         slice.fx.delay_rate = match s.delay_rate {
-            1 => crate::slicer::DelayRate::SixtyFourth,
-            2 => crate::slicer::DelayRate::ThirtySecond,
-            3 => crate::slicer::DelayRate::Sixteenth,
-            4 => crate::slicer::DelayRate::Eighth,
-            5 => crate::slicer::DelayRate::DottedEighth,
-            6 => crate::slicer::DelayRate::Quarter,
-            7 => crate::slicer::DelayRate::Half,
+            1 => crate::slicer::DelayRate::Ms,
+            2 => crate::slicer::DelayRate::SixtyFourth,
+            3 => crate::slicer::DelayRate::ThirtySecond,
+            4 => crate::slicer::DelayRate::Sixteenth,
+            5 => crate::slicer::DelayRate::DottedSixteenth,
+            6 => crate::slicer::DelayRate::Eighth,
+            7 => crate::slicer::DelayRate::DottedEighth,
+            8 => crate::slicer::DelayRate::Quarter,
+            9 => crate::slicer::DelayRate::Half,
             _ => crate::slicer::DelayRate::Off,
         };
+        slice.fx.delay_ms = if s.delay_ms > 0.0 { s.delay_ms } else { 20.0 };
         slice.fx.delay_feedback = s.delay_feedback;
         slice.fx.delay_mix = s.delay_mix;
         slice.fx.delay_tone = if s.delay_tone > 0.0 { s.delay_tone } else { 3500.0 };

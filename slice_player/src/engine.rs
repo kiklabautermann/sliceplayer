@@ -452,8 +452,12 @@ impl Engine {
 
                 // 4. DJM500 / Oldschool Jungle Dub Echo Delay
                 if slice.fx.delay_rate != crate::slicer::DelayRate::Off {
-                    let beats = slice.fx.delay_rate.beats();
-                    let delay_samples = ((60.0 / bpm) * beats * sample_rate).round() as usize;
+                    let delay_samples = if slice.fx.delay_rate == crate::slicer::DelayRate::Ms {
+                        ((slice.fx.delay_ms * 0.001) * sample_rate).round() as usize
+                    } else {
+                        let beats = slice.fx.delay_rate.beats();
+                        ((60.0 / bpm) * beats * sample_rate).round() as usize
+                    };
                     let delay_samples = delay_samples.clamp(1, 95999);
 
                     let read_idx = (voice.delay_write_pos + 96000 - delay_samples) % 96000;
@@ -630,6 +634,37 @@ mod tests {
 
         let sum: f32 = output.iter().map(|s| s.abs()).sum();
         assert!(sum > 0.0, "Jungle Dub Echo rendered silent audio");
+    }
+
+    #[test]
+    fn test_jungle_dub_echo_free_ms_dsp() {
+        let mut sl = SliceLoop {
+            file_path: None,
+            audio: vec![0.8; 88200],
+            channels: 2,
+            sample_rate: 44100,
+            total_frames: 44100,
+            loop_start: 0,
+            loop_end: 44100,
+            bpm: 174.0,
+            slices: Vec::new(),
+            peak_cache: Vec::new(),
+        };
+        let mut s1 = Slice::new(0, 1000, 60);
+        s1.fx.delay_rate = crate::slicer::DelayRate::Ms;
+        s1.fx.delay_ms = 15.0;
+        s1.fx.delay_feedback = 0.6;
+        s1.fx.delay_mix = 0.5;
+        sl.slices.push(s1);
+
+        let mut engine = Engine::new();
+        engine.note_on(&sl, 60, 1.0, 1);
+
+        let mut output = vec![0.0f32; 4096];
+        engine.process(&mut output, 2048, &sl);
+
+        let sum: f32 = output.iter().map(|s| s.abs()).sum();
+        assert!(sum > 0.0, "Jungle Dub Echo free ms rendered silent audio");
     }
 
     #[test]

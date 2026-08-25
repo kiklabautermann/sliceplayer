@@ -114,24 +114,28 @@ impl RetriggerRate {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DelayRate {
     Off,
-    SixtyFourth,   // 1/64
-    ThirtySecond,  // 1/32
-    Sixteenth,     // 1/16
-    Eighth,        // 1/8
-    DottedEighth,  // 3/16
-    Quarter,       // 1/4
-    Half,          // 1/2
+    Ms,              // Free Milliseconds mode (1.0ms - 100.0ms)
+    SixtyFourth,     // 1/64
+    ThirtySecond,    // 1/32
+    Sixteenth,       // 1/16
+    DottedSixteenth, // 1/16 Dotted (0.375 beats)
+    Eighth,          // 1/8
+    DottedEighth,    // 3/16 Dotted (0.75 beats)
+    Quarter,         // 1/4
+    Half,            // 1/2
 }
 
 impl DelayRate {
     pub fn label(self) -> &'static str {
         match self {
             Self::Off => "Off",
+            Self::Ms => "Free ms",
             Self::SixtyFourth => "1/64",
             Self::ThirtySecond => "1/32",
             Self::Sixteenth => "1/16",
+            Self::DottedSixteenth => "1/16 Dotted",
             Self::Eighth => "1/8",
-            Self::DottedEighth => "3/16 (Dotted)",
+            Self::DottedEighth => "3/16 Dotted",
             Self::Quarter => "1/4",
             Self::Half => "1/2",
         }
@@ -139,10 +143,11 @@ impl DelayRate {
 
     pub fn beats(self) -> f32 {
         match self {
-            Self::Off => 0.0,
+            Self::Off | Self::Ms => 0.0,
             Self::SixtyFourth => 0.0625,
             Self::ThirtySecond => 0.125,
             Self::Sixteenth => 0.25,
+            Self::DottedSixteenth => 0.375,
             Self::Eighth => 0.5,
             Self::DottedEighth => 0.75,
             Self::Quarter => 1.0,
@@ -183,6 +188,8 @@ pub struct SliceFx {
 
     /// DJM500 / Oldschool Jungle Dub Echo rate.
     pub delay_rate: DelayRate,
+    /// Free delay time in milliseconds (1.0ms - 100.0ms).
+    pub delay_ms: f32,
     /// Delay feedback (0.0 - 0.90).
     pub delay_feedback: f32,
     /// Delay wet mix (0.0 - 1.0).
@@ -225,6 +232,7 @@ impl Default for SliceFx {
             stretch_factor: 1.0,
             stretch_grain_ms: 30.0,
             delay_rate: DelayRate::Off,
+            delay_ms: 20.0,
             delay_feedback: 0.45,
             delay_mix: 0.35,
             delay_tone: 3500.0,

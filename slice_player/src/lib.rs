@@ -70,6 +70,8 @@ pub struct SlicePersisted {
     pub stretch_grain_ms: f32,
     #[serde(default)]
     pub delay_rate: u8,
+    #[serde(default = "default_delay_ms")]
+    pub delay_ms: f32,
     #[serde(default = "default_delay_feedback")]
     pub delay_feedback: f32,
     #[serde(default = "default_delay_mix")]
@@ -77,6 +79,8 @@ pub struct SlicePersisted {
     #[serde(default = "default_delay_tone")]
     pub delay_tone: f32,
 }
+
+fn default_delay_ms() -> f32 { 20.0 }
 
 #[derive(serde::Serialize, serde::Deserialize, Clone)]
 pub struct SlicePlayerPersistedData {
@@ -174,14 +178,17 @@ fn update_persisted_from_loop(target: &RwLock<Option<SlicePlayerPersistedData>>,
             stretch_grain_ms: s.fx.stretch_grain_ms,
             delay_rate: match s.fx.delay_rate {
                 slicer::DelayRate::Off => 0,
-                slicer::DelayRate::SixtyFourth => 1,
-                slicer::DelayRate::ThirtySecond => 2,
-                slicer::DelayRate::Sixteenth => 3,
-                slicer::DelayRate::Eighth => 4,
-                slicer::DelayRate::DottedEighth => 5,
-                slicer::DelayRate::Quarter => 6,
-                slicer::DelayRate::Half => 7,
+                slicer::DelayRate::Ms => 1,
+                slicer::DelayRate::SixtyFourth => 2,
+                slicer::DelayRate::ThirtySecond => 3,
+                slicer::DelayRate::Sixteenth => 4,
+                slicer::DelayRate::DottedSixteenth => 5,
+                slicer::DelayRate::Eighth => 6,
+                slicer::DelayRate::DottedEighth => 7,
+                slicer::DelayRate::Quarter => 8,
+                slicer::DelayRate::Half => 9,
             },
+            delay_ms: s.fx.delay_ms,
             delay_feedback: s.fx.delay_feedback,
             delay_mix: s.fx.delay_mix,
             delay_tone: s.fx.delay_tone,
@@ -286,15 +293,18 @@ fn restore_from_persisted(persisted: &RwLock<Option<SlicePlayerPersistedData>>, 
                     slice.fx.stretch_factor = if s.stretch_factor > 0.0 { s.stretch_factor } else { 1.0 };
                     slice.fx.stretch_grain_ms = if s.stretch_grain_ms > 0.0 { s.stretch_grain_ms } else { 30.0 };
                     slice.fx.delay_rate = match s.delay_rate {
-                        1 => slicer::DelayRate::SixtyFourth,
-                        2 => slicer::DelayRate::ThirtySecond,
-                        3 => slicer::DelayRate::Sixteenth,
-                        4 => slicer::DelayRate::Eighth,
-                        5 => slicer::DelayRate::DottedEighth,
-                        6 => slicer::DelayRate::Quarter,
-                        7 => slicer::DelayRate::Half,
+                        1 => slicer::DelayRate::Ms,
+                        2 => slicer::DelayRate::SixtyFourth,
+                        3 => slicer::DelayRate::ThirtySecond,
+                        4 => slicer::DelayRate::Sixteenth,
+                        5 => slicer::DelayRate::DottedSixteenth,
+                        6 => slicer::DelayRate::Eighth,
+                        7 => slicer::DelayRate::DottedEighth,
+                        8 => slicer::DelayRate::Quarter,
+                        9 => slicer::DelayRate::Half,
                         _ => slicer::DelayRate::Off,
                     };
+                    slice.fx.delay_ms = if s.delay_ms > 0.0 { s.delay_ms } else { 20.0 };
                     slice.fx.delay_feedback = s.delay_feedback;
                     slice.fx.delay_mix = s.delay_mix;
                     slice.fx.delay_tone = if s.delay_tone > 0.0 { s.delay_tone } else { 3500.0 };
