@@ -704,6 +704,48 @@ mod tests {
     }
 
     #[test]
+    fn test_slice_note_change_back_and_forth() {
+        let mut sl = SliceLoop {
+            file_path: None,
+            audio: vec![0.5; 88200],
+            channels: 2,
+            sample_rate: 44100,
+            total_frames: 44100,
+            loop_start: 0,
+            loop_end: 44100,
+            bpm: 174.0,
+            slices: (0..10).map(|i| Slice::new(i * 1000, (i + 1) * 1000, 48 + i as u8)).collect(),
+            peak_cache: Vec::new(),
+        };
+
+        // Slice 5 (6th slice) starts at F2 (53)
+        assert_eq!(sl.slices[5].note, 53);
+
+        // Change slice 5 from F2 (53) to G2 (55)
+        sl.set_slice_note(5, 55);
+        assert_eq!(sl.slices[5].note, 55);
+        assert_eq!(sl.slices[7].note, 53);
+
+        // Change slice 5 back from G2 (55) to F2 (53)
+        sl.set_slice_note(5, 53);
+        assert_eq!(sl.slices[5].note, 53);
+        assert_eq!(sl.slices[7].note, 55);
+
+        // Play F2 (53)
+        let mut engine = Engine::new();
+        engine.note_on(&sl, 53, 1.0, 1);
+
+        let active_voice = engine.voices.iter().find(|v| v.active).expect("Voice should be active");
+        assert_eq!(active_voice.slice_idx, 5, "Triggered slice should be slice 5");
+
+        let mut output = vec![0.0f32; 1024];
+        engine.process(&mut output, 512, &sl);
+
+        let sum: f32 = output.iter().map(|s| s.abs()).sum();
+        assert!(sum > 0.0, "Changed-back slice note rendered silent audio");
+    }
+
+    #[test]
     fn test_djm_combo_filter_effective() {
         let mut fx = SliceFx::default();
         assert_eq!(fx.effective_filter(), (FilterMode::Off, 20000.0));

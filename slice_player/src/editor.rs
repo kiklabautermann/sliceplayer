@@ -1360,7 +1360,7 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
 
                         ui.add_space(8.0);
                         ui.label("Note:");
-                        egui::ComboBox::new("slice_note", "")
+                        egui::ComboBox::new(("slice_note", sel), "")
                             .selected_text(midi_note_name(selected_note))
                             .show_ui(ui, |ui| {
                                 for n in 0u8..=127 {
@@ -1408,51 +1408,45 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                     ui.separator();
                     ui.add_space(4.0);
 
-                    // Row 2: Per-Slice DSP / FX Engine Controls
+                    // Row 2: Slice Processing FX
                     ui.horizontal(|ui| {
-                        ui.label(egui::RichText::new("🎛️ Slice FX:").color(ACCENT).strong());
-
-                        // DJM Mixer-Style Lowpass / Highpass Combo Filter
-                        ui.add_space(4.0);
-                        ui.label("🎚️ DJM Filter:");
+                        // DJM Mixer Combo Filter & Res
+                        ui.label(egui::RichText::new("🎛️ Filter (DJM):").color(ACCENT).strong());
                         ui.add(egui::Slider::new(&mut slice.fx.filter_djm, -1.0..=1.0)
-                            .custom_formatter(|val, _| {
-                                if val < -0.01 {
-                                    let norm = (1.0 + val.clamp(-1.0, 0.0)) as f32;
-                                    let hz = 20.0f32 * (20000.0f32 / 20.0f32).powf(norm);
-                                    format!("LP {:.0} Hz", hz)
-                                } else if val > 0.01 {
-                                    let norm = val.clamp(0.0, 1.0) as f32;
-                                    let hz = 20.0f32 * (15000.0f32 / 20.0f32).powf(norm);
-                                    format!("HP {:.0} Hz", hz)
-                                } else {
-                                    "Neutral (Off)".to_string()
-                                }
-                            }));
+                            .fixed_decimals(2));
 
                         ui.label("Res:");
                         ui.add(egui::Slider::new(&mut slice.fx.filter_resonance, 0.5..=10.0)
-                            .suffix(" Q").fixed_decimals(2));
+                            .logarithmic(true).fixed_decimals(2));
 
-                        // Bitcrusher
                         ui.add_space(6.0);
-                        ui.label("Crush:");
-                        ui.add(egui::Slider::new(&mut slice.fx.bit_depth, 1.0..=16.0)
-                            .suffix(" bits").fixed_decimals(1));
+                        ui.separator();
+                        ui.add_space(6.0);
 
-                        ui.label("Downsample:");
-                        ui.add(egui::Slider::new(&mut slice.fx.downsample_factor, 1..=32)
+                        // Bitcrush / Sample Reduction
+                        ui.label("Bits:");
+                        ui.add(egui::Slider::new(&mut slice.fx.bit_depth, 2.0..=16.0)
+                            .fixed_decimals(0));
+
+                        ui.label("Down:");
+                        ui.add(egui::Slider::new(&mut slice.fx.downsample_factor, 1..=16)
                             .suffix("x"));
 
-                        // Drive
                         ui.add_space(6.0);
+                        ui.separator();
+                        ui.add_space(6.0);
+
+                        // Overdrive
                         ui.label("Drive:");
                         ui.add(egui::Slider::new(&mut slice.fx.drive, 0.0..=1.0)
                             .fixed_decimals(2));
 
-                        // Retrigger
                         ui.add_space(6.0);
-                        ui.label("Retrig:");
+                        ui.separator();
+                        ui.add_space(6.0);
+
+                        // Retrigger
+                        ui.label("Roll:");
                         egui::ComboBox::new("retrigger_rate", "")
                             .selected_text(slice.fx.retrigger_rate.label())
                             .show_ui(ui, |ui| {
@@ -1562,14 +1556,7 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
             });
 
         if selected_note != old_note {
-            // Swap note with any conflicting slice so all slices remain unique
-            for (i, other_slice) in sl.slices.iter_mut().enumerate() {
-                if i != sel && other_slice.note == selected_note {
-                    other_slice.note = old_note;
-                    break;
-                }
-            }
-            sl.slices[sel].note = selected_note;
+            sl.set_slice_note(sel, selected_note);
             audition_note_requested = Some(selected_note);
         }
     }

@@ -448,12 +448,16 @@ impl Plugin for SlicePlayer {
         while let Some(event) = context.next_event() {
             match event {
                 NoteEvent::NoteOn { note, velocity, voice_id, .. } => {
-                    if let Ok(guard) = self.loop_data.read() {
-                        if let Some(sl) = guard.as_ref() {
-                            if let Ok(mut eng) = self.engine.lock() {
-                                eng.note_on(sl, note, velocity, voice_id.unwrap_or(-1));
+                    if velocity > 0.0 {
+                        if let Ok(guard) = self.loop_data.read() {
+                            if let Some(sl) = guard.as_ref() {
+                                if let Ok(mut eng) = self.engine.lock() {
+                                    eng.note_on(sl, note, velocity, voice_id.unwrap_or(-1));
+                                }
                             }
                         }
+                    } else if let Ok(mut eng) = self.engine.lock() {
+                        eng.note_off(voice_id.unwrap_or(-1));
                     }
                 }
                 NoteEvent::NoteOff { voice_id, .. } => {

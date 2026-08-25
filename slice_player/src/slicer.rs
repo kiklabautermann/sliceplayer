@@ -473,6 +473,20 @@ impl SliceLoop {
         }
     }
 
+    /// Safely change the MIDI note for a slice, swapping with any slice that currently holds `new_note`.
+    pub fn set_slice_note(&mut self, slice_idx: usize, new_note: u8) {
+        if slice_idx >= self.slices.len() { return; }
+        let old_note = self.slices[slice_idx].note;
+        if old_note == new_note { return; }
+
+        for (i, slice) in self.slices.iter_mut().enumerate() {
+            if i != slice_idx && slice.note == new_note {
+                slice.note = old_note;
+            }
+        }
+        self.slices[slice_idx].note = new_note;
+    }
+
     /// Replace slices with an even grid within [loop_start..loop_end].
     pub fn apply_grid(&mut self, division: GridDivision, bpm: f64) {
         self.bpm = bpm;
