@@ -2081,15 +2081,15 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
                             let fx = &mut sl.master_fx;
 
                             ui.vertical(|ui| {
-                                // ── 1. Akai S950 Section ─────────────────────────────
+                                // ── 1. Akai S950 / Vintage Sampler Section ───────────
                                 ui.horizontal(|ui| {
-                                    ui.checkbox(&mut fx.s950_enabled, egui::RichText::new("📻 Akai S950 Sampler").color(ACCENT).strong());
+                                    ui.checkbox(&mut fx.s950_enabled, egui::RichText::new("📻 Sampler DAC & Clock").color(ACCENT).strong());
                                     if fx.s950_enabled {
                                         ui.add_space(6.0);
                                         ui.label("Rate:");
-                                        for rate in [7500.0, 10000.0, 12000.0, 15000.0, 19200.0] {
+                                        for rate in [7500.0, 8363.0, 10000.0, 12000.0, 15000.0, 19200.0] {
                                             let is_sel = (fx.s950_rate_hz - rate).abs() < 50.0;
-                                            let label = format!("{:.1}k", rate / 1000.0);
+                                            let label = if (rate - 8363.0).abs() < 50.0 { "8.3k (Amiga)".to_string() } else { format!("{:.1}k", rate / 1000.0) };
                                             if ui.add(egui::SelectableLabel::new(is_sel, label)).clicked() {
                                                 fx.s950_rate_hz = rate;
                                             }
@@ -2097,7 +2097,7 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
 
                                         ui.add_space(4.0);
                                         ui.label("Bits:");
-                                        for b in [10.0, 12.0, 16.0] {
+                                        for b in [8.0, 10.0, 12.0, 16.0] {
                                             let is_sel = (fx.s950_bit_depth - b).abs() < 0.1;
                                             let label = format!("{:.0}-bit", b);
                                             if ui.add(egui::SelectableLabel::new(is_sel, label)).clicked() {
@@ -2154,6 +2154,18 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
                                 ui.horizontal(|ui| {
                                     ui.label(egui::RichText::new("⚡ Quick Presets:").color(TEXT_DIM));
                                     ui.add_space(2.0);
+                                    if styled_button(ui, "💾 Amiga 500 Paula", Color32::from_rgb(220, 90, 180)) {
+                                        fx.s950_enabled = true;
+                                        fx.s950_rate_hz = 8363.0;
+                                        fx.s950_bit_depth = 8.0;
+                                        fx.s950_filter_cutoff = 4800.0;
+                                        fx.tape_enabled = true;
+                                        fx.sat_mode = crate::slicer::MasterSatMode::Tape;
+                                        fx.tape_drive = 0.25;
+                                        fx.tape_warmth = 0.40;
+                                        fx.tape_softness = 0.45;
+                                    }
+                                    ui.add_space(4.0);
                                     if styled_button(ui, "📻 90s S950", Color32::from_rgb(60, 160, 220)) {
                                         fx.s950_enabled = true;
                                         fx.s950_rate_hz = 12000.0;
