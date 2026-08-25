@@ -1320,10 +1320,11 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
     if let Some(drag_idx) = state.dragging_marker {
         if response.dragged() {
             if let Some(pos) = response.interact_pointer_pos() {
-                let new_frame = x_to_frame(pos.x);
+                let raw_frame = x_to_frame(pos.x);
                 let mut guard = state.loop_data.write().unwrap();
                 if let Some(sl) = guard.as_mut() {
-                    sl.move_slice_start(drag_idx, new_frame);
+                    let snapped_frame = sl.snap_to_zero_crossing(raw_frame, 400);
+                    sl.move_slice_start(drag_idx, snapped_frame);
                     sl.rebuild_peaks(1024);
                 }
             }
@@ -1360,9 +1361,10 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
 
                         // Shift+Click or Double-Click inserts a new slice marker.
                         if ui.input(|i| i.modifiers.shift) || response.double_clicked() {
-                            sl.insert_slice_at(click_frame);
+                            let snapped_frame = sl.snap_to_zero_crossing(click_frame, 400);
+                            sl.insert_slice_at(snapped_frame);
                             sl.rebuild_peaks(1024);
-                            status_msg = Some(format!("Inserted slice at frame {click_frame}"));
+                            status_msg = Some(format!("Inserted slice at zero-crossing frame {snapped_frame}"));
                         }
                     }
                 }

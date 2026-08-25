@@ -686,6 +686,52 @@ impl SliceLoop {
             slice.reset_fx();
         }
     }
+
+    /// Find the nearest zero-crossing sample frame within a given search window (e.g. ±500 samples ~10ms).
+    pub fn snap_to_zero_crossing(&self, frame: usize, max_search_samples: usize) -> usize {
+        if self.audio.is_empty() || frame >= self.total_frames {
+            return frame;
+        }
+
+        let num_channels = self.channels.max(1);
+        let start = frame.saturating_sub(max_search_samples);
+        let end = (frame + max_search_samples).min(self.total_frames);
+
+        let mut best_frame = frame;
+        let mut min_abs_val = f32::MAX;
+        let mut min_dist = usize::MAX;
+
+        for f in start..end {
+            let idx = f * num_channels;
+            if idx < self.audio.len() {
+                let sample_l = self.audio[idx];
+                let sample_r = if num_channels > 1 && idx + 1 < self.audio.len() { self.audio[idx + 1] } else { sample_l };
+                let abs_val = (sample_l.abs() + sample_r.abs()) * 0.5;
+
+                // Check if sign flips between this frame and previous frame (true zero crossing)
+                let is_true_crossing = if f > 0 && (f - 1) * num_channels < self.audio.len() {
+                    let prev_l = self.audio[(f - 1) * num_channels];
+                    (sample_l >= 0.0 && prev_l < 0.0) || (sample_l <= 0.0 && prev_l > 0.0)
+                } else {
+                    false
+                };
+
+                let dist = (f as isize - frame as isize).unsigned_abs();
+
+                if is_true_crossing {
+                    if dist < min_dist {
+                        min_dist = dist;
+                        best_frame = f;
+                    }
+                } else if min_dist == usize::MAX && abs_val < min_abs_val {
+                    min_abs_val = abs_val;
+                    best_frame = f;
+                }
+            }
+        }
+
+        best_frame
+    }
 }
 
 fn detect_wav_bpm(path: &Path, _sample_rate: u32, _total_frames: usize) -> f64 {
