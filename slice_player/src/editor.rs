@@ -2087,9 +2087,15 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
                                     if fx.s950_enabled {
                                         ui.add_space(6.0);
                                         ui.label("Rate:");
-                                        for rate in [7500.0, 8363.0, 10000.0, 12000.0, 15000.0, 19200.0] {
-                                            let is_sel = (fx.s950_rate_hz - rate).abs() < 50.0;
-                                            let label = if (rate - 8363.0).abs() < 50.0 { "8.3k (Amiga)".to_string() } else { format!("{:.1}k", rate / 1000.0) };
+                                        for rate in [7500.0, 8363.0, 12000.0, 15000.0, 20500.0] {
+                                            let is_sel = (fx.s950_rate_hz - rate).abs() < 100.0;
+                                            let label = if (rate - 8363.0).abs() < 50.0 {
+                                                "8.3k".to_string()
+                                            } else if (rate - 20500.0).abs() < 100.0 {
+                                                "20.5k (Amiga)".to_string()
+                                            } else {
+                                                format!("{:.1}k", rate / 1000.0)
+                                            };
                                             if ui.add(egui::SelectableLabel::new(is_sel, label)).clicked() {
                                                 fx.s950_rate_hz = rate;
                                             }
@@ -2154,7 +2160,19 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
                                 ui.horizontal(|ui| {
                                     ui.label(egui::RichText::new("⚡ Quick Presets:").color(TEXT_DIM));
                                     ui.add_space(2.0);
-                                    if styled_button(ui, "💾 Amiga 500 Paula", Color32::from_rgb(220, 90, 180)) {
+                                    if styled_button(ui, "💾 Amiga 20.5k HQ", Color32::from_rgb(220, 90, 180)) {
+                                        fx.s950_enabled = true;
+                                        fx.s950_rate_hz = 20500.0;
+                                        fx.s950_bit_depth = 8.0;
+                                        fx.s950_filter_cutoff = 7500.0;
+                                        fx.tape_enabled = true;
+                                        fx.sat_mode = crate::slicer::MasterSatMode::Tape;
+                                        fx.tape_drive = 0.20;
+                                        fx.tape_warmth = 0.35;
+                                        fx.tape_softness = 0.30;
+                                    }
+                                    ui.add_space(4.0);
+                                    if styled_button(ui, "🕹️ Amiga 8.3k Lo-Fi", Color32::from_rgb(180, 80, 200)) {
                                         fx.s950_enabled = true;
                                         fx.s950_rate_hz = 8363.0;
                                         fx.s950_bit_depth = 8.0;
