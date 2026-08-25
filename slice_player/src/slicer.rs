@@ -571,9 +571,41 @@ impl SliceLoop {
         Ok(())
     }
 
-    /// Generative Jungle / Drum & Bass breakbeat shuffler.
-    pub fn apply_jungle_break_shuffle(&mut self, style: ShuffleStyle, intensity: f32, lock_main_beats: bool, rearrange_slices: bool) {
-        // If there is only 1 slice, auto-slice into a 16th grid first!
+    /// Rearrange / chop & substitute slice sequence boundaries across the grid slots.
+    pub fn rearrange_slice_sequence(&mut self, intensity: f32, lock_main_beats: bool) {
+        if self.slices.len() <= 1 {
+            self.apply_grid(GridDivision::Sixteenth, self.bpm);
+        }
+        let num_slices = self.slices.len();
+        if num_slices < 4 { return; }
+
+        let intensity_clamped = intensity.clamp(0.05, 1.0);
+        let mut seed = (num_slices * 47 + (intensity_clamped * 100.0) as usize) as u32;
+        let mut rand_f32 = || -> f32 {
+            seed = seed.wrapping_mul(1664525).wrapping_add(1013904223);
+            (seed >> 9) as f32 / 8388608.0
+        };
+
+        let original_ranges: Vec<(usize, usize)> = self.slices.iter().map(|s| (s.start, s.end)).collect();
+        let num_rearranges = ((num_slices as f32 * 0.75 * intensity_clamped) as usize).max(1);
+
+        for _ in 0..num_rearranges {
+            let target_idx = (rand_f32() * num_slices as f32) as usize % num_slices;
+            let is_main_beat = target_idx % 4 == 0;
+            if lock_main_beats && is_main_beat { continue; }
+
+            // Pick a source slice to substitute/duplicate into target_idx
+            let src_idx = (rand_f32() * num_slices as f32) as usize % num_slices;
+            let (src_start, src_end) = original_ranges[src_idx];
+
+            self.slices[target_idx].start = src_start;
+            self.slices[target_idx].end = src_end;
+        }
+        self.rebuild_peaks(1024);
+    }
+
+    /// Randomize per-slice FX parameters (pitch, retrigger, filters, drive, reverse) according to style.
+    pub fn randomize_slice_fx(&mut self, style: ShuffleStyle, intensity: f32, lock_main_beats: bool) {
         if self.slices.len() <= 1 {
             self.apply_grid(GridDivision::Sixteenth, self.bpm);
         }
@@ -581,34 +613,12 @@ impl SliceLoop {
         if num_slices == 0 { return; }
 
         let intensity_clamped = intensity.clamp(0.05, 1.0);
-
-        // Simple pseudo-random helper for deterministic/fun variations
         let mut seed = (num_slices * 31 + (intensity_clamped * 100.0) as usize) as u32;
         let mut rand_f32 = || -> f32 {
             seed = seed.wrapping_mul(1664525).wrapping_add(1013904223);
             (seed >> 9) as f32 / 8388608.0
         };
 
-        // ── 1. Optional Slice Rearrangement & Duplication/Substitution ─────────────
-        if rearrange_slices && num_slices >= 4 {
-            let original_ranges: Vec<(usize, usize)> = self.slices.iter().map(|s| (s.start, s.end)).collect();
-            let num_rearranges = ((num_slices as f32 * 0.75 * intensity_clamped) as usize).max(1);
-
-            for _ in 0..num_rearranges {
-                let target_idx = (rand_f32() * num_slices as f32) as usize % num_slices;
-                let is_main_beat = target_idx % 4 == 0;
-                if lock_main_beats && is_main_beat { continue; }
-
-                // Pick a source slice to substitute/duplicate into target_idx
-                let src_idx = (rand_f32() * num_slices as f32) as usize % num_slices;
-                let (src_start, src_end) = original_ranges[src_idx];
-
-                self.slices[target_idx].start = src_start;
-                self.slices[target_idx].end = src_end;
-            }
-        }
-
-        // ── 2. Style-based FX & Parameter Transformations ─────────────────────
         match style {
             ShuffleStyle::GhostNotesOnly => {
                 for (idx, slice) in self.slices.iter_mut().enumerate() {
@@ -691,6 +701,14 @@ impl SliceLoop {
             }
         }
         self.rebuild_peaks(1024);
+    }
+
+    /// Combined Generative Jungle / Drum & Bass breakbeat shuffler.
+    pub fn apply_jungle_break_shuffle(&mut self, style: ShuffleStyle, intensity: f32, lock_main_beats: bool, rearrange_slices: bool) {
+        if rearrange_slices {
+            self.rearrange_slice_sequence(intensity, lock_main_beats);
+        }
+        self.randomize_slice_fx(style, intensity, lock_main_beats);
     }
 
     // ── Manual slice editing ──────────────────────────────────────────────────

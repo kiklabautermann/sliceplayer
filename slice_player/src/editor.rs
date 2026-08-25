@@ -129,7 +129,6 @@ pub struct EditorState {
     pub shuffle_style: crate::slicer::ShuffleStyle,
     pub shuffle_intensity: f32,
     pub lock_main_beats: bool,
-    pub rearrange_slices: bool,
 }
 
 impl EditorState {
@@ -164,7 +163,6 @@ impl EditorState {
             shuffle_style: crate::slicer::ShuffleStyle::AmenRoller,
             shuffle_intensity: 0.50,
             lock_main_beats: true,
-            rearrange_slices: true,
         }
     }
 
@@ -1959,25 +1957,50 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
 
                         ui.add_space(4.0);
                         ui.checkbox(&mut state.lock_main_beats, "🔒 Lock Main Beats");
-                        ui.checkbox(&mut state.rearrange_slices, "🔄 Rearrange Slices");
 
                         ui.add_space(6.0);
-                        if styled_button(ui, "🎲 Shuffle Break", Color32::from_rgb(240, 160, 40)) {
-                            state.engine.lock().unwrap().reset_playback();
+                        ui.horizontal(|ui| {
                             let style = state.shuffle_style;
                             let intensity = state.shuffle_intensity;
                             let lock_beats = state.lock_main_beats;
-                            let rearrange = state.rearrange_slices;
-                            let msg = {
-                                let mut guard = state.loop_data.write().unwrap();
-                                if let Some(sl) = guard.as_mut() {
-                                    sl.apply_jungle_break_shuffle(style, intensity, lock_beats, rearrange);
-                                    let n = sl.slices.len();
-                                    Some(format!("Generated {} breakbeat variation ({n} Slices @ {:.0}% Amount)", style.label(), intensity * 100.0))
-                                } else { None }
-                            };
-                            if let Some(m) = msg { state.status(m); }
-                        }
+
+                            if styled_button(ui, "🎲 Randomize FX Only", Color32::from_rgb(100, 180, 240)) {
+                                state.engine.lock().unwrap().reset_playback();
+                                let msg = {
+                                    let mut guard = state.loop_data.write().unwrap();
+                                    if let Some(sl) = guard.as_mut() {
+                                        sl.randomize_slice_fx(style, intensity, lock_beats);
+                                        Some(format!("Randomized {} FX ({:.0}% Amount)", style.label(), intensity * 100.0))
+                                    } else { None }
+                                };
+                                if let Some(m) = msg { state.status(m); }
+                            }
+
+                            if styled_button(ui, "🔀 Rearrange Slices Only", Color32::from_rgb(180, 120, 240)) {
+                                state.engine.lock().unwrap().reset_playback();
+                                let msg = {
+                                    let mut guard = state.loop_data.write().unwrap();
+                                    if let Some(sl) = guard.as_mut() {
+                                        sl.rearrange_slice_sequence(intensity, lock_beats);
+                                        Some(format!("Rearranged slice sequence ({:.0}% Amount)", intensity * 100.0))
+                                    } else { None }
+                                };
+                                if let Some(m) = msg { state.status(m); }
+                            }
+
+                            if styled_button(ui, "🌴 Full Jungle Shuffle", Color32::from_rgb(240, 160, 40)) {
+                                state.engine.lock().unwrap().reset_playback();
+                                let msg = {
+                                    let mut guard = state.loop_data.write().unwrap();
+                                    if let Some(sl) = guard.as_mut() {
+                                        sl.apply_jungle_break_shuffle(style, intensity, lock_beats, true);
+                                        let n = sl.slices.len();
+                                        Some(format!("Generated {} breakbeat variation ({n} Slices @ {:.0}% Amount)", style.label(), intensity * 100.0))
+                                    } else { None }
+                                };
+                                if let Some(m) = msg { state.status(m); }
+                            }
+                        });
                     }
                 }
             });
