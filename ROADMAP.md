@@ -8,6 +8,7 @@ This document outlines planned features, community ideas, and future enhancement
 
 ### 📦 DAW Export Expansion
 - [x] **Bitwig Multisample Export**: Native `.multisample` export for Bitwig Studio.
+- [x] **Bitwig MIDI Clip Copy**: One-click `🎹 Copy MIDI` to clipboard (`text/uri-list`) for instant `Ctrl+V` pasting into Bitwig Studio with exact bar length and grid clamping.
 - [ ] **Custom WAV Export Scope**: Option/toggle to export slice WAV files either completely or restricted strictly to the active loop/slice region.
 - [ ] **Ableton Live Drum Rack Export**: Export `.alc` / Drum Rack presets.
 - [ ] **DecentSampler Preset Export**: Export `.dspreset` XML archives.
@@ -25,7 +26,7 @@ This document outlines planned features, community ideas, and future enhancement
 
 ### 🌴 Jungle & Drum & Bass Specialized Tools
 - [x] **Per-Slice Reverse Toggle**: Instant reverse playback per slice for swell effects & reverse snare fills.
-- [x] **Zero-Crossing Auto-Snap & Micro-Nudge**: Zero-crossing alignment to prevent clicks on ultra-fast chops.
+- [x] **Zero-Crossing Auto-Snap & Micro-Nudge**: Zero-crossing alignment on marker drag/creation AND keyboard arrow key (`←` / `→`) nudge mode when hovering slice markers.
 - [ ] **Multi-Bus Audio Routing (Multi-Out)**: Route slices to up to 8 separate stereo DAW audio buses (e.g., Bus 1: Kick, Bus 2: Snare, Bus 3: Tops, Bus 4: FX).
 - [ ] **Per-Slice Pitch Envelope & Pitch Drop**: Pitch decay envelope per slice for classic 808/snare pitch-drops.
 - [ ] **Jungle Ghost Note & Break Shuffler**: 1-click generative syncopation & snare roll generator.
@@ -34,8 +35,8 @@ This document outlines planned features, community ideas, and future enhancement
 ### 🎨 GUI & User Experience
 - [x] **Copy & Paste Slice Settings**: Copy all FX, filter, envelope, and pitch settings from one slice and apply/propagate them to all slices simultaneously.
 - [x] **Reset Slice Settings to Default**: Reset per-slice FX and tuning parameters back to default initial state per slice.
+- [x] **Mouse Wheel Zoom & Pan**: Pinch-to-zoom, middle-mouse drag panning, horizontal scroll wheel panning, and multi-resolution sample-accurate waveform rendering.
 - [ ] **Direct Waveform Drag-and-Drop**: Drag audio files directly from the OS file manager into the waveform view.
-- [ ] **Mouse Wheel Zoom & Pan**: Pinch-to-zoom and smooth horizontal waveform scrolling.
 - [ ] **Slice Categorization & Color Tagging**: Assign custom colors and tags (Kick, Snare, HiHat, Synth, Perc) to slices.
 - [ ] **A/B Comparison Snapshots**: Quick state snapshot switching while editing slice layouts.
 
