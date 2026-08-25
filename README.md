@@ -45,8 +45,8 @@ Built with Rust, [`nih-plug`](https://github.com/robbert-vdh/nih-plug), [`egui`]
 
 - **🎧 Onset & Grid Slicing**: SuperFlux spectral onset analysis + beat grid divisions + manual waveform editing.
 - **🎛️ Global Master Audio FX Section**:
-  - 📻 **Akai S950 Sampler**: 12-bit/10-bit DAC downsampling quantization (7.5k–19.2k Hz) with steep 6-pole Butterworth reconstruction filter.
-  - 🎛️ **Elektron Digitakt Warm Overdrive**: Authentic 5-stage mathematical DSP model (quadratic gain scaling, asymmetric $\tanh$ soft-clipping with 2nd-harmonic DC bias, dynamic $G_{\text{out}}$ auto-gain compensation, 1st-order IIR DC blocker, and anti-aliasing reconstruction).
+  - 📻 **Akai S950 Sampler**: 12-bit/10-bit DAC downsampling quantization (7.5k–20.5k Hz) with steep 6-pole Butterworth reconstruction filter.
+  - 🎛️ **Digitakt-Style Warm Overdrive**: Authentic 5-stage mathematical DSP model (quadratic gain scaling, asymmetric $\tanh$ soft-clipping with 2nd-harmonic DC bias, dynamic $G_{\text{out}}$ auto-gain compensation, 1st-order IIR DC blocker, and anti-aliasing reconstruction).
   - 🎚️ **Mackie CR-1604 Transistor Red-Line**: 90s console transistor overdrive with 1.5 kHz transformer mid-band punch resonance, cubic soft-knee transistor saturation, and dynamic level compensation.
   - 📼 **Analog Studio Tape Saturation**: Soft $\tanh$ tape saturation curve, 75 Hz low-end head bump, and HF softness compression.
 - **🌴 Jungle & Drum & Bass Shuffler**: 1-click generative syncopation & snare roll generator with 4 algorithmic styles (Amen Roller, Syncopated Funk, Ghost Notes Only, Wild Chopper), gapless continuous beat protection, and beat locking.

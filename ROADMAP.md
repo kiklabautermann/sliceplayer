@@ -21,7 +21,7 @@ This document outlines planned features, community ideas, and future enhancement
 - [x] **Per-Slice Bitcrusher & Degradation**: Bit depth reduction (2–16 bits), sample rate crushing (downsampling 1–16x), and soft drive distortion per slice.
 - [x] **Per-Slice Retrigger / Rhythmic Stutter**: Multi-trigger repeat modes (1/8, 1/16, 1/32, 1/64 rolls) with decay envelope per slice.
 - [x] **Akai S950 "Oldskool Sampler" Emulation**: Global master audio FX featuring 12-bit/10-bit DAC quantization, variable sampling rates (7.5k–19.2k Hz), and 6-pole S950 reconstruction filter.
-- [x] **Elektron Digitakt Warm Overdrive**: Authentic 5-stage mathematical DSP model featuring quadratic $G_{\text{in}}$ gain mapping, 2nd-harmonic asymmetric $\tanh$ soft-clipping with DC-bias, $G_{\text{out}}$ dynamic auto-gain compensation, 1st-order IIR DC-blocker filter ($15\text{ Hz}$), and anti-aliasing reconstruction.
+- [x] **Digitakt-Style Warm Overdrive**: Authentic 5-stage mathematical DSP model featuring quadratic $G_{\text{in}}$ gain mapping, 2nd-harmonic asymmetric $\tanh$ soft-clipping with DC-bias, $G_{\text{out}}$ dynamic auto-gain compensation, 1st-order IIR DC-blocker filter ($15\text{ Hz}$), and anti-aliasing reconstruction.
 - [x] **Mackie CR-1604 Transistor "In The Red" Overdrive**: 90s console transistor overdrive with 1.5 kHz transformer mid-band punch resonance, cubic soft-knee transistor saturation, and dynamic level compensation.
 - [x] **Header Master FX Quick-Access Button**: Header bar indicator (`🎛️ Master FX: ON` / `OFF`) allowing 1-click access to Master FX controls right from startup.
 - [ ] **Velocity Sensitivity Mapping**: Customizable velocity curves per slice.

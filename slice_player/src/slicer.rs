@@ -218,39 +218,43 @@ pub struct SliceFx {
     pub delay_tone: f32,
 }
 
-/// Master Saturation / Overdrive Circuit Model.
-#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum MasterSatMode {
     Tape,             // Warm Analog Studio Tape Saturation
-    Digitakt,         // Elektron Digitakt Ultra-Warm Soft Overdrive
-    MackieTransistor, // Mackie CR-1604 "In The Red" Transistor Console Distortion
+    Digitakt,         // Digitakt-Style Ultra-Warm Soft Overdrive
+    MackieTransistor, // 90s Mackie CR-1604 Transistor Console Drive ("In The Red")
 }
 
 impl MasterSatMode {
     pub fn label(&self) -> &'static str {
         match self {
-            MasterSatMode::Tape => "📼 Analog Tape",
-            MasterSatMode::Digitakt => "🎛️ Elektron Digitakt",
-            MasterSatMode::MackieTransistor => "🎚️ Mackie CR-1604 Red-Line",
+            MasterSatMode::Tape => "📼 Studio Tape",
+            MasterSatMode::Digitakt => "🎛️ Digitakt Overdrive",
+            MasterSatMode::MackieTransistor => "🎚️ Mackie Transistor",
         }
     }
 }
 
-/// Global Master Audio FX parameters (Akai S950 Sampler Emulation & Master Saturation).
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+impl Default for MasterSatMode {
+    fn default() -> Self {
+        MasterSatMode::Tape
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MasterFxParams {
-    // ── Akai S950 Sampler Emulation ──────────────────────────────────────
+    /// Akai S950 12-bit/10-bit DAC & clock downsampling emulation toggle.
     pub s950_enabled: bool,
-    /// Target sampling rate (e.g., 7500.0, 10000.0, 12000.0, 15000.0, 19200.0 Hz).
+    /// S950 sample rate in Hz (7500 to 19200 Hz).
     pub s950_rate_hz: f32,
-    /// DAC Bit depth quantization (e.g., 12.0 = S950, 10.0 = S900, 16.0 = Off).
+    /// S950 DAC bit depth (8, 10, 12, or 16-bit).
     pub s950_bit_depth: f32,
-    /// 6-pole Butterworth S950 reconstruction filter cutoff Hz (2000.0..=18000.0 Hz).
+    /// S950 6-pole Butterworth lowpass filter cutoff frequency (2000 to 18000 Hz).
     pub s950_filter_cutoff: f32,
 
-    // ── Master Saturation / Overdrive Section ─────────────────────────────
+    /// Master saturation / overdrive circuit toggle.
     pub tape_enabled: bool,
-    /// Saturation circuit model (Analog Tape, Elektron Digitakt, Mackie Transistor).
+    /// Saturation circuit model (Analog Tape, Digitakt-Style Overdrive, Mackie Transistor).
     pub sat_mode: MasterSatMode,
     /// Saturation drive / distortion amount (0.0..=1.0).
     pub tape_drive: f32,

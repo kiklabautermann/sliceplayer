@@ -257,7 +257,7 @@ impl Engine {
                         }
                     }
                     crate::slicer::MasterSatMode::Digitakt => {
-                        // ── Elektron Digitakt Overdrive (5-Stage Model) ──────────────
+                        // ── Digitakt-Style Overdrive (5-Stage Model) ─────────────────
                         // 1. Parameter-Mapping (0..127): d in 0.0..127.0
                         let d = (params.tape_drive * 127.0).clamp(0.0, 127.0);
 
