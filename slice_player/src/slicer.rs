@@ -571,6 +571,23 @@ impl SliceLoop {
         Ok(())
     }
 
+    /// Reset slice note mappings back to sequential order (48, 49, 50...).
+    pub fn reset_sequence_mapping(&mut self) {
+        let base_note: u8 = 48;
+        for (i, slice) in self.slices.iter_mut().enumerate() {
+            slice.note = (base_note as usize + i).min(127) as u8;
+        }
+    }
+
+    /// Reset all per-slice FX and restore original sequential note order for all slices.
+    pub fn reset_all_slices_completely(&mut self) {
+        let base_note: u8 = 48;
+        for (i, slice) in self.slices.iter_mut().enumerate() {
+            slice.note = (base_note as usize + i).min(127) as u8;
+            slice.reset_fx();
+        }
+    }
+
     /// Rearrange / chop & substitute slice sequence boundaries across the grid slots without any silent gaps.
     pub fn rearrange_slice_sequence(&mut self, intensity: f32, lock_main_beats: bool) {
         if self.slices.len() <= 1 {

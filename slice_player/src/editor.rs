@@ -1593,6 +1593,7 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
     let mut copy_to_all_requested = false;
     let mut reset_fx_requested = false;
     let mut select_all_requested = false;
+    let mut reset_sequence_requested = false;
 
     {
         let mut guard = state.loop_data.write().unwrap();
@@ -1801,6 +1802,10 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                         if styled_button(ui, "🔄 Reset Slice FX", Color32::from_rgb(180, 120, 60)) {
                             reset_fx_requested = true;
                         }
+                        ui.add_space(8.0);
+                        if styled_button(ui, "↺ Reset Sequence", Color32::from_rgb(180, 90, 90)) {
+                            reset_sequence_requested = true;
+                        }
                     });
                 });
             });
@@ -1827,6 +1832,16 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
         state.select_all_slices();
         let n = state.selected_slices.len();
         state.status(format!("Selected all {n} slices"));
+    }
+
+    if reset_sequence_requested {
+        {
+            let mut guard = state.loop_data.write().unwrap();
+            if let Some(sl) = guard.as_mut() {
+                sl.reset_sequence_mapping();
+            }
+        }
+        state.status("Slice arrangement reset to original sequential order.".to_string());
     }
 
     if copy_to_all_requested {
