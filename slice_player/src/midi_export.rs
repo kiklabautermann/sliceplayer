@@ -15,8 +15,11 @@ pub fn export_midi(loop_data: &SliceLoop, path: &Path) -> Result<(), String> {
     let ppq: u16 = 960;
     let bpm = loop_data.bpm;
     let sample_rate = loop_data.sample_rate as f64;
-    // Microseconds per beat.
-    let _uspb = (60_000_000.0 / bpm) as u32;
+
+    // Calculate total beats of loop (rounded to nearest 1/16th beat grid)
+    let raw_beats = loop_data.loop_frames() as f64 / sample_rate / (60.0 / bpm);
+    let rounded_16ths = (raw_beats * 16.0).round().max(1.0);
+    let max_loop_ticks = ((rounded_16ths / 16.0) * 4.0 * ppq as f64).round() as u32;
 
     // samples → ticks
     let samples_to_ticks = |samples: usize| -> u32 {
@@ -57,10 +60,13 @@ pub fn export_midi(loop_data: &SliceLoop, path: &Path) -> Result<(), String> {
         let rel_start = clamped_start - loop_data.loop_start;
         let rel_end = clamped_end - loop_data.loop_start;
 
-        let on_tick  = samples_to_ticks(rel_start);
-        let off_tick = samples_to_ticks(rel_end);
-        raw.push((on_tick,  true,  note));
-        raw.push((off_tick, false, note));
+        let on_tick  = samples_to_ticks(rel_start).min(max_loop_ticks.saturating_sub(1));
+        let off_tick = samples_to_ticks(rel_end).min(max_loop_ticks);
+
+        if off_tick > on_tick {
+            raw.push((on_tick,  true,  note));
+            raw.push((off_tick, false, note));
+        }
     }
     raw.sort_unstable_by_key(|&(t, on, _)| (t, !on as u32));
 
@@ -80,9 +86,10 @@ pub fn export_midi(loop_data: &SliceLoop, path: &Path) -> Result<(), String> {
         });
     }
 
-    // End-of-track meta.
+    // End-of-track meta at exact loop end tick boundary
+    let final_delta = max_loop_ticks.saturating_sub(last_tick);
     events.push(TrackEvent {
-        delta: u28::new(0),
+        delta: u28::new(final_delta),
         kind: TrackEventKind::Meta(MetaMessage::EndOfTrack),
     });
 
