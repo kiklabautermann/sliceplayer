@@ -248,33 +248,34 @@ impl Engine {
                     }
                     crate::slicer::MasterSatMode::Digitakt => {
                         // ── Elektron Digitakt Warm Overdrive ─────────────
-                        // 1. Soft anti-harshness pre-filter
-                        l = self.master_fx_state.tape_soft_svf_l.process(l, FilterMode::Lowpass, 14000.0, 0.707, sample_rate);
-                        r = self.master_fx_state.tape_soft_svf_r.process(r, FilterMode::Lowpass, 14000.0, 0.707, sample_rate);
+                        // 1. Soft anti-harshness pre-filter (smooth 12.5 kHz lowpass)
+                        l = self.master_fx_state.tape_soft_svf_l.process(l, FilterMode::Lowpass, 12500.0, 0.707, sample_rate);
+                        r = self.master_fx_state.tape_soft_svf_r.process(r, FilterMode::Lowpass, 12500.0, 0.707, sample_rate);
 
-                        // Low-frequency warmth boost around 90 Hz
+                        // 2. Low-frequency warmth boost around 85 Hz (Elektron analogue bass bloom)
                         if params.tape_warmth > 0.01 {
-                            let bump_l = self.master_fx_state.tape_bump_svf_l.process(l, FilterMode::Lowpass, 90.0, 1.0, sample_rate);
-                            let bump_r = self.master_fx_state.tape_bump_svf_r.process(r, FilterMode::Lowpass, 90.0, 1.0, sample_rate);
+                            let bump_l = self.master_fx_state.tape_bump_svf_l.process(l, FilterMode::Lowpass, 85.0, 0.9, sample_rate);
+                            let bump_r = self.master_fx_state.tape_bump_svf_r.process(r, FilterMode::Lowpass, 85.0, 0.9, sample_rate);
                             l += bump_l * (params.tape_warmth * 0.35);
                             r += bump_r * (params.tape_warmth * 0.35);
                         }
 
-                        // Smooth Digitakt asymmetric soft-clip curve x / (1 + |x|^1.4)
-                        let drive_gain = 1.0 + params.tape_drive * 4.5;
+                        // 3. Ultra-smooth Digitakt Overdrive scaling (1.0x to 2.2x gain)
+                        let drive_gain = 1.0 + params.tape_drive * 1.2;
                         let xl = l * drive_gain;
                         let xr = r * drive_gain;
 
-                        let sat_l = xl / (1.0 + xl.abs().powf(1.4));
-                        let sat_r = xr / (1.0 + xr.abs().powf(1.4));
+                        // 4. Soft tanh Tube/Diode Sättigung (smooth, organic, zero harshness)
+                        let sat_l = xl.tanh();
+                        let sat_r = xr.tanh();
 
-                        // Add subtle 2nd harmonic warmth (tubey / Digitakt character)
-                        let warm_l = sat_l + 0.06 * params.tape_warmth * (1.0 - (-sat_l.abs()).exp());
-                        let warm_r = sat_r + 0.06 * params.tape_warmth * (1.0 - (-sat_r.abs()).exp());
+                        // Subtle 2nd harmonic warmth (Digitakt analogue glue)
+                        let warm_l = sat_l + 0.05 * params.tape_warmth * (sat_l * sat_l);
+                        let warm_r = sat_r + 0.05 * params.tape_warmth * (sat_r * sat_r);
 
-                        // Soft post-smoothing filter (12 kHz roll-off for ultra-warm, non-harsh sound)
-                        let fc_soft = (16000.0 - params.tape_softness * 7000.0).clamp(1000.0, sample_rate * 0.48);
-                        let comp_gain = 1.0 / (1.0 + params.tape_drive * 0.6);
+                        // 5. High-frequency roll-off (10.5 kHz - 15 kHz) & gain compensation
+                        let fc_soft = (15000.0 - params.tape_softness * 5000.0).clamp(2000.0, sample_rate * 0.48);
+                        let comp_gain = 1.0 / (1.0 + params.tape_drive * 0.25);
                         l = self.master_fx_state.tape_soft_svf_l.process(warm_l * comp_gain, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
                         r = self.master_fx_state.tape_soft_svf_r.process(warm_r * comp_gain, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
                     }
