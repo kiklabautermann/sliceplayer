@@ -2104,20 +2104,29 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
                                     ui.separator();
                                     ui.add_space(12.0);
 
-                                    // ── Analog Tape Saturation Section ─────────
+                                    // ── Master Saturation & Overdrive Section ─────
                                     ui.vertical(|ui| {
                                         ui.horizontal(|ui| {
-                                            ui.checkbox(&mut fx.tape_enabled, egui::RichText::new("📼 Analog Tape Saturation").color(Color32::from_rgb(240, 160, 40)).strong());
+                                            ui.checkbox(&mut fx.tape_enabled, egui::RichText::new("🔥 Master Saturation & Overdrive").color(Color32::from_rgb(240, 160, 40)).strong());
                                         });
 
                                         if fx.tape_enabled {
                                             ui.horizontal(|ui| {
+                                                ui.label("Model:");
+                                                for mode in [crate::slicer::MasterSatMode::Tape, crate::slicer::MasterSatMode::Digitakt, crate::slicer::MasterSatMode::MackieTransistor] {
+                                                    let is_sel = fx.sat_mode == mode;
+                                                    if ui.add(egui::SelectableLabel::new(is_sel, mode.label())).clicked() {
+                                                        fx.sat_mode = mode;
+                                                    }
+                                                }
+
+                                                ui.add_space(8.0);
                                                 ui.label("Drive:");
                                                 ui.add(egui::Slider::new(&mut fx.tape_drive, 0.0..=1.0)
                                                     .custom_formatter(|n, _| format!("{:.0}%", n * 100.0)));
 
                                                 ui.add_space(6.0);
-                                                ui.label("Warmth (75Hz):");
+                                                ui.label("Warmth:");
                                                 ui.add(egui::Slider::new(&mut fx.tape_warmth, 0.0..=1.0)
                                                     .custom_formatter(|n, _| format!("{:.0}%", n * 100.0)));
 
@@ -2134,7 +2143,7 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
                                 ui.horizontal(|ui| {
                                     ui.label(egui::RichText::new("⚡ Quick Master Presets:").color(TEXT_DIM));
                                     ui.add_space(4.0);
-                                    if styled_button(ui, "📻 90s Jungle S950 (12kHz 12-bit)", Color32::from_rgb(60, 160, 220)) {
+                                    if styled_button(ui, "📻 90s Jungle S950", Color32::from_rgb(60, 160, 220)) {
                                         fx.s950_enabled = true;
                                         fx.s950_rate_hz = 12000.0;
                                         fx.s950_bit_depth = 12.0;
@@ -2145,9 +2154,28 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
                                     if styled_button(ui, "📼 Warm Tape Bounce", Color32::from_rgb(220, 140, 40)) {
                                         fx.s950_enabled = false;
                                         fx.tape_enabled = true;
+                                        fx.sat_mode = crate::slicer::MasterSatMode::Tape;
                                         fx.tape_drive = 0.40;
                                         fx.tape_warmth = 0.50;
                                         fx.tape_softness = 0.35;
+                                    }
+                                    ui.add_space(6.0);
+                                    if styled_button(ui, "🎛️ Digitakt Warm Overdrive", Color32::from_rgb(40, 180, 140)) {
+                                        fx.s950_enabled = false;
+                                        fx.tape_enabled = true;
+                                        fx.sat_mode = crate::slicer::MasterSatMode::Digitakt;
+                                        fx.tape_drive = 0.45;
+                                        fx.tape_warmth = 0.60;
+                                        fx.tape_softness = 0.40;
+                                    }
+                                    ui.add_space(6.0);
+                                    if styled_button(ui, "🎚️ Mackie \"In The Red\"", Color32::from_rgb(230, 80, 80)) {
+                                        fx.s950_enabled = false;
+                                        fx.tape_enabled = true;
+                                        fx.sat_mode = crate::slicer::MasterSatMode::MackieTransistor;
+                                        fx.tape_drive = 0.55;
+                                        fx.tape_warmth = 0.45;
+                                        fx.tape_softness = 0.25;
                                     }
                                     ui.add_space(6.0);
                                     if styled_button(ui, "🌴 Gritty 12-bit Tape", Color32::from_rgb(180, 100, 220)) {
@@ -2156,6 +2184,7 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
                                         fx.s950_bit_depth = 12.0;
                                         fx.s950_filter_cutoff = 7500.0;
                                         fx.tape_enabled = true;
+                                        fx.sat_mode = crate::slicer::MasterSatMode::Tape;
                                         fx.tape_drive = 0.45;
                                         fx.tape_warmth = 0.55;
                                         fx.tape_softness = 0.40;

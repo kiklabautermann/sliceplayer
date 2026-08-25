@@ -214,35 +214,100 @@ impl Engine {
                 r = self.master_fx_state.s950_svf_r3.process(r, FilterMode::Lowpass, fc, 0.707, sample_rate);
             }
 
-            // ── 2. Analog Tape Saturation ──────────────────────────────────
+            // ── 2. Master Saturation / Overdrive Circuit ─────────────────
             if params.tape_enabled {
-                let drive_gain = 1.0 + params.tape_drive * 3.5;
+                match params.sat_mode {
+                    crate::slicer::MasterSatMode::Tape => {
+                        let drive_gain = 1.0 + params.tape_drive * 3.5;
 
-                // Low-end tape bump around 75 Hz
-                if params.tape_warmth > 0.01 {
-                    let bump_l = self.master_fx_state.tape_bump_svf_l.process(l, FilterMode::Lowpass, 75.0, 1.2, sample_rate);
-                    let bump_r = self.master_fx_state.tape_bump_svf_r.process(r, FilterMode::Lowpass, 75.0, 1.2, sample_rate);
-                    l += bump_l * (params.tape_warmth * 0.45);
-                    r += bump_r * (params.tape_warmth * 0.45);
-                }
+                        // Low-end tape bump around 75 Hz
+                        if params.tape_warmth > 0.01 {
+                            let bump_l = self.master_fx_state.tape_bump_svf_l.process(l, FilterMode::Lowpass, 75.0, 1.2, sample_rate);
+                            let bump_r = self.master_fx_state.tape_bump_svf_r.process(r, FilterMode::Lowpass, 75.0, 1.2, sample_rate);
+                            l += bump_l * (params.tape_warmth * 0.45);
+                            r += bump_r * (params.tape_warmth * 0.45);
+                        }
 
-                // Soft 2nd & 3rd Harmonic Tape Saturation Curve (tanh with asymmetric warmth)
-                let xl = l * drive_gain;
-                let xr = r * drive_gain;
+                        // Soft 2nd & 3rd Harmonic Tape Saturation Curve (tanh with asymmetric warmth)
+                        let xl = l * drive_gain;
+                        let xr = r * drive_gain;
 
-                let sat_l = xl.tanh() + 0.08 * params.tape_warmth * (xl.tanh() * xl.tanh());
-                let sat_r = xr.tanh() + 0.08 * params.tape_warmth * (xr.tanh() * xr.tanh());
+                        let sat_l = xl.tanh() + 0.08 * params.tape_warmth * (xl.tanh() * xl.tanh());
+                        let sat_r = xr.tanh() + 0.08 * params.tape_warmth * (xr.tanh() * xr.tanh());
 
-                // Compensate drive gain slightly so output volume remains balanced
-                let comp_gain = 1.0 / (1.0 + params.tape_drive * 0.8);
-                l = sat_l * comp_gain;
-                r = sat_r * comp_gain;
+                        let comp_gain = 1.0 / (1.0 + params.tape_drive * 0.8);
+                        l = sat_l * comp_gain;
+                        r = sat_r * comp_gain;
 
-                // High-frequency tape compression & softness
-                if params.tape_softness > 0.01 {
-                    let fc_soft = (16000.0 - params.tape_softness * 8000.0).clamp(1000.0, sample_rate * 0.48);
-                    l = self.master_fx_state.tape_soft_svf_l.process(l, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
-                    r = self.master_fx_state.tape_soft_svf_r.process(r, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
+                        // High-frequency tape compression & softness
+                        if params.tape_softness > 0.01 {
+                            let fc_soft = (16000.0 - params.tape_softness * 8000.0).clamp(1000.0, sample_rate * 0.48);
+                            l = self.master_fx_state.tape_soft_svf_l.process(l, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
+                            r = self.master_fx_state.tape_soft_svf_r.process(r, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
+                        }
+                    }
+                    crate::slicer::MasterSatMode::Digitakt => {
+                        // ── Elektron Digitakt Warm Overdrive ─────────────
+                        // 1. Soft anti-harshness pre-filter
+                        l = self.master_fx_state.tape_soft_svf_l.process(l, FilterMode::Lowpass, 14000.0, 0.707, sample_rate);
+                        r = self.master_fx_state.tape_soft_svf_r.process(r, FilterMode::Lowpass, 14000.0, 0.707, sample_rate);
+
+                        // Low-frequency warmth boost around 90 Hz
+                        if params.tape_warmth > 0.01 {
+                            let bump_l = self.master_fx_state.tape_bump_svf_l.process(l, FilterMode::Lowpass, 90.0, 1.0, sample_rate);
+                            let bump_r = self.master_fx_state.tape_bump_svf_r.process(r, FilterMode::Lowpass, 90.0, 1.0, sample_rate);
+                            l += bump_l * (params.tape_warmth * 0.35);
+                            r += bump_r * (params.tape_warmth * 0.35);
+                        }
+
+                        // Smooth Digitakt asymmetric soft-clip curve x / (1 + |x|^1.4)
+                        let drive_gain = 1.0 + params.tape_drive * 4.5;
+                        let xl = l * drive_gain;
+                        let xr = r * drive_gain;
+
+                        let sat_l = xl / (1.0 + xl.abs().powf(1.4));
+                        let sat_r = xr / (1.0 + xr.abs().powf(1.4));
+
+                        // Add subtle 2nd harmonic warmth (tubey / Digitakt character)
+                        let warm_l = sat_l + 0.06 * params.tape_warmth * (1.0 - (-sat_l.abs()).exp());
+                        let warm_r = sat_r + 0.06 * params.tape_warmth * (1.0 - (-sat_r.abs()).exp());
+
+                        // Soft post-smoothing filter (12 kHz roll-off for ultra-warm, non-harsh sound)
+                        let fc_soft = (16000.0 - params.tape_softness * 7000.0).clamp(1000.0, sample_rate * 0.48);
+                        let comp_gain = 1.0 / (1.0 + params.tape_drive * 0.6);
+                        l = self.master_fx_state.tape_soft_svf_l.process(warm_l * comp_gain, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
+                        r = self.master_fx_state.tape_soft_svf_r.process(warm_r * comp_gain, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
+                    }
+                    crate::slicer::MasterSatMode::MackieTransistor => {
+                        // ── Mackie CR-1604 Transistor Console Drive ("In The Red") ───
+                        // Mid-range punch boost (1.5 kHz console transformer resonance)
+                        if params.tape_warmth > 0.01 {
+                            let mid_l = self.master_fx_state.tape_bump_svf_l.process(l, FilterMode::Bandpass, 1500.0, 1.4, sample_rate);
+                            let mid_r = self.master_fx_state.tape_bump_svf_r.process(r, FilterMode::Bandpass, 1500.0, 1.4, sample_rate);
+                            l += mid_l * (params.tape_warmth * 0.40);
+                            r += mid_r * (params.tape_warmth * 0.40);
+                        }
+
+                        // Symmetrical Transistor Cubic Soft Knee Clipper
+                        let drive_gain = 1.0 + params.tape_drive * 6.5;
+                        let xl = l * drive_gain;
+                        let xr = r * drive_gain;
+
+                        let sat_l = if xl.abs() < 1.0 { xl - (xl * xl * xl) / 3.0 } else { xl.signum() * (2.0 / 3.0) };
+                        let sat_r = if xr.abs() < 1.0 { xr - (xr * xr * xr) / 3.0 } else { xr.signum() * (2.0 / 3.0) };
+
+                        // Dynamic compensation gain so output punches without clipping
+                        let comp_gain = 1.25 / (1.0 + params.tape_drive * 0.9);
+                        l = sat_l * comp_gain;
+                        r = sat_r * comp_gain;
+
+                        // High frequency tone control
+                        if params.tape_softness > 0.01 {
+                            let fc_soft = (18000.0 - params.tape_softness * 9000.0).clamp(1000.0, sample_rate * 0.48);
+                            l = self.master_fx_state.tape_soft_svf_l.process(l, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
+                            r = self.master_fx_state.tape_soft_svf_r.process(r, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
+                        }
+                    }
                 }
             }
 
@@ -899,6 +964,7 @@ mod tests {
                 s950_bit_depth: 12.0,
                 s950_filter_cutoff: 8000.0,
                 tape_enabled: true,
+                sat_mode: crate::slicer::MasterSatMode::Tape,
                 tape_drive: 0.40,
                 tape_warmth: 0.50,
                 tape_softness: 0.35,
@@ -914,5 +980,43 @@ mod tests {
 
         let sum: f32 = output.iter().map(|s| s.abs()).sum();
         assert!(sum > 0.0, "Akai S950 & Tape Saturation rendered silent audio");
+    }
+
+    #[test]
+    fn test_digitakt_and_mackie_master_saturation_dsp() {
+        for mode in [crate::slicer::MasterSatMode::Digitakt, crate::slicer::MasterSatMode::MackieTransistor] {
+            let sl = SliceLoop {
+                file_path: None,
+                audio: vec![0.7; 88200],
+                channels: 2,
+                sample_rate: 44100,
+                total_frames: 44100,
+                loop_start: 0,
+                loop_end: 44100,
+                bpm: 174.0,
+                slices: vec![Slice::new(0, 10000, 48)],
+                master_fx: crate::slicer::MasterFxParams {
+                    s950_enabled: false,
+                    s950_rate_hz: 12000.0,
+                    s950_bit_depth: 12.0,
+                    s950_filter_cutoff: 8000.0,
+                    tape_enabled: true,
+                    sat_mode: mode,
+                    tape_drive: 0.50,
+                    tape_warmth: 0.50,
+                    tape_softness: 0.30,
+                },
+                peak_cache: Vec::new(),
+            };
+
+            let mut engine = Engine::new();
+            engine.note_on(&sl, 48, 1.0, 1);
+
+            let mut output = vec![0.0f32; 2048];
+            engine.process(&mut output, 1024, &sl);
+
+            let sum: f32 = output.iter().map(|s| s.abs()).sum();
+            assert!(sum > 0.0, "Master Saturation mode {:?} rendered silent audio", mode);
+        }
     }
 }

@@ -218,7 +218,25 @@ pub struct SliceFx {
     pub delay_tone: f32,
 }
 
-/// Global Master Audio FX parameters (Akai S950 Sampler Emulation & Analog Tape Saturation).
+/// Master Saturation / Overdrive Circuit Model.
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub enum MasterSatMode {
+    Tape,             // Warm Analog Studio Tape Saturation
+    Digitakt,         // Elektron Digitakt Ultra-Warm Soft Overdrive
+    MackieTransistor, // Mackie CR-1604 "In The Red" Transistor Console Distortion
+}
+
+impl MasterSatMode {
+    pub fn label(&self) -> &'static str {
+        match self {
+            MasterSatMode::Tape => "📼 Analog Tape",
+            MasterSatMode::Digitakt => "🎛️ Elektron Digitakt",
+            MasterSatMode::MackieTransistor => "🎚️ Mackie CR-1604 Red-Line",
+        }
+    }
+}
+
+/// Global Master Audio FX parameters (Akai S950 Sampler Emulation & Master Saturation).
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct MasterFxParams {
     // ── Akai S950 Sampler Emulation ──────────────────────────────────────
@@ -230,13 +248,15 @@ pub struct MasterFxParams {
     /// 6-pole Butterworth S950 reconstruction filter cutoff Hz (2000.0..=18000.0 Hz).
     pub s950_filter_cutoff: f32,
 
-    // ── Analog Tape Saturation ───────────────────────────────────────────
+    // ── Master Saturation / Overdrive Section ─────────────────────────────
     pub tape_enabled: bool,
-    /// Tape saturation drive / distortion amount (0.0..=1.0).
+    /// Saturation circuit model (Analog Tape, Elektron Digitakt, Mackie Transistor).
+    pub sat_mode: MasterSatMode,
+    /// Saturation drive / distortion amount (0.0..=1.0).
     pub tape_drive: f32,
-    /// Tape warmth / low-end 70 Hz head bump & 2nd harmonic warmth (0.0..=1.0).
+    /// Saturation warmth / low-end bump (0.0..=1.0).
     pub tape_warmth: f32,
-    /// High-frequency tape compression & softness (0.0..=1.0).
+    /// High-frequency compression / softness (0.0..=1.0).
     pub tape_softness: f32,
 }
 
@@ -249,6 +269,7 @@ impl Default for MasterFxParams {
             s950_filter_cutoff: 8000.0,
 
             tape_enabled: false,
+            sat_mode: MasterSatMode::Tape,
             tape_drive: 0.35,
             tape_warmth: 0.40,
             tape_softness: 0.30,
