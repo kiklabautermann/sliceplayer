@@ -1986,9 +1986,9 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
 
                         ui.add_space(4.0);
                         ui.label("Amount:");
-                        ui.add(egui::Slider::new(&mut state.shuffle_intensity, 0.10..=1.00)
-                            .custom_formatter(|n, _| format!("{:.0}%", n * 100.0))
-                            .fixed_decimals(0));
+                        ui.add(egui::Slider::new(&mut state.shuffle_intensity, 0.05..=1.00)
+                            .step_by(0.01)
+                            .custom_formatter(|n, _| format!("{:.0}%", n * 100.0)));
 
                         ui.add_space(4.0);
                         ui.checkbox(&mut state.lock_main_beats, "🔒 Lock Main Beats");
