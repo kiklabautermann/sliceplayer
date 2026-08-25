@@ -98,6 +98,7 @@ pub enum SlicingModeTab {
     Transient,
     Grid,
     Manual,
+    JungleShuffler,
 }
 
 // ── Editor state (lives in the GUI thread, not audio thread) ─────────────────
@@ -125,6 +126,9 @@ pub struct EditorState {
     pub zoom_factor: f32,
     /// Horizontal scroll offset (normalized 0.0..=1.0).
     pub zoom_scroll: f32,
+    pub shuffle_style: crate::slicer::ShuffleStyle,
+    pub shuffle_intensity: f32,
+    pub lock_main_beats: bool,
 }
 
 impl EditorState {
@@ -156,6 +160,9 @@ impl EditorState {
             dragging_loop_bound: None,
             zoom_factor: 1.0,
             zoom_scroll: 0.0,
+            shuffle_style: crate::slicer::ShuffleStyle::AmenRoller,
+            shuffle_intensity: 0.50,
+            lock_main_beats: true,
         }
     }
 
@@ -1851,6 +1858,11 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
                     state.slicing_tab = SlicingModeTab::Manual;
                 }
 
+                let is_shuffler = state.slicing_tab == SlicingModeTab::JungleShuffler;
+                if ui.add(egui::SelectableLabel::new(is_shuffler, egui::RichText::new("🌴 Jungle Shuffler").color(if is_shuffler { ACCENT } else { TEXT_DIM }).strong())).clicked() {
+                    state.slicing_tab = SlicingModeTab::JungleShuffler;
+                }
+
                 ui.separator();
 
                 // Tab Content
@@ -1921,6 +1933,43 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
                                     sl.slices.push(crate::slicer::Slice::new(0, total, 48));
                                     state.selected_slice = None;
                                     Some("All slices cleared.".to_string())
+                                } else { None }
+                            };
+                            if let Some(m) = msg { state.status(m); }
+                        }
+                    }
+                    SlicingModeTab::JungleShuffler => {
+                        ui.label("Style:");
+                        egui::ComboBox::new("shuffle_style", "")
+                            .selected_text(state.shuffle_style.label())
+                            .show_ui(ui, |ui| {
+                                ui.selectable_value(&mut state.shuffle_style, crate::slicer::ShuffleStyle::AmenRoller, "Amen Roller");
+                                ui.selectable_value(&mut state.shuffle_style, crate::slicer::ShuffleStyle::SyncopatedFunk, "Syncopated Funk");
+                                ui.selectable_value(&mut state.shuffle_style, crate::slicer::ShuffleStyle::GhostNotesOnly, "Ghost Notes Only");
+                                ui.selectable_value(&mut state.shuffle_style, crate::slicer::ShuffleStyle::WildChopper, "Wild Chopper");
+                            });
+
+                        ui.add_space(4.0);
+                        ui.label("Amount:");
+                        ui.add(egui::Slider::new(&mut state.shuffle_intensity, 0.10..=1.00)
+                            .custom_formatter(|n, _| format!("{:.0}%", n * 100.0))
+                            .fixed_decimals(0));
+
+                        ui.add_space(4.0);
+                        ui.checkbox(&mut state.lock_main_beats, "🔒 Lock Main Beats");
+
+                        ui.add_space(6.0);
+                        if styled_button(ui, "🎲 Shuffle Break", Color32::from_rgb(240, 160, 40)) {
+                            state.engine.lock().unwrap().reset_playback();
+                            let style = state.shuffle_style;
+                            let intensity = state.shuffle_intensity;
+                            let lock_beats = state.lock_main_beats;
+                            let msg = {
+                                let mut guard = state.loop_data.write().unwrap();
+                                if let Some(sl) = guard.as_mut() {
+                                    sl.apply_jungle_break_shuffle(style, intensity, lock_beats);
+                                    let n = sl.slices.len();
+                                    Some(format!("Generated {} breakbeat variation ({n} Slices @ {:.0}% Amount)", style.label(), intensity * 100.0))
                                 } else { None }
                             };
                             if let Some(m) = msg { state.status(m); }

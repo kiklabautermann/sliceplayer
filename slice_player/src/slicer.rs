@@ -156,6 +156,25 @@ impl DelayRate {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub enum ShuffleStyle {
+    AmenRoller,
+    SyncopatedFunk,
+    GhostNotesOnly,
+    WildChopper,
+}
+
+impl ShuffleStyle {
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::AmenRoller => "Amen Roller",
+            Self::SyncopatedFunk => "Syncopated Funk",
+            Self::GhostNotesOnly => "Ghost Notes Only",
+            Self::WildChopper => "Wild Chopper",
+        }
+    }
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct SliceFx {
     pub filter_mode: FilterMode,
@@ -552,6 +571,111 @@ impl SliceLoop {
         Ok(())
     }
 
+    /// Generative Jungle / Drum & Bass breakbeat shuffler.
+    pub fn apply_jungle_break_shuffle(&mut self, style: ShuffleStyle, intensity: f32, lock_main_beats: bool) {
+        // If there is only 1 slice, auto-slice into a 16th grid first!
+        if self.slices.len() <= 1 {
+            self.apply_grid(GridDivision::Sixteenth, self.bpm);
+        }
+        let num_slices = self.slices.len();
+        if num_slices == 0 { return; }
+
+        let intensity_clamped = intensity.clamp(0.05, 1.0);
+
+        // Simple pseudo-random helper for deterministic/fun variations
+        let mut seed = (num_slices * 31 + (intensity_clamped * 100.0) as usize) as u32;
+        let mut rand_f32 = || -> f32 {
+            seed = seed.wrapping_mul(1664525).wrapping_add(1013904223);
+            (seed >> 9) as f32 / 8388608.0
+        };
+
+        match style {
+            ShuffleStyle::GhostNotesOnly => {
+                for (idx, slice) in self.slices.iter_mut().enumerate() {
+                    let is_main_beat = idx % 4 == 0; // 1/4 beats
+                    if lock_main_beats && is_main_beat { continue; }
+
+                    if !is_main_beat && rand_f32() < intensity_clamped {
+                        // Shape into snappy ghost note: low gain, subtle pitch shift, short fade out
+                        slice.gain = (0.20 + rand_f32() * 0.25).clamp(0.1, 0.5);
+                        slice.pitch_semitones = (rand_f32() * 3.0).round(); // +0..+3 semitones
+                        slice.fade_out_ms = (15.0 + rand_f32() * 25.0).clamp(5.0, 50.0);
+                        slice.reverse = false;
+                    }
+                }
+            }
+            ShuffleStyle::AmenRoller => {
+                for (idx, slice) in self.slices.iter_mut().enumerate() {
+                    let is_main_beat = idx % 4 == 0;
+                    if lock_main_beats && is_main_beat { continue; }
+
+                    let roll_prob = rand_f32();
+                    if roll_prob < intensity_clamped * 0.40 {
+                        // Retrigger roll on fill slices
+                        slice.fx.retrigger_rate = if rand_f32() > 0.5 { RetriggerRate::ThirtySecond } else { RetriggerRate::Sixteenth };
+                        slice.fx.retrigger_decay = 0.6 + rand_f32() * 0.35;
+                        slice.pitch_semitones = (rand_f32() * 5.0).round(); // Pitch rise
+                    } else if roll_prob < intensity_clamped * 0.70 {
+                        // Ghost note accent
+                        slice.gain = 0.30 + rand_f32() * 0.20;
+                        slice.fx.filter_djm = 0.15 + rand_f32() * 0.30; // Subtle HP filter cut
+                    }
+                }
+
+                // Swap offbeat slices for classic Amen shuffle fill
+                if num_slices >= 8 {
+                    let swap_count = ((num_slices as f32 * 0.25 * intensity_clamped) as usize).max(1);
+                    for _ in 0..swap_count {
+                        let i1 = (rand_f32() * num_slices as f32) as usize % num_slices;
+                        let i2 = (rand_f32() * num_slices as f32) as usize % num_slices;
+                        if lock_main_beats && (i1 % 4 == 0 || i2 % 4 == 0) { continue; }
+                        if i1 != i2 {
+                            let note1 = self.slices[i1].note;
+                            self.slices[i1].note = self.slices[i2].note;
+                            self.slices[i2].note = note1;
+                        }
+                    }
+                }
+            }
+            ShuffleStyle::SyncopatedFunk => {
+                for (idx, slice) in self.slices.iter_mut().enumerate() {
+                    let is_main_beat = idx % 4 == 0;
+                    if lock_main_beats && is_main_beat { continue; }
+
+                    let p = rand_f32();
+                    if p < intensity_clamped * 0.50 {
+                        // Funky swing gain and pitch offset
+                        slice.gain = if idx % 2 == 1 { 0.40 + rand_f32() * 0.30 } else { 0.85 + rand_f32() * 0.25 };
+                        slice.pitch_semitones = if rand_f32() > 0.6 { 2.0 } else { 0.0 };
+                        slice.fx.drive = (rand_f32() * 0.25).clamp(0.0, 0.4);
+                    }
+                }
+            }
+            ShuffleStyle::WildChopper => {
+                for (idx, slice) in self.slices.iter_mut().enumerate() {
+                    let is_main_beat = idx % 4 == 0;
+                    if lock_main_beats && is_main_beat { continue; }
+
+                    if rand_f32() < intensity_clamped {
+                        let r = rand_f32();
+                        if r < 0.25 {
+                            slice.reverse = !slice.reverse;
+                        } else if r < 0.50 {
+                            slice.fx.retrigger_rate = RetriggerRate::ThirtySecond;
+                            slice.fx.retrigger_decay = 0.5;
+                        } else if r < 0.75 {
+                            slice.pitch_semitones = (rand_f32() * 12.0 - 6.0).round(); // -6..+6 st
+                        } else {
+                            slice.fx.bit_depth = 8.0;
+                            slice.fx.downsample_factor = 2;
+                        }
+                    }
+                }
+            }
+        }
+        self.rebuild_peaks(1024);
+    }
+
     // ── Manual slice editing ──────────────────────────────────────────────────
 
     /// Insert a new slice boundary at `frame`. Splits the existing slice that
@@ -804,4 +928,44 @@ fn detect_wav_bpm(path: &Path, _sample_rate: u32, _total_frames: usize) -> f64 {
     }
 
     120.0
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_jungle_break_shuffler() {
+        let sample_rate: u32 = 44100;
+        let total_frames = sample_rate as usize * 2;
+        let audio = vec![0.0f32; total_frames * 2];
+        let mut sl = SliceLoop {
+            file_path: None,
+            audio,
+            channels: 2,
+            sample_rate,
+            total_frames,
+            loop_start: 0,
+            loop_end: total_frames,
+            bpm: 174.0,
+            slices: Vec::new(),
+            peak_cache: Vec::new(),
+        };
+
+        sl.apply_grid(GridDivision::Sixteenth, 174.0);
+        let n = sl.slices.len();
+        assert!(n > 0);
+
+        sl.apply_jungle_break_shuffle(ShuffleStyle::AmenRoller, 0.70, true);
+        assert_eq!(sl.slices.len(), n);
+
+        sl.apply_jungle_break_shuffle(ShuffleStyle::GhostNotesOnly, 0.50, false);
+        assert_eq!(sl.slices.len(), n);
+
+        sl.apply_jungle_break_shuffle(ShuffleStyle::SyncopatedFunk, 0.80, true);
+        assert_eq!(sl.slices.len(), n);
+
+        sl.apply_jungle_break_shuffle(ShuffleStyle::WildChopper, 1.00, false);
+        assert_eq!(sl.slices.len(), n);
+    }
 }
