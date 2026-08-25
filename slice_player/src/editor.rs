@@ -1337,15 +1337,12 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
     let mut delete_requested = false;
     let mut copy_to_all_requested = false;
     let mut reset_fx_requested = false;
-    let mut audition_note_requested: Option<u8> = None;
 
     {
         let mut guard = state.loop_data.write().unwrap();
         let Some(sl) = guard.as_mut() else { return; };
         if sel >= sl.slices.len() { state.selected_slice = None; return; }
 
-        let old_note = sl.slices[sel].note;
-        let mut selected_note = old_note;
         let slice = &mut sl.slices[sel];
 
         egui::Frame::NONE
@@ -1357,16 +1354,6 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                     ui.horizontal(|ui| {
                         ui.label(egui::RichText::new(format!("Slice #{} ({})", sel + 1, midi_note_name(slice.note)))
                             .color(ACCENT).strong());
-
-                        ui.add_space(8.0);
-                        ui.label("Note:");
-                        egui::ComboBox::new(("slice_note", sel), "")
-                            .selected_text(midi_note_name(selected_note))
-                            .show_ui(ui, |ui| {
-                                for n in 0u8..=127 {
-                                    ui.selectable_value(&mut selected_note, n, midi_note_name(n));
-                                }
-                            });
 
                         ui.add_space(8.0);
                         ui.label("Gain:");
@@ -1554,11 +1541,6 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                     });
                 });
             });
-
-        if selected_note != old_note {
-            sl.set_slice_note(sel, selected_note);
-            audition_note_requested = Some(selected_note);
-        }
     }
 
     if copy_to_all_requested {
@@ -1597,13 +1579,6 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
             } else { None }
         };
         if let Some(m) = msg { state.status(m); }
-    }
-
-    if let Some(n) = audition_note_requested {
-        let read_guard = state.loop_data.read().unwrap();
-        if let Some(sl) = read_guard.as_ref() {
-            state.engine.lock().unwrap().note_on(sl, n, 1.0, -1);
-        }
     }
 }
 // ── Slice mode panel ─────────────────────────────────────────────────────────
