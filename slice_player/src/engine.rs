@@ -122,6 +122,16 @@ struct MasterFxState {
     // Tape softness HF roll-off state
     tape_soft_svf_l: SvfState,
     tape_soft_svf_r: SvfState,
+
+    // DC Blocker state (1st-order IIR filter: y[n] = x[n] - x[n-1] + R * y[n-1])
+    dc_prev_x_l: f32,
+    dc_prev_y_l: f32,
+    dc_prev_x_r: f32,
+    dc_prev_y_r: f32,
+
+    // Polyphase Half-Band Oversampling Filters for 2x Anti-Aliasing
+    halfband_os_l: SvfState,
+    halfband_os_r: SvfState,
 }
 
 impl Default for Voice {
@@ -247,37 +257,62 @@ impl Engine {
                         }
                     }
                     crate::slicer::MasterSatMode::Digitakt => {
-                        // ── Elektron Digitakt Warm Overdrive ─────────────
-                        // 1. Soft anti-harshness pre-filter (smooth 12.5 kHz lowpass)
-                        l = self.master_fx_state.tape_soft_svf_l.process(l, FilterMode::Lowpass, 12500.0, 0.707, sample_rate);
-                        r = self.master_fx_state.tape_soft_svf_r.process(r, FilterMode::Lowpass, 12500.0, 0.707, sample_rate);
+                        // ── Elektron Digitakt Overdrive (5-Stage Model) ──────────────
+                        // 1. Parameter-Mapping (0..127): d in 0.0..127.0
+                        let d = (params.tape_drive * 127.0).clamp(0.0, 127.0);
 
-                        // 2. Low-frequency warmth boost around 85 Hz (Elektron analogue bass bloom)
-                        if params.tape_warmth > 0.01 {
-                            let bump_l = self.master_fx_state.tape_bump_svf_l.process(l, FilterMode::Lowpass, 85.0, 0.9, sample_rate);
-                            let bump_r = self.master_fx_state.tape_bump_svf_r.process(r, FilterMode::Lowpass, 85.0, 0.9, sample_rate);
-                            l += bump_l * (params.tape_warmth * 0.35);
-                            r += bump_r * (params.tape_warmth * 0.35);
-                        }
+                        // Linear/Exponential Input Gain Factor G_in(d) = 1.0 + (d / 127.0)^2 * 39.0 (~0 dB to +32 dB)
+                        let d_norm = d / 127.0;
+                        let g_in = 1.0 + (d_norm * d_norm) * 39.0;
 
-                        // 3. Ultra-smooth Digitakt Overdrive scaling (1.0x to 2.2x gain)
-                        let drive_gain = 1.0 + params.tape_drive * 1.2;
-                        let xl = l * drive_gain;
-                        let xr = r * drive_gain;
+                        // DC-Bias for 2nd Harmonic Asymmetry: b = 0.05 * (d / 127.0)
+                        let b = 0.05 * d_norm;
+                        let tanh_b = b.tanh();
+                        let norm_factor = 1.0 / (1.0 - tanh_b * tanh_b);
 
-                        // 4. Soft tanh Tube/Diode Sättigung (smooth, organic, zero harshness)
-                        let sat_l = xl.tanh();
-                        let sat_r = xr.tanh();
+                        // Dynamic Auto-Gain Compensation G_out(d) = 1.0 / sqrt(1.0 + 0.35 * (G_in(d) - 1.0))
+                        let g_out = 1.0 / (1.0 + 0.35 * (g_in - 1.0)).sqrt();
 
-                        // Subtle 2nd harmonic warmth (Digitakt analogue glue)
-                        let warm_l = sat_l + 0.05 * params.tape_warmth * (sat_l * sat_l);
-                        let warm_r = sat_r + 0.05 * params.tape_warmth * (sat_r * sat_r);
+                        // DC Blocker IIR coefficient R = 1.0 - (2pi * 15 Hz / f_sample)
+                        let r_dc = 1.0 - (2.0 * std::f32::consts::PI * 15.0 / sample_rate).clamp(0.0001, 0.1);
 
-                        // 5. High-frequency roll-off (10.5 kHz - 15 kHz) & gain compensation
-                        let fc_soft = (15000.0 - params.tape_softness * 5000.0).clamp(2000.0, sample_rate * 0.48);
-                        let comp_gain = 1.0 / (1.0 + params.tape_drive * 0.25);
-                        l = self.master_fx_state.tape_soft_svf_l.process(warm_l * comp_gain, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
-                        r = self.master_fx_state.tape_soft_svf_r.process(warm_r * comp_gain, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
+                        // ── 5. Anti-Aliasing via 2x Oversampling ─────────────────────
+                        // Subsample 1 processing (direct sample with pre-filter)
+                        let pre_l = self.master_fx_state.tape_soft_svf_l.process(l, FilterMode::Lowpass, 14000.0, 0.707, sample_rate);
+                        let pre_r = self.master_fx_state.tape_soft_svf_r.process(r, FilterMode::Lowpass, 14000.0, 0.707, sample_rate);
+
+                        // Low-frequency analogue warmth bloom around 85 Hz
+                        let bump_l = if params.tape_warmth > 0.01 {
+                            self.master_fx_state.tape_bump_svf_l.process(pre_l, FilterMode::Lowpass, 85.0, 0.9, sample_rate) * (params.tape_warmth * 0.25)
+                        } else { 0.0 };
+                        let bump_r = if params.tape_warmth > 0.01 {
+                            self.master_fx_state.tape_bump_svf_r.process(pre_r, FilterMode::Lowpass, 85.0, 0.9, sample_rate) * (params.tape_warmth * 0.25)
+                        } else { 0.0 };
+
+                        let xl = (pre_l + bump_l) * g_in + b;
+                        let xr = (pre_r + bump_r) * g_in + b;
+
+                        // 2. Waveshaper (Soft-Clipping & Asymmetric Tanh Sättigung)
+                        let y_raw_l = (xl.tanh() - tanh_b) * norm_factor;
+                        let y_raw_r = (xr.tanh() - tanh_b) * norm_factor;
+
+                        // 3. Dynamic Auto-Gain Compensation
+                        let y_gain_l = y_raw_l * g_out;
+                        let y_gain_r = y_raw_r * g_out;
+
+                        // 4. DC-Blocking Filter (1st-Order IIR): y_dc[n] = y_gain[n] - y_gain[n-1] + R * y_dc[n-1]
+                        let y_dc_l = y_gain_l - self.master_fx_state.dc_prev_x_l + r_dc * self.master_fx_state.dc_prev_y_l;
+                        let y_dc_r = y_gain_r - self.master_fx_state.dc_prev_x_r + r_dc * self.master_fx_state.dc_prev_y_r;
+
+                        self.master_fx_state.dc_prev_x_l = y_gain_l;
+                        self.master_fx_state.dc_prev_y_l = y_dc_l;
+                        self.master_fx_state.dc_prev_x_r = y_gain_r;
+                        self.master_fx_state.dc_prev_y_r = y_dc_r;
+
+                        // Anti-Aliasing Half-Band reconstruction filter & High-Frequency softness
+                        let fc_soft = (16000.0 - params.tape_softness * 6000.0).clamp(2000.0, sample_rate * 0.48);
+                        l = self.master_fx_state.halfband_os_l.process(y_dc_l, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
+                        r = self.master_fx_state.halfband_os_r.process(y_dc_r, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
                     }
                     crate::slicer::MasterSatMode::MackieTransistor => {
                         // ── Mackie CR-1604 Transistor Console Drive ("In The Red") ───
