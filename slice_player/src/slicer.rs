@@ -156,7 +156,7 @@ impl DelayRate {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct SliceFx {
     pub filter_mode: FilterMode,
     /// Cutoff frequency in Hz (20.0 Hz - 20000.0 Hz).
@@ -242,7 +242,7 @@ impl Default for SliceFx {
 
 // ── Per-slice data ────────────────────────────────────────────────────────────
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Slice {
     /// Start sample frame (in the parent loop's sample array).
     pub start: usize,

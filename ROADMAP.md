@@ -33,6 +33,7 @@ This document outlines planned features, community ideas, and future enhancement
 - [ ] **E-mu Z-Plane / Akai S950 Filter Modeling**: Non-linear warm lowpass filter modeling with sampler saturation.
 
 ### 🎨 GUI & User Experience
+- [x] **Multi-Slice Selection (Ctrl+Click)**: Select multiple slices simultaneously with Ctrl+Click and modify parameters (Gain, Pan, Pitch, Filters, FX, Mute, Reverse) for all selected slices in real time.
 - [x] **Copy & Paste Slice Settings**: Copy all FX, filter, envelope, and pitch settings from one slice and apply/propagate them to all slices simultaneously.
 - [x] **Reset Slice Settings to Default**: Reset per-slice FX and tuning parameters back to default initial state per slice.
 - [x] **Mouse Wheel Zoom & Pan**: Pinch-to-zoom, middle-mouse drag panning, horizontal scroll wheel panning, and multi-resolution sample-accurate waveform rendering.

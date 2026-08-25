@@ -108,6 +108,7 @@ pub struct EditorState {
     pub favorites: Arc<Mutex<[Option<PathBuf>; 5]>>,
     pub file_browser: FileBrowserState,
     pub selected_slice: Option<usize>,
+    pub selected_slices: Vec<usize>,
     pub grid_division: GridDivision,
     pub bpm_input: f64,
     pub transient_settings: TransientSettings,
@@ -143,6 +144,7 @@ impl EditorState {
             favorites,
             file_browser: FileBrowserState::new(initial_dir),
             selected_slice: None,
+            selected_slices: Vec::new(),
             grid_division: GridDivision::Eighth,
             bpm_input: 120.0,
             transient_settings: TransientSettings::default(),
@@ -155,6 +157,30 @@ impl EditorState {
             zoom_factor: 1.0,
             zoom_scroll: 0.0,
         }
+    }
+
+    pub fn select_slice(&mut self, idx: usize, ctrl_held: bool) {
+        if ctrl_held {
+            if let Some(pos) = self.selected_slices.iter().position(|&i| i == idx) {
+                if self.selected_slices.len() > 1 {
+                    self.selected_slices.remove(pos);
+                    if self.selected_slice == Some(idx) {
+                        self.selected_slice = self.selected_slices.last().copied();
+                    }
+                }
+            } else {
+                self.selected_slices.push(idx);
+                self.selected_slice = Some(idx);
+            }
+        } else {
+            self.selected_slices = vec![idx];
+            self.selected_slice = Some(idx);
+        }
+    }
+
+    pub fn clear_selection(&mut self) {
+        self.selected_slice = None;
+        self.selected_slices.clear();
     }
 
     fn status(&mut self, msg: impl Into<String>) {
@@ -1078,26 +1104,31 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
         }
     }
 
-    // ── Render Selected Slice Highlight Overlay ─────────────────────────────────────────
-    if let Some(sel_idx) = state.selected_slice {
+    // ── Render Selected Slices Highlight Overlay ─────────────────────────────────────────
+    for &sel_idx in &state.selected_slices {
         if let Some(slice) = sl.slices.get(sel_idx) {
             let x_start = frame_to_x(slice.start as f32);
             let x_end   = frame_to_x(slice.end as f32);
             let x0 = x_start.max(rect.left());
             let x1 = x_end.min(rect.right());
             if x1 > x0 {
+                let is_primary = state.selected_slice == Some(sel_idx);
                 let sel_rect = Rect::from_min_max(Pos2::new(x0, rect.top()), Pos2::new(x1, rect.bottom()));
+
+                let fill_alpha = if is_primary { 55 } else { 35 };
+                let border_w = if is_primary { 2.5 } else { 1.5 };
+
                 // Vibrant translucent gold/orange fill overlay
                 painter.rect_filled(
                     sel_rect,
                     0.0,
-                    Color32::from_rgba_unmultiplied(255, 170, 40, 45),
+                    Color32::from_rgba_unmultiplied(255, 170, 40, fill_alpha),
                 );
                 // Glowing border box frame
                 painter.rect_stroke(
                     sel_rect,
                     0.0,
-                    Stroke::new(2.5, Color32::from_rgb(255, 170, 40)),
+                    Stroke::new(border_w, Color32::from_rgb(255, 170, 40)),
                     egui::StrokeKind::Inside,
                 );
                 // Header badge at top left of selected slice
@@ -1264,54 +1295,60 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
     // Start drag on a loop marker, fade handle, or slice marker.
     if response.drag_started() {
         if let Some(pos) = response.interact_pointer_pos() {
-            let guard = state.loop_data.read().unwrap();
-            if let Some(sl) = guard.as_ref() {
-                let x_s = frame_to_x(sl.loop_start as f32);
-                let x_e = frame_to_x(sl.loop_end as f32);
+            let mut select_target = None;
+            {
+                let guard = state.loop_data.read().unwrap();
+                if let Some(sl) = guard.as_ref() {
+                    let x_s = frame_to_x(sl.loop_start as f32);
+                    let x_e = frame_to_x(sl.loop_end as f32);
 
-                if (pos.x - x_s).abs() < 14.0 {
-                    state.dragging_loop_bound = Some(false);
-                } else if (pos.x - x_e).abs() < 14.0 {
-                    state.dragging_loop_bound = Some(true);
-                } else {
-                    // Check fade handles
-                    let mut fade_hit = None;
-                    for (idx, slice) in sl.slices.iter().enumerate() {
-                        let fade_out_f = slice.fade_out_frames(sl.sample_rate);
-                        let x_fade_out = frame_to_x(slice.end.saturating_sub(fade_out_f) as f32);
-                        let handle_out = Pos2::new(x_fade_out, rect.top() + 8.0);
-                        if (pos - handle_out).length() < 10.0 {
-                            fade_hit = Some((idx, true));
-                            break;
-                        }
-
-                        let fade_in_f = slice.fade_in_frames(sl.sample_rate);
-                        let x_fade_in = frame_to_x((slice.start + fade_in_f) as f32);
-                        let handle_in = Pos2::new(x_fade_in, rect.top() + 8.0);
-                        if (pos - handle_in).length() < 10.0 {
-                            fade_hit = Some((idx, false));
-                            break;
-                        }
-                    }
-
-                    if let Some(hit) = fade_hit {
-                        state.dragging_fade = Some(hit);
-                        state.selected_slice = Some(hit.0);
-                    } else if let Some(idx) = hover_marker {
-                        state.dragging_marker = Some(idx);
-                        state.selected_slice = Some(idx);
+                    if (pos.x - x_s).abs() < 14.0 {
+                        state.dragging_loop_bound = Some(false);
+                    } else if (pos.x - x_e).abs() < 14.0 {
+                        state.dragging_loop_bound = Some(true);
                     } else {
-                        // Check slice markers
-                        for (idx, slice) in sl.slices.iter().enumerate().skip(1) {
-                            let x = frame_to_x(slice.start as f32);
-                            if (pos.x - x).abs() < MARKER_GRAB_PX {
-                                state.dragging_marker = Some(idx);
-                                state.selected_slice = Some(idx);
+                        // Check fade handles
+                        let mut fade_hit = None;
+                        for (idx, slice) in sl.slices.iter().enumerate() {
+                            let fade_out_f = slice.fade_out_frames(sl.sample_rate);
+                            let x_fade_out = frame_to_x(slice.end.saturating_sub(fade_out_f) as f32);
+                            let handle_out = Pos2::new(x_fade_out, rect.top() + 8.0);
+                            if (pos - handle_out).length() < 10.0 {
+                                fade_hit = Some((idx, true));
                                 break;
+                            }
+
+                            let fade_in_f = slice.fade_in_frames(sl.sample_rate);
+                            let x_fade_in = frame_to_x((slice.start + fade_in_f) as f32);
+                            let handle_in = Pos2::new(x_fade_in, rect.top() + 8.0);
+                            if (pos - handle_in).length() < 10.0 {
+                                fade_hit = Some((idx, false));
+                                break;
+                            }
+                        }
+
+                        if let Some(hit) = fade_hit {
+                            state.dragging_fade = Some(hit);
+                            select_target = Some(hit.0);
+                        } else if let Some(idx) = hover_marker {
+                            state.dragging_marker = Some(idx);
+                            select_target = Some(idx);
+                        } else {
+                            // Check slice markers
+                            for (idx, slice) in sl.slices.iter().enumerate().skip(1) {
+                                let x = frame_to_x(slice.start as f32);
+                                if (pos.x - x).abs() < MARKER_GRAB_PX {
+                                    state.dragging_marker = Some(idx);
+                                    select_target = Some(idx);
+                                    break;
+                                }
                             }
                         }
                     }
                 }
+            }
+            if let Some(idx) = select_target {
+                state.select_slice(idx, false);
             }
         }
     }
@@ -1383,8 +1420,10 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
     if response.clicked() && state.dragging_marker.is_none() && state.dragging_loop_bound.is_none() && state.dragging_fade.is_none() {
         if let Some(pos) = response.interact_pointer_pos() {
             let click_frame = x_to_frame(pos.x);
+            let ctrl_held = ui.input(|i| i.modifiers.ctrl || i.modifiers.command);
             let mut play_note = None;
             let mut status_msg = None;
+            let mut select_action: Option<Option<usize>> = None;
             {
                 let mut guard = state.loop_data.write().unwrap();
                 if let Some(sl) = guard.as_mut() {
@@ -1395,14 +1434,16 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
                     });
 
                     if let Some((idx, _)) = near_marker {
-                        state.selected_slice = Some(idx);
+                        select_action = Some(Some(idx));
                         play_note = Some(sl.slices[idx].note);
                     } else {
                         // Which slice did we click in?
                         let clicked_slice = sl.slices.iter().position(|s| s.start <= click_frame && click_frame < s.end);
-                        state.selected_slice = clicked_slice;
                         if let Some(idx) = clicked_slice {
+                            select_action = Some(Some(idx));
                             play_note = Some(sl.slices[idx].note);
+                        } else if !ctrl_held {
+                            select_action = Some(None);
                         }
 
                         // Shift+Click or Double-Click inserts a new slice marker.
@@ -1413,6 +1454,13 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
                             status_msg = Some(format!("Inserted slice at zero-crossing frame {snapped_frame}"));
                         }
                     }
+                }
+            }
+            if let Some(action) = select_action {
+                if let Some(idx) = action {
+                    state.select_slice(idx, ctrl_held);
+                } else {
+                    state.clear_selection();
                 }
             }
             if let Some(msg) = status_msg {
@@ -1455,7 +1503,7 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
 
     // Interaction hint label.
     ui.label(egui::RichText::new(
-        "Doppelklick / Shift+Click: Slice einfügen  |  Rechtsklick: Entfernen  |  Drag: Verschieben"
+        "Ctrl+Klick: Mehrere Slices markieren  |  Doppelklick / Shift+Click: Slice einfügen  |  Rechtsklick: Entfernen  |  Drag: Verschieben"
     ).color(TEXT_DIM).size(10.0));
 }
 
@@ -1470,8 +1518,13 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
     {
         let mut guard = state.loop_data.write().unwrap();
         let Some(sl) = guard.as_mut() else { return; };
-        if sel >= sl.slices.len() { state.selected_slice = None; return; }
+        if sel >= sl.slices.len() {
+            state.selected_slice = None;
+            state.selected_slices.clear();
+            return;
+        }
 
+        let slice_before = sl.slices[sel].clone();
         let slice = &mut sl.slices[sel];
 
         egui::Frame::NONE
@@ -1481,8 +1534,12 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
             .show(ui, |ui| {
                 ui.vertical(|ui| {
                     ui.horizontal(|ui| {
-                        ui.label(egui::RichText::new(format!("Slice #{} ({})", sel + 1, midi_note_name(slice.note)))
-                            .color(ACCENT).strong());
+                        let header_label = if state.selected_slices.len() > 1 {
+                            format!("Selected: {} Slices (Active: #{})", state.selected_slices.len(), sel + 1)
+                        } else {
+                            format!("Slice #{} ({})", sel + 1, midi_note_name(slice.note))
+                        };
+                        ui.label(egui::RichText::new(header_label).color(ACCENT).strong());
 
                         ui.add_space(8.0);
                         ui.label("Gain:");
@@ -1573,22 +1630,24 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                                 ui.selectable_value(&mut slice.fx.retrigger_rate, RetriggerRate::SixtyFourth, "1/64");
                             });
 
-                        if slice.fx.retrigger_rate != RetriggerRate::Off {
-                            ui.label("Decay:");
-                            ui.add(egui::Slider::new(&mut slice.fx.retrigger_decay, 0.0..=1.0)
-                                .fixed_decimals(2));
-                        }
+                        ui.label("Decay:");
+                        ui.add(egui::Slider::new(&mut slice.fx.retrigger_decay, 0.0..=1.0)
+                            .fixed_decimals(2));
+
+                        ui.add_space(6.0);
+                        ui.separator();
+                        ui.add_space(6.0);
 
                         // Choke Group
-                        ui.add_space(6.0);
                         ui.label("Choke:");
                         egui::ComboBox::new("choke_group", "")
-                            .selected_text(if slice.fx.choke_group == 0 { "Off".to_string() } else { format!("Grp {}", slice.fx.choke_group) })
+                            .selected_text(if slice.fx.choke_group == 0 { "Off".to_string() } else { format!("Group {}", slice.fx.choke_group) })
                             .show_ui(ui, |ui| {
                                 ui.selectable_value(&mut slice.fx.choke_group, 0, "Off");
-                                for g in 1u8..=8 {
-                                    ui.selectable_value(&mut slice.fx.choke_group, g, format!("Group {g}"));
-                                }
+                                ui.selectable_value(&mut slice.fx.choke_group, 1, "Group 1");
+                                ui.selectable_value(&mut slice.fx.choke_group, 2, "Group 2");
+                                ui.selectable_value(&mut slice.fx.choke_group, 3, "Group 3");
+                                ui.selectable_value(&mut slice.fx.choke_group, 4, "Group 4");
                             });
                     });
 
@@ -1596,26 +1655,23 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                     ui.separator();
                     ui.add_space(4.0);
 
-                    // Row 3: Akai Vintage Timestretch & DJM500 Oldschool Jungle Dub Echo
+                    // Row 3: Akai Stretch & Dub Echo FX
                     ui.horizontal(|ui| {
-                        // Akai Timestretch
-                        ui.label(egui::RichText::new("📼 Akai Stretch:").color(ACCENT2).strong());
+                        // Akai Vintage Stretch
+                        ui.label(egui::RichText::new("📻 Akai Stretch:").color(ACCENT).strong());
                         ui.add(egui::Slider::new(&mut slice.fx.stretch_factor, 0.5..=2.0)
                             .suffix("x").fixed_decimals(2));
 
-                        if (slice.fx.stretch_factor - 1.0).abs() > 0.01 {
-                            ui.label("Grain:");
-                            ui.add(egui::Slider::new(&mut slice.fx.stretch_grain_ms, 10.0..=100.0)
-                                .suffix(" ms").fixed_decimals(0));
-                        }
+                        ui.label("Grain:");
+                        ui.add(egui::Slider::new(&mut slice.fx.stretch_grain_ms, 10.0..=100.0)
+                            .suffix(" ms").fixed_decimals(0));
 
-                        ui.add_space(8.0);
+                        ui.add_space(6.0);
                         ui.separator();
-                        ui.add_space(8.0);
+                        ui.add_space(6.0);
 
-                        // DJM500 Dub Echo
-                        ui.label(egui::RichText::new("📻 Jungle Dub Echo:").color(ACCENT2).strong());
-                        ui.label("Time:");
+                        // Oldschool Jungle Dub Echo
+                        ui.label(egui::RichText::new("🌴 Dub Echo:").color(ACCENT).strong());
                         egui::ComboBox::new("delay_rate", "")
                             .selected_text(slice.fx.delay_rate.label())
                             .show_ui(ui, |ui| {
@@ -1624,31 +1680,26 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                                 ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::SixtyFourth, "1/64");
                                 ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::ThirtySecond, "1/32");
                                 ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::Sixteenth, "1/16");
-                                ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::DottedSixteenth, "1/16 Dotted");
+                                ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::DottedSixteenth, "1/16d");
                                 ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::Eighth, "1/8");
-                                ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::DottedEighth, "3/16 Dotted");
                                 ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::Quarter, "1/4");
                                 ui.selectable_value(&mut slice.fx.delay_rate, DelayRate::Half, "1/2");
                             });
 
-                        if slice.fx.delay_rate == DelayRate::Ms {
-                            ui.label("ms:");
-                            ui.add(egui::Slider::new(&mut slice.fx.delay_ms, 1.0..=100.0)
-                                .suffix(" ms").fixed_decimals(1));
-                        }
-
                         if slice.fx.delay_rate != DelayRate::Off {
-                            ui.label("FB:");
-                            ui.add(egui::Slider::new(&mut slice.fx.delay_feedback, 0.0..=0.90)
+                            if slice.fx.delay_rate == DelayRate::Ms {
+                                ui.label("Time:");
+                                ui.add(egui::Slider::new(&mut slice.fx.delay_ms, 1.0..=100.0)
+                                    .suffix(" ms").fixed_decimals(1));
+                            }
+
+                            ui.label("Fbk:");
+                            ui.add(egui::Slider::new(&mut slice.fx.delay_feedback, 0.0..=0.95)
                                 .fixed_decimals(2));
 
                             ui.label("Mix:");
                             ui.add(egui::Slider::new(&mut slice.fx.delay_mix, 0.0..=1.0)
                                 .fixed_decimals(2));
-
-                            ui.label("Tone (LP):");
-                            ui.add(egui::Slider::new(&mut slice.fx.delay_tone, 200.0..=12000.0)
-                                .logarithmic(true).suffix(" Hz").fixed_decimals(0));
                         }
                     });
 
@@ -1670,6 +1721,23 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                     });
                 });
             });
+
+        // Sync changed parameters across all selected slices
+        let slice_after = sl.slices[sel].clone();
+        if slice_after != slice_before && state.selected_slices.len() > 1 {
+            let targets: Vec<usize> = state.selected_slices.iter().copied().filter(|&i| i != sel && i < sl.slices.len()).collect();
+            for target_idx in targets {
+                let target_slice = &mut sl.slices[target_idx];
+                if slice_after.gain != slice_before.gain { target_slice.gain = slice_after.gain; }
+                if slice_after.pan != slice_before.pan { target_slice.pan = slice_after.pan; }
+                if slice_after.pitch_semitones != slice_before.pitch_semitones { target_slice.pitch_semitones = slice_after.pitch_semitones; }
+                if slice_after.fade_in_ms != slice_before.fade_in_ms { target_slice.fade_in_ms = slice_after.fade_in_ms; }
+                if slice_after.fade_out_ms != slice_before.fade_out_ms { target_slice.fade_out_ms = slice_after.fade_out_ms; }
+                if slice_after.reverse != slice_before.reverse { target_slice.reverse = slice_after.reverse; }
+                if slice_after.muted != slice_before.muted { target_slice.muted = slice_after.muted; }
+                if slice_after.fx != slice_before.fx { target_slice.fx = slice_after.fx.clone(); }
+            }
+        }
     }
 
     if copy_to_all_requested {
@@ -1821,6 +1889,43 @@ fn draw_status(ui: &mut Ui, state: &EditorState) {
     ui.horizontal(|ui| {
         ui.label(egui::RichText::new(&state.status_msg).color(TEXT_DIM).size(11.0));
     });
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_multi_slice_selection() {
+        let loop_data = Arc::new(RwLock::new(None));
+        let engine = Arc::new(Mutex::new(Engine::new()));
+        let last_dir = Arc::new(Mutex::new(None));
+        let favorites = Arc::new(Mutex::new([None, None, None, None, None]));
+        let mut state = EditorState::new(loop_data, engine, last_dir, favorites);
+
+        // Single selection
+        state.select_slice(1, false);
+        assert_eq!(state.selected_slice, Some(1));
+        assert_eq!(state.selected_slices, vec![1]);
+
+        // Ctrl+Click adds slice 3
+        state.select_slice(3, true);
+        assert_eq!(state.selected_slice, Some(3));
+        assert_eq!(state.selected_slices, vec![1, 3]);
+
+        // Ctrl+Click adds slice 5
+        state.select_slice(5, true);
+        assert_eq!(state.selected_slices, vec![1, 3, 5]);
+
+        // Ctrl+Clicking slice 3 toggles it off
+        state.select_slice(3, true);
+        assert_eq!(state.selected_slices, vec![1, 5]);
+
+        // Normal click selects only slice 2
+        state.select_slice(2, false);
+        assert_eq!(state.selected_slice, Some(2));
+        assert_eq!(state.selected_slices, vec![2]);
+    }
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
