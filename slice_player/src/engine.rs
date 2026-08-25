@@ -668,6 +668,42 @@ mod tests {
     }
 
     #[test]
+    fn test_slice_note_change_and_playback() {
+        let mut sl = SliceLoop {
+            file_path: None,
+            audio: vec![0.5; 88200],
+            channels: 2,
+            sample_rate: 44100,
+            total_frames: 44100,
+            loop_start: 0,
+            loop_end: 44100,
+            bpm: 174.0,
+            slices: Vec::new(),
+            peak_cache: Vec::new(),
+        };
+        let s1 = Slice::new(0, 5000, 48);
+        let s2 = Slice::new(5000, 10000, 49);
+        sl.slices.push(s1);
+        sl.slices.push(s2);
+
+        // Swap notes between slice 0 and slice 1
+        sl.slices[0].note = 49;
+        sl.slices[1].note = 48;
+
+        let mut engine = Engine::new();
+        engine.note_on(&sl, 48, 1.0, 1);
+
+        let active_voice = engine.voices.iter().find(|v| v.active).expect("Voice should be active");
+        assert_eq!(active_voice.slice_idx, 1);
+
+        let mut output = vec![0.0f32; 1024];
+        engine.process(&mut output, 512, &sl);
+
+        let sum: f32 = output.iter().map(|s| s.abs()).sum();
+        assert!(sum > 0.0, "Changed slice note rendered silent audio");
+    }
+
+    #[test]
     fn test_djm_combo_filter_effective() {
         let mut fx = SliceFx::default();
         assert_eq!(fx.effective_filter(), (FilterMode::Off, 20000.0));

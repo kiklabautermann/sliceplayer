@@ -1254,31 +1254,44 @@ fn draw_waveform(ui: &mut Ui, state: &mut EditorState) {
     if response.clicked() && state.dragging_marker.is_none() && state.dragging_loop_bound.is_none() && state.dragging_fade.is_none() {
         if let Some(pos) = response.interact_pointer_pos() {
             let click_frame = x_to_frame(pos.x);
-            let mut guard = state.loop_data.write().unwrap();
-            if let Some(sl) = guard.as_mut() {
-                // Check if we're near an existing marker.
-                let near_marker = sl.slices.iter().enumerate().skip(1).find(|(_, s)| {
-                    let mx = frame_to_x(s.start as f32);
-                    (pos.x - mx).abs() < MARKER_GRAB_PX
-                });
+            let mut play_note = None;
+            let mut status_msg = None;
+            {
+                let mut guard = state.loop_data.write().unwrap();
+                if let Some(sl) = guard.as_mut() {
+                    // Check if we're near an existing marker.
+                    let near_marker = sl.slices.iter().enumerate().skip(1).find(|(_, s)| {
+                        let mx = frame_to_x(s.start as f32);
+                        (pos.x - mx).abs() < MARKER_GRAB_PX
+                    });
 
-                if let Some((idx, _)) = near_marker {
-                    state.selected_slice = Some(idx);
-                } else {
-                    // Which slice did we click in?
-                    let clicked_slice = sl.slices.iter().position(|s| s.start <= click_frame && click_frame < s.end);
-                    state.selected_slice = clicked_slice;
+                    if let Some((idx, _)) = near_marker {
+                        state.selected_slice = Some(idx);
+                        play_note = Some(sl.slices[idx].note);
+                    } else {
+                        // Which slice did we click in?
+                        let clicked_slice = sl.slices.iter().position(|s| s.start <= click_frame && click_frame < s.end);
+                        state.selected_slice = clicked_slice;
+                        if let Some(idx) = clicked_slice {
+                            play_note = Some(sl.slices[idx].note);
+                        }
 
-                    // Shift+Click or Double-Click inserts a new slice marker.
-                    if ui.input(|i| i.modifiers.shift) || response.double_clicked() {
-                        let msg = {
+                        // Shift+Click or Double-Click inserts a new slice marker.
+                        if ui.input(|i| i.modifiers.shift) || response.double_clicked() {
                             sl.insert_slice_at(click_frame);
                             sl.rebuild_peaks(1024);
-                            format!("Inserted slice at frame {click_frame}")
-                        };
-                        drop(guard);
-                        state.status(msg);
+                            status_msg = Some(format!("Inserted slice at frame {click_frame}"));
+                        }
                     }
+                }
+            }
+            if let Some(msg) = status_msg {
+                state.status(msg);
+            }
+            if let Some(n) = play_note {
+                let read_guard = state.loop_data.read().unwrap();
+                if let Some(sl) = read_guard.as_ref() {
+                    state.engine.lock().unwrap().note_on(sl, n, 1.0, -1);
                 }
             }
         }
@@ -1324,11 +1337,15 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
     let mut delete_requested = false;
     let mut copy_to_all_requested = false;
     let mut reset_fx_requested = false;
+    let mut audition_note_requested: Option<u8> = None;
 
     {
         let mut guard = state.loop_data.write().unwrap();
         let Some(sl) = guard.as_mut() else { return; };
         if sel >= sl.slices.len() { state.selected_slice = None; return; }
+
+        let old_note = sl.slices[sel].note;
+        let mut selected_note = old_note;
         let slice = &mut sl.slices[sel];
 
         egui::Frame::NONE
@@ -1344,10 +1361,10 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                         ui.add_space(8.0);
                         ui.label("Note:");
                         egui::ComboBox::new("slice_note", "")
-                            .selected_text(midi_note_name(slice.note))
+                            .selected_text(midi_note_name(selected_note))
                             .show_ui(ui, |ui| {
                                 for n in 0u8..=127 {
-                                    ui.selectable_value(&mut slice.note, n, midi_note_name(n));
+                                    ui.selectable_value(&mut selected_note, n, midi_note_name(n));
                                 }
                             });
 
@@ -1543,6 +1560,18 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
                     });
                 });
             });
+
+        if selected_note != old_note {
+            // Swap note with any conflicting slice so all slices remain unique
+            for (i, other_slice) in sl.slices.iter_mut().enumerate() {
+                if i != sel && other_slice.note == selected_note {
+                    other_slice.note = old_note;
+                    break;
+                }
+            }
+            sl.slices[sel].note = selected_note;
+            audition_note_requested = Some(selected_note);
+        }
     }
 
     if copy_to_all_requested {
@@ -1582,8 +1611,14 @@ fn draw_slice_editor(ui: &mut Ui, state: &mut EditorState) {
         };
         if let Some(m) = msg { state.status(m); }
     }
-}
 
+    if let Some(n) = audition_note_requested {
+        let read_guard = state.loop_data.read().unwrap();
+        if let Some(sl) = read_guard.as_ref() {
+            state.engine.lock().unwrap().note_on(sl, n, 1.0, -1);
+        }
+    }
+}
 // ── Slice mode panel ─────────────────────────────────────────────────────────
 fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
     egui::Frame::NONE
