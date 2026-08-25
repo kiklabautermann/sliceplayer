@@ -596,8 +596,7 @@ impl SliceLoop {
                     if lock_main_beats && is_main_beat { continue; }
 
                     if !is_main_beat && rand_f32() < intensity_clamped {
-                        // Shape into snappy ghost note: low gain, subtle pitch shift, short fade out
-                        slice.gain = (0.20 + rand_f32() * 0.25).clamp(0.1, 0.5);
+                        // Shape into snappy ghost note: subtle pitch shift & short fade out (preserve gain)
                         slice.pitch_semitones = (rand_f32() * 3.0).round(); // +0..+3 semitones
                         slice.fade_out_ms = (15.0 + rand_f32() * 25.0).clamp(5.0, 50.0);
                         slice.reverse = false;
@@ -616,8 +615,7 @@ impl SliceLoop {
                         slice.fx.retrigger_decay = 0.6 + rand_f32() * 0.35;
                         slice.pitch_semitones = (rand_f32() * 5.0).round(); // Pitch rise
                     } else if roll_prob < intensity_clamped * 0.70 {
-                        // Ghost note accent
-                        slice.gain = 0.30 + rand_f32() * 0.20;
+                        // Filter accent (preserve gain)
                         slice.fx.filter_djm = 0.15 + rand_f32() * 0.30; // Subtle HP filter cut
                     }
                 }
@@ -644,8 +642,7 @@ impl SliceLoop {
 
                     let p = rand_f32();
                     if p < intensity_clamped * 0.50 {
-                        // Funky swing gain and pitch offset
-                        slice.gain = if idx % 2 == 1 { 0.40 + rand_f32() * 0.30 } else { 0.85 + rand_f32() * 0.25 };
+                        // Funky swing pitch offset & drive accent (preserve gain)
                         slice.pitch_semitones = if rand_f32() > 0.6 { 2.0 } else { 0.0 };
                         slice.fx.drive = (rand_f32() * 0.25).clamp(0.0, 0.4);
                     }
@@ -956,16 +953,25 @@ mod tests {
         let n = sl.slices.len();
         assert!(n > 0);
 
+        // Verify that gain of all slices remains untouched (1.0) across all shuffle modes
+        for slice in &sl.slices {
+            assert_eq!(slice.gain, 1.0);
+        }
+
         sl.apply_jungle_break_shuffle(ShuffleStyle::AmenRoller, 0.70, true);
         assert_eq!(sl.slices.len(), n);
+        for slice in &sl.slices { assert_eq!(slice.gain, 1.0); }
 
         sl.apply_jungle_break_shuffle(ShuffleStyle::GhostNotesOnly, 0.50, false);
         assert_eq!(sl.slices.len(), n);
+        for slice in &sl.slices { assert_eq!(slice.gain, 1.0); }
 
         sl.apply_jungle_break_shuffle(ShuffleStyle::SyncopatedFunk, 0.80, true);
         assert_eq!(sl.slices.len(), n);
+        for slice in &sl.slices { assert_eq!(slice.gain, 1.0); }
 
         sl.apply_jungle_break_shuffle(ShuffleStyle::WildChopper, 1.00, false);
         assert_eq!(sl.slices.len(), n);
+        for slice in &sl.slices { assert_eq!(slice.gain, 1.0); }
     }
 }
