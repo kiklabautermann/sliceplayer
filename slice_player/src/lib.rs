@@ -247,6 +247,7 @@ fn restore_from_persisted(persisted: &RwLock<Option<SlicePlayerPersistedData>>, 
                 loop_end: total_frames,
                 bpm: state.bpm,
                 slices: Vec::new(),
+                master_fx: crate::slicer::MasterFxParams::default(),
                 peak_cache: Vec::new(),
             };
             restored.rebuild_peaks(1024);

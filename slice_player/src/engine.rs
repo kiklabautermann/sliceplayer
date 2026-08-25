@@ -102,6 +102,28 @@ struct Voice {
     delay_filter_r: f32,
 }
 
+#[derive(Clone, Default)]
+struct MasterFxState {
+    downsample_counter: u32,
+    held_sample_l: f32,
+    held_sample_r: f32,
+
+    // 6-pole Butterworth/S950 filter states (3 cascaded 2-pole SVFs per channel)
+    s950_svf_l1: SvfState,
+    s950_svf_r1: SvfState,
+    s950_svf_l2: SvfState,
+    s950_svf_r2: SvfState,
+    s950_svf_l3: SvfState,
+    s950_svf_r3: SvfState,
+
+    // Tape saturation warmth EQ state (low-pass 75Hz head bump)
+    tape_bump_svf_l: SvfState,
+    tape_bump_svf_r: SvfState,
+    // Tape softness HF roll-off state
+    tape_soft_svf_l: SvfState,
+    tape_soft_svf_r: SvfState,
+}
+
 impl Default for Voice {
     fn default() -> Self {
         Self {
@@ -134,6 +156,7 @@ pub struct Engine {
     voices: [Voice; MAX_VOICES],
     /// Output gain (0.0–2.0).
     pub master_gain: f32,
+    master_fx_state: MasterFxState,
     /// Full loop preview playhead position in frames.
     preview_playhead: Option<usize>,
     /// File explorer audition buffer: (interleaved stereo pcm, read frame head).
@@ -145,8 +168,86 @@ impl Engine {
         Self {
             voices: std::array::from_fn(|_| Voice::default()),
             master_gain: 1.0,
+            master_fx_state: MasterFxState::default(),
             preview_playhead: None,
             audition_buffer: None,
+        }
+    }
+
+    fn process_master_fx(&mut self, output: &mut [f32], frames: usize, sample_rate: f32, params: &crate::slicer::MasterFxParams) {
+        if !params.s950_enabled && !params.tape_enabled {
+            return;
+        }
+
+        let ds_ratio = (sample_rate / params.s950_rate_hz.clamp(1000.0, sample_rate)).max(1.0);
+        let ds_factor = ds_ratio.round() as u32;
+
+        for f in 0..frames {
+            let mut l = output[f * 2];
+            let mut r = output[f * 2 + 1];
+
+            // ── 1. Akai S950 Sampler Emulation ──────────────────────────────
+            if params.s950_enabled {
+                // Variable Clock Downsampling with Zero-Order Hold (ZOH)
+                if ds_factor > 1 {
+                    if self.master_fx_state.downsample_counter % ds_factor == 0 {
+                        self.master_fx_state.held_sample_l = l;
+                        self.master_fx_state.held_sample_r = r;
+                    }
+                    self.master_fx_state.downsample_counter = self.master_fx_state.downsample_counter.wrapping_add(1);
+                    l = self.master_fx_state.held_sample_l;
+                    r = self.master_fx_state.held_sample_r;
+                }
+
+                // 12-bit / 10-bit DAC Quantization
+                l = bitcrush(l, params.s950_bit_depth);
+                r = bitcrush(r, params.s950_bit_depth);
+
+                // Steep 6-pole S950 Lowpass Reconstruction Filter (3 cascaded 2-pole SVFs)
+                let fc = params.s950_filter_cutoff.clamp(200.0, sample_rate * 0.48);
+                l = self.master_fx_state.s950_svf_l1.process(l, FilterMode::Lowpass, fc, 0.707, sample_rate);
+                l = self.master_fx_state.s950_svf_l2.process(l, FilterMode::Lowpass, fc, 0.707, sample_rate);
+                l = self.master_fx_state.s950_svf_l3.process(l, FilterMode::Lowpass, fc, 0.707, sample_rate);
+
+                r = self.master_fx_state.s950_svf_r1.process(r, FilterMode::Lowpass, fc, 0.707, sample_rate);
+                r = self.master_fx_state.s950_svf_r2.process(r, FilterMode::Lowpass, fc, 0.707, sample_rate);
+                r = self.master_fx_state.s950_svf_r3.process(r, FilterMode::Lowpass, fc, 0.707, sample_rate);
+            }
+
+            // ── 2. Analog Tape Saturation ──────────────────────────────────
+            if params.tape_enabled {
+                let drive_gain = 1.0 + params.tape_drive * 3.5;
+
+                // Low-end tape bump around 75 Hz
+                if params.tape_warmth > 0.01 {
+                    let bump_l = self.master_fx_state.tape_bump_svf_l.process(l, FilterMode::Lowpass, 75.0, 1.2, sample_rate);
+                    let bump_r = self.master_fx_state.tape_bump_svf_r.process(r, FilterMode::Lowpass, 75.0, 1.2, sample_rate);
+                    l += bump_l * (params.tape_warmth * 0.45);
+                    r += bump_r * (params.tape_warmth * 0.45);
+                }
+
+                // Soft 2nd & 3rd Harmonic Tape Saturation Curve (tanh with asymmetric warmth)
+                let xl = l * drive_gain;
+                let xr = r * drive_gain;
+
+                let sat_l = xl.tanh() + 0.08 * params.tape_warmth * (xl.tanh() * xl.tanh());
+                let sat_r = xr.tanh() + 0.08 * params.tape_warmth * (xr.tanh() * xr.tanh());
+
+                // Compensate drive gain slightly so output volume remains balanced
+                let comp_gain = 1.0 / (1.0 + params.tape_drive * 0.8);
+                l = sat_l * comp_gain;
+                r = sat_r * comp_gain;
+
+                // High-frequency tape compression & softness
+                if params.tape_softness > 0.01 {
+                    let fc_soft = (16000.0 - params.tape_softness * 8000.0).clamp(1000.0, sample_rate * 0.48);
+                    l = self.master_fx_state.tape_soft_svf_l.process(l, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
+                    r = self.master_fx_state.tape_soft_svf_r.process(r, FilterMode::Lowpass, fc_soft, 0.707, sample_rate);
+                }
+            }
+
+            output[f * 2] = l;
+            output[f * 2 + 1] = r;
         }
     }
 
@@ -499,6 +600,9 @@ impl Engine {
                 }
             }
         }
+
+        // Apply Global Master Audio FX (Akai S950 & Analog Tape Saturation)
+        self.process_master_fx(output, frames, sample_rate, &loop_data.master_fx);
     }
 
     #[allow(dead_code)]
@@ -563,6 +667,7 @@ mod tests {
             loop_end: 44100,
             bpm: 174.0,
             slices: Vec::new(),
+            master_fx: crate::slicer::MasterFxParams::default(),
             peak_cache: Vec::new(),
         };
 
@@ -599,6 +704,7 @@ mod tests {
             loop_end: 44100,
             bpm: 174.0,
             slices: Vec::new(),
+            master_fx: crate::slicer::MasterFxParams::default(),
             peak_cache: Vec::new(),
         };
         let mut s1 = Slice::new(0, 20000, 60);
@@ -628,6 +734,7 @@ mod tests {
             loop_end: 44100,
             bpm: 174.0,
             slices: Vec::new(),
+            master_fx: crate::slicer::MasterFxParams::default(),
             peak_cache: Vec::new(),
         };
         let mut s1 = Slice::new(0, 1000, 60);
@@ -658,6 +765,7 @@ mod tests {
             loop_end: 44100,
             bpm: 174.0,
             slices: Vec::new(),
+            master_fx: crate::slicer::MasterFxParams::default(),
             peak_cache: Vec::new(),
         };
         let mut s1 = Slice::new(0, 1000, 60);
@@ -689,6 +797,7 @@ mod tests {
             loop_end: 44100,
             bpm: 174.0,
             slices: Vec::new(),
+            master_fx: crate::slicer::MasterFxParams::default(),
             peak_cache: Vec::new(),
         };
         let s1 = Slice::new(0, 5000, 48);
@@ -725,6 +834,7 @@ mod tests {
             loop_end: 44100,
             bpm: 174.0,
             slices: (0..10).map(|i| Slice::new(i * 1000, (i + 1) * 1000, 48 + i as u8)).collect(),
+            master_fx: crate::slicer::MasterFxParams::default(),
             peak_cache: Vec::new(),
         };
 
@@ -769,5 +879,40 @@ mod tests {
         let (mode_hp, cutoff_hp) = fx.effective_filter();
         assert_eq!(mode_hp, FilterMode::Highpass);
         assert!(cutoff_hp > 100.0 && cutoff_hp < 5000.0);
+    }
+
+    #[test]
+    fn test_akai_s950_and_tape_master_fx_dsp() {
+        let sl = SliceLoop {
+            file_path: None,
+            audio: vec![0.6; 88200],
+            channels: 2,
+            sample_rate: 44100,
+            total_frames: 44100,
+            loop_start: 0,
+            loop_end: 44100,
+            bpm: 174.0,
+            slices: vec![Slice::new(0, 10000, 48)],
+            master_fx: crate::slicer::MasterFxParams {
+                s950_enabled: true,
+                s950_rate_hz: 12000.0,
+                s950_bit_depth: 12.0,
+                s950_filter_cutoff: 8000.0,
+                tape_enabled: true,
+                tape_drive: 0.40,
+                tape_warmth: 0.50,
+                tape_softness: 0.35,
+            },
+            peak_cache: Vec::new(),
+        };
+
+        let mut engine = Engine::new();
+        engine.note_on(&sl, 48, 1.0, 1);
+
+        let mut output = vec![0.0f32; 2048];
+        engine.process(&mut output, 1024, &sl);
+
+        let sum: f32 = output.iter().map(|s| s.abs()).sum();
+        assert!(sum > 0.0, "Akai S950 & Tape Saturation rendered silent audio");
     }
 }

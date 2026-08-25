@@ -93,12 +93,13 @@ impl FileBrowserState {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy, PartialEq, Eq)]
 pub enum SlicingModeTab {
     Transient,
     Grid,
     Manual,
     JungleShuffler,
+    MasterFX,
 }
 
 // ── Editor state (lives in the GUI thread, not audio thread) ─────────────────
@@ -1913,6 +1914,11 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
                     state.slicing_tab = SlicingModeTab::JungleShuffler;
                 }
 
+                let is_master = state.slicing_tab == SlicingModeTab::MasterFX;
+                if ui.add(egui::SelectableLabel::new(is_master, egui::RichText::new("🎛️ Master FX").color(if is_master { ACCENT } else { TEXT_DIM }).strong())).clicked() {
+                    state.slicing_tab = SlicingModeTab::MasterFX;
+                }
+
                 ui.separator();
 
                 // Tab Content
@@ -2051,6 +2057,117 @@ fn draw_slice_mode_panel(ui: &mut Ui, state: &mut EditorState) {
                                 if let Some(m) = msg { state.status(m); }
                             }
                         });
+                    }
+                    SlicingModeTab::MasterFX => {
+                        let mut guard = state.loop_data.write().unwrap();
+                        if let Some(sl) = guard.as_mut() {
+                            let fx = &mut sl.master_fx;
+
+                            ui.vertical(|ui| {
+                                ui.horizontal(|ui| {
+                                    // ── Akai S950 Section ──────────────────────
+                                    ui.vertical(|ui| {
+                                        ui.horizontal(|ui| {
+                                            ui.checkbox(&mut fx.s950_enabled, egui::RichText::new("📻 Akai S950 Sampler").color(ACCENT).strong());
+                                        });
+
+                                        if fx.s950_enabled {
+                                            ui.horizontal(|ui| {
+                                                ui.label("Rate:");
+                                                for rate in [7500.0, 10000.0, 12000.0, 15000.0, 19200.0] {
+                                                    let is_sel = (fx.s950_rate_hz - rate).abs() < 50.0;
+                                                    let label = format!("{:.1}k", rate / 1000.0);
+                                                    if ui.add(egui::SelectableLabel::new(is_sel, label)).clicked() {
+                                                        fx.s950_rate_hz = rate;
+                                                    }
+                                                }
+
+                                                ui.add_space(6.0);
+                                                ui.label("Bits:");
+                                                for b in [10.0, 12.0, 16.0] {
+                                                    let is_sel = (fx.s950_bit_depth - b).abs() < 0.1;
+                                                    let label = format!("{:.0}-bit", b);
+                                                    if ui.add(egui::SelectableLabel::new(is_sel, label)).clicked() {
+                                                        fx.s950_bit_depth = b;
+                                                    }
+                                                }
+
+                                                ui.add_space(6.0);
+                                                ui.label("Tone Cutoff:");
+                                                ui.add(egui::Slider::new(&mut fx.s950_filter_cutoff, 2000.0..=18000.0)
+                                                    .suffix(" Hz").fixed_decimals(0));
+                                            });
+                                        }
+                                    });
+
+                                    ui.add_space(12.0);
+                                    ui.separator();
+                                    ui.add_space(12.0);
+
+                                    // ── Analog Tape Saturation Section ─────────
+                                    ui.vertical(|ui| {
+                                        ui.horizontal(|ui| {
+                                            ui.checkbox(&mut fx.tape_enabled, egui::RichText::new("📼 Analog Tape Saturation").color(Color32::from_rgb(240, 160, 40)).strong());
+                                        });
+
+                                        if fx.tape_enabled {
+                                            ui.horizontal(|ui| {
+                                                ui.label("Drive:");
+                                                ui.add(egui::Slider::new(&mut fx.tape_drive, 0.0..=1.0)
+                                                    .custom_formatter(|n, _| format!("{:.0}%", n * 100.0)));
+
+                                                ui.add_space(6.0);
+                                                ui.label("Warmth (75Hz):");
+                                                ui.add(egui::Slider::new(&mut fx.tape_warmth, 0.0..=1.0)
+                                                    .custom_formatter(|n, _| format!("{:.0}%", n * 100.0)));
+
+                                                ui.add_space(6.0);
+                                                ui.label("Softness:");
+                                                ui.add(egui::Slider::new(&mut fx.tape_softness, 0.0..=1.0)
+                                                    .custom_formatter(|n, _| format!("{:.0}%", n * 100.0)));
+                                            });
+                                        }
+                                    });
+                                });
+
+                                ui.add_space(4.0);
+                                ui.horizontal(|ui| {
+                                    ui.label(egui::RichText::new("⚡ Quick Master Presets:").color(TEXT_DIM));
+                                    ui.add_space(4.0);
+                                    if styled_button(ui, "📻 90s Jungle S950 (12kHz 12-bit)", Color32::from_rgb(60, 160, 220)) {
+                                        fx.s950_enabled = true;
+                                        fx.s950_rate_hz = 12000.0;
+                                        fx.s950_bit_depth = 12.0;
+                                        fx.s950_filter_cutoff = 8000.0;
+                                        fx.tape_enabled = false;
+                                    }
+                                    ui.add_space(6.0);
+                                    if styled_button(ui, "📼 Warm Tape Bounce", Color32::from_rgb(220, 140, 40)) {
+                                        fx.s950_enabled = false;
+                                        fx.tape_enabled = true;
+                                        fx.tape_drive = 0.40;
+                                        fx.tape_warmth = 0.50;
+                                        fx.tape_softness = 0.35;
+                                    }
+                                    ui.add_space(6.0);
+                                    if styled_button(ui, "🌴 Gritty 12-bit Tape", Color32::from_rgb(180, 100, 220)) {
+                                        fx.s950_enabled = true;
+                                        fx.s950_rate_hz = 10000.0;
+                                        fx.s950_bit_depth = 12.0;
+                                        fx.s950_filter_cutoff = 7500.0;
+                                        fx.tape_enabled = true;
+                                        fx.tape_drive = 0.45;
+                                        fx.tape_warmth = 0.55;
+                                        fx.tape_softness = 0.40;
+                                    }
+                                    ui.add_space(6.0);
+                                    if styled_button(ui, "🚫 Bypass Master FX", Color32::from_rgb(160, 80, 80)) {
+                                        fx.s950_enabled = false;
+                                        fx.tape_enabled = false;
+                                    }
+                                });
+                            });
+                        }
                     }
                 }
             });

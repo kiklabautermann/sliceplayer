@@ -21,7 +21,7 @@ This document outlines planned features, community ideas, and future enhancement
 - [x] **Per-Slice Bitcrusher & Degradation**: Bit depth reduction (2–16 bits), sample rate crushing (downsampling 1–16x), and soft drive distortion per slice.
 - [x] **Per-Slice Retrigger / Rhythmic Stutter**: Multi-trigger repeat modes (1/8, 1/16, 1/32, 1/64 rolls) with decay envelope per slice.
 - [x] **Akai-Style Vintage Time-Stretching**: Classic S1000/S3000 granular pitch-coarse time-stretching (0.5x–2.0x) with signature metallic artifacts.
-- [x] **DJM500 / Oldschool Jungle Dub Echo**: Rhythmic BPM-synced delay (1/64 to 1/2, 1/16 dotted, 1ms–100ms free ms) with feedback LP filtering for classic D&B / Jungle dub echoes.
+- [x] **Akai S950 "Oldskool Sampler" Emulation & Analog Tape Saturation**: Global master audio FX section featuring 12-bit/10-bit DAC quantization, variable sampling rates (7.5k–19.2k Hz), 6-pole S950 reconstruction filter, and warm analog tape saturation (tanh drive, 75Hz warmth bump, HF softness).
 - [ ] **Velocity Sensitivity Mapping**: Customizable velocity curves per slice.
 
 ### 🌴 Jungle & Drum & Bass Specialized Tools

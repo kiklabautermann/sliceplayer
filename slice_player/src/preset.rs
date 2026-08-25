@@ -14,6 +14,7 @@ pub struct SlicePlayerPreset {
     pub loop_start: usize,
     pub loop_end: usize,
     pub slices: Vec<SlicePersisted>,
+    pub master_fx: Option<crate::slicer::MasterFxParams>,
     pub audio_pcm: Vec<f32>,
 }
 
@@ -72,6 +73,7 @@ pub fn save_preset_to_file(path: &Path, sl: &SliceLoop) -> Result<(), String> {
         loop_start: sl.loop_start,
         loop_end: sl.loop_end,
         slices,
+        master_fx: Some(sl.master_fx.clone()),
         audio_pcm: sl.audio.clone(),
     };
 
@@ -79,14 +81,14 @@ pub fn save_preset_to_file(path: &Path, sl: &SliceLoop) -> Result<(), String> {
         .map_err(|e| format!("Failed to serialize preset: {e}"))?;
 
     std::fs::write(path, json)
-        .map_err(|e| format!("Failed to write preset file: {e}"))?;
+        .map_err(|e| format!("Failed to write preset file {}: {e}", path.display()))?;
 
     Ok(())
 }
 
 pub fn load_preset_from_file(path: &Path) -> Result<SliceLoop, String> {
     let content = std::fs::read_to_string(path)
-        .map_err(|e| format!("Failed to read preset file: {e}"))?;
+        .map_err(|e| format!("Failed to read preset file {}: {e}", path.display()))?;
 
     let preset: SlicePlayerPreset = serde_json::from_str(&content)
         .map_err(|e| format!("Failed to parse preset JSON: {e}"))?;
@@ -106,6 +108,7 @@ pub fn load_preset_from_file(path: &Path) -> Result<SliceLoop, String> {
         loop_end: if preset.loop_end > 0 { preset.loop_end.min(total_frames) } else { total_frames },
         bpm: preset.bpm,
         slices: Vec::new(),
+        master_fx: preset.master_fx.unwrap_or_default(),
         peak_cache: Vec::new(),
     };
 
@@ -182,6 +185,7 @@ mod tests {
             loop_end: 44100,
             bpm: 174.0,
             slices: Vec::new(),
+            master_fx: crate::slicer::MasterFxParams::default(),
             peak_cache: Vec::new(),
         };
 

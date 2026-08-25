@@ -338,6 +338,7 @@ mod tests {
                 Slice::new(0, 22050, 48),
                 Slice::new(22050, 44100, 49),
             ],
+            master_fx: crate::slicer::MasterFxParams::default(),
             peak_cache: Vec::new(),
         };
 

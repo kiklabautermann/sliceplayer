@@ -4,6 +4,7 @@
 //! 3. Transient detection (VelociLoops SuperFlux)
 
 use std::path::{Path, PathBuf};
+use serde::{Serialize, Deserialize};
 use crate::velocloops_ffi::{Rex2File, superflux_detect_slices, superflux_default_options};
 use symphonia::core::audio::SampleBuffer;
 use symphonia::core::codecs::DecoderOptions;
@@ -217,6 +218,44 @@ pub struct SliceFx {
     pub delay_tone: f32,
 }
 
+/// Global Master Audio FX parameters (Akai S950 Sampler Emulation & Analog Tape Saturation).
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct MasterFxParams {
+    // ── Akai S950 Sampler Emulation ──────────────────────────────────────
+    pub s950_enabled: bool,
+    /// Target sampling rate (e.g., 7500.0, 10000.0, 12000.0, 15000.0, 19200.0 Hz).
+    pub s950_rate_hz: f32,
+    /// DAC Bit depth quantization (e.g., 12.0 = S950, 10.0 = S900, 16.0 = Off).
+    pub s950_bit_depth: f32,
+    /// 6-pole Butterworth S950 reconstruction filter cutoff Hz (2000.0..=18000.0 Hz).
+    pub s950_filter_cutoff: f32,
+
+    // ── Analog Tape Saturation ───────────────────────────────────────────
+    pub tape_enabled: bool,
+    /// Tape saturation drive / distortion amount (0.0..=1.0).
+    pub tape_drive: f32,
+    /// Tape warmth / low-end 70 Hz head bump & 2nd harmonic warmth (0.0..=1.0).
+    pub tape_warmth: f32,
+    /// High-frequency tape compression & softness (0.0..=1.0).
+    pub tape_softness: f32,
+}
+
+impl Default for MasterFxParams {
+    fn default() -> Self {
+        Self {
+            s950_enabled: false,
+            s950_rate_hz: 12000.0,
+            s950_bit_depth: 12.0,
+            s950_filter_cutoff: 8000.0,
+
+            tape_enabled: false,
+            tape_drive: 0.35,
+            tape_warmth: 0.40,
+            tape_softness: 0.30,
+        }
+    }
+}
+
 impl SliceFx {
     pub fn effective_filter(&self) -> (FilterMode, f32) {
         if self.filter_djm < -0.01 {
@@ -331,6 +370,8 @@ pub struct SliceLoop {
     /// BPM from file metadata (REX2) or user-set.
     pub bpm: f64,
     pub slices: Vec<Slice>,
+    /// Master FX processing settings (Akai S950 & Tape Saturation).
+    pub master_fx: MasterFxParams,
     /// Waveform peak cache for the GUI (one peak per pixel bucket).
     pub peak_cache: Vec<(f32, f32)>,
 }
@@ -407,7 +448,7 @@ impl SliceLoop {
             file_path: Some(path.to_path_buf()),
             audio, channels: 2, sample_rate, total_frames,
             loop_start: 0, loop_end: total_frames,
-            bpm, slices: Vec::new(), peak_cache: Vec::new(),
+            bpm, slices: Vec::new(), master_fx: MasterFxParams::default(), peak_cache: Vec::new(),
         };
         s.rebuild_peaks(1024);
         Ok(s)
@@ -464,7 +505,7 @@ impl SliceLoop {
             file_path: Some(path.to_path_buf()),
             audio, channels: 2, sample_rate, total_frames,
             loop_start: 0, loop_end: total_frames,
-            bpm, slices, peak_cache: Vec::new(),
+            bpm, slices, master_fx: MasterFxParams::default(), peak_cache: Vec::new(),
         };
         s.rebuild_peaks(1024);
         Ok(s)
@@ -1005,6 +1046,7 @@ mod tests {
             loop_end: total_frames,
             bpm: 174.0,
             slices: Vec::new(),
+            master_fx: MasterFxParams::default(),
             peak_cache: Vec::new(),
         };
 
